@@ -1,0 +1,16 @@
+name: spec-validate
+on: [push, pull_request]
+jobs:
+  codegen-drift-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npm run bundle-schema
+      - run: npm run codegen -- --out-dir /tmp/codegen-output
+      - run: |
+          diff -r generated/ /tmp/codegen-output/ || \
+          (echo "Generated code is stale - run 'npm run codegen' and commit the result" && exit 1)
