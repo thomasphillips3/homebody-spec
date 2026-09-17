@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://homebody.app/schema/home-record.schema.json",
+  "title": "HomeRecord",
+  "description": "Root document for a Home Record export. Flat, database-table-mirroring shape - one home, plus arrays of every other entity, each keyed by an id and its parent foreign keys rather than deep nesting.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "home",
+    "levels",
+    "rooms",
+    "plan_elements",
+    "systems",
+    "components",
+    "events",
+    "attachments",
+    "smart_home_readings",
+    "utility_bills"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semver of the Home Record spec this document conforms to, e.g. 0.1.0. Downstream import validation rejects unknown versions rather than duck-typing."
+    },
+    "home": { "$ref": "./entities/home.schema.json" },
+    "levels": {
+      "type": "array",
+      "items": { "$ref": "./entities/level.schema.json" },
+      "default": []
+    },
+    "rooms": {
+      "type": "array",
+      "items": { "$ref": "./entities/room.schema.json" },
+      "default": []
+    },
+    "plan_elements": {
+      "type": "array",
+      "items": { "$ref": "./entities/plan-element.schema.json" },
+      "default": []
+    },
+    "systems": {
+      "type": "array",
+      "items": { "$ref": "./entities/system.schema.json" },
+      "default": []
+    },
+    "components": {
+      "type": "array",
+      "items": { "$ref": "./entities/component.schema.json" },
+      "default": []
+    },
+    "events": {
+      "type": "array",
+      "items": { "$ref": "./entities/event.schema.json" },
+      "default": []
+    },
+    "attachments": {
+      "type": "array",
+      "items": { "$ref": "./entities/attachment.schema.json" },
+      "default": []
+    },
+    "smart_home_readings": {
+      "type": "array",
+      "items": { "$ref": "./entities/smart-home-reading.schema.json" },
+      "default": []
+    },
+    "utility_bills": {
+      "type": "array",
+      "items": { "$ref": "./entities/utility-bill.schema.json" },
+      "default": []
+    }
+  }
+}
