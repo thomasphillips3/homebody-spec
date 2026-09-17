@@ -1,0 +1,19 @@
+{
+  "name": "homebody-spec",
+  "version": "0.1.0",
+  "description": "The Home Record spec: open, versioned JSON Schema plus generated Swift/Kotlin/TypeScript models and golden fixtures.",
+  "license": "MIT",
+  "main": "generated/typescript/homeRecord.ts",
+  "types": "generated/typescript/homeRecord.ts",
+  "scripts": {
+    "bundle-schema": "tsx codegen/bundle-schema.ts",
+    "codegen": "tsx codegen/generate-models.ts"
+  },
+  "devDependencies": {
+    "@apidevtools/json-schema-ref-parser": "16.0.2",
+    "json-canonicalize": "3.0.1",
+    "quicktype": "26.0.0",
+    "tsx": "4.23.13",
+    "typescript": "^5.9.0"
+  }
+}
