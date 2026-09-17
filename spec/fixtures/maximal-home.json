@@ -1,0 +1,571 @@
+{
+  "schema_version": "0.1.0",
+  "home": {
+    "id": "00000000-0000-4000-8000-000000000001",
+    "owner_user_id": "00000000-0000-4000-8000-000000000002",
+    "name": "Fixture Home (Maximal)",
+    "address": "456 Sample Court, Placeholder City, ZZ 00001",
+    "parcel_id": "TEST-PARCEL-000456",
+    "year_built": 1998,
+    "sq_ft": 2400,
+    "beds": 4,
+    "baths": 2.5,
+    "lot_size_m2": 810.5,
+    "created_at": "2026-01-01T00:00:00Z"
+  },
+  "levels": [
+    {
+      "id": "00000000-0000-4000-8000-000000000010",
+      "home_id": "00000000-0000-4000-8000-000000000001",
+      "name": "Main Floor",
+      "sort_order": 0,
+      "elevation_offset_m": 0.0,
+      "scale_confidence": "measured"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000011",
+      "home_id": "00000000-0000-4000-8000-000000000001",
+      "name": "Second Floor",
+      "sort_order": 1,
+      "elevation_offset_m": 3.0,
+      "scale_confidence": "estimated"
+    }
+  ],
+  "rooms": [
+    {
+      "id": "00000000-0000-4000-8000-000000000020",
+      "level_id": "00000000-0000-4000-8000-000000000010",
+      "name": "Kitchen",
+      "room_type": "kitchen",
+      "geometry": {
+        "type": "polygon",
+        "coordinates": [[0, 0], [4, 0], [4, 3], [0, 3], [0, 0]]
+      },
+      "area_computed_m2": 12.0
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000021",
+      "level_id": "00000000-0000-4000-8000-000000000010",
+      "name": "Living Room",
+      "room_type": "living_room",
+      "geometry": {
+        "type": "polygon",
+        "coordinates": [[4, 0], [9, 0], [9, 4], [4, 4], [4, 0]]
+      },
+      "area_computed_m2": 20.0
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000022",
+      "level_id": "00000000-0000-4000-8000-000000000010",
+      "name": "Garage",
+      "room_type": "garage",
+      "geometry": {
+        "type": "polygon",
+        "coordinates": [[9, 0], [13, 0], [13, 5], [9, 5], [9, 0]]
+      },
+      "area_computed_m2": 20.0
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000023",
+      "level_id": "00000000-0000-4000-8000-000000000011",
+      "name": "Primary Bedroom",
+      "room_type": "bedroom",
+      "geometry": {
+        "type": "polygon",
+        "coordinates": [[0, 0], [4, 0], [4, 4], [0, 4], [0, 0]]
+      },
+      "area_computed_m2": 16.0
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000024",
+      "level_id": "00000000-0000-4000-8000-000000000011",
+      "name": "Hall Bathroom",
+      "room_type": "bathroom",
+      "geometry": {
+        "type": "polygon",
+        "coordinates": [[4, 0], [6, 0], [6, 2.5], [4, 2.5], [4, 0]]
+      },
+      "area_computed_m2": 5.0
+    }
+  ],
+  "plan_elements": [
+    {
+      "id": "00000000-0000-4000-8000-000000000030",
+      "level_id": "00000000-0000-4000-8000-000000000010",
+      "kind": "wall",
+      "geometry": {
+        "type": "polyline",
+        "coordinates": [[0, 0], [4, 0]]
+      },
+      "host_element_id": null
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000031",
+      "level_id": "00000000-0000-4000-8000-000000000010",
+      "kind": "door",
+      "geometry": {
+        "type": "polyline",
+        "coordinates": [[1.0, 0], [1.9, 0]]
+      },
+      "host_element_id": "00000000-0000-4000-8000-000000000030"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000032",
+      "level_id": "00000000-0000-4000-8000-000000000010",
+      "kind": "window",
+      "geometry": {
+        "type": "polyline",
+        "coordinates": [[2.5, 0], [3.3, 0]]
+      },
+      "host_element_id": "00000000-0000-4000-8000-000000000030"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000033",
+      "level_id": "00000000-0000-4000-8000-000000000010",
+      "kind": "opening",
+      "geometry": {
+        "type": "polyline",
+        "coordinates": [[4, 0], [4, 3]]
+      },
+      "host_element_id": null
+    }
+  ],
+  "systems": [
+    {
+      "id": "00000000-0000-4000-8000-000000000040",
+      "home_id": "00000000-0000-4000-8000-000000000001",
+      "category": "plumbing",
+      "name": "Main Plumbing",
+      "notes": null
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000041",
+      "home_id": "00000000-0000-4000-8000-000000000001",
+      "category": "electrical",
+      "name": "Main Electrical",
+      "notes": "200A service panel in garage."
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000042",
+      "home_id": "00000000-0000-4000-8000-000000000001",
+      "category": "hvac",
+      "name": "Central HVAC",
+      "notes": null
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000043",
+      "home_id": "00000000-0000-4000-8000-000000000001",
+      "category": "roof_structure",
+      "name": "Roof and Structure",
+      "notes": "Asphalt shingle, replaced 2015."
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000044",
+      "home_id": "00000000-0000-4000-8000-000000000001",
+      "category": "appliances_and_water_heater",
+      "name": "Appliances and Water Heater",
+      "notes": null
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000045",
+      "home_id": "00000000-0000-4000-8000-000000000001",
+      "category": "exterior_and_site",
+      "name": "Exterior and Site",
+      "notes": null
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000046",
+      "home_id": "00000000-0000-4000-8000-000000000001",
+      "category": "low_voltage_and_smart_home",
+      "name": "Low Voltage and Smart Home",
+      "notes": "Includes thermostat, smoke detectors, and one exterior camera."
+    }
+  ],
+  "components": [
+    {
+      "id": "00000000-0000-4000-8000-000000000050",
+      "system_id": "00000000-0000-4000-8000-000000000044",
+      "name": "Water Heater",
+      "component_type": "water_heater",
+      "make": "Rheem",
+      "model": "XE50T10H45U1",
+      "serial_number": "WH-TEST-000001",
+      "install_date": "2020-05-01",
+      "warranty_start": "2020-05-01",
+      "warranty_length_months": 72,
+      "manual_attachment_id": "00000000-0000-4000-8000-000000000072",
+      "service_interval_days": 365,
+      "last_serviced_at": "2025-11-01",
+      "condition": "good",
+      "level_id": "00000000-0000-4000-8000-000000000010",
+      "room_ids": ["00000000-0000-4000-8000-000000000022"],
+      "geometry": null,
+      "notes": null,
+      "linked_component_id": null,
+      "custom_fields": {}
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000051",
+      "system_id": "00000000-0000-4000-8000-000000000042",
+      "name": "Furnace",
+      "component_type": "hvac_furnace",
+      "make": "Carrier",
+      "model": "59SC5A060S17",
+      "serial_number": "FN-TEST-000002",
+      "install_date": "2018-09-15",
+      "warranty_start": "2018-09-15",
+      "warranty_length_months": 120,
+      "manual_attachment_id": null,
+      "service_interval_days": 180,
+      "last_serviced_at": "2026-04-01",
+      "condition": "fair",
+      "level_id": "00000000-0000-4000-8000-000000000010",
+      "room_ids": ["00000000-0000-4000-8000-000000000022"],
+      "geometry": null,
+      "notes": "Slight rattling noise on startup, monitoring.",
+      "linked_component_id": null,
+      "custom_fields": {}
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000052",
+      "system_id": "00000000-0000-4000-8000-000000000041",
+      "name": "Main Electrical Panel",
+      "component_type": "electrical_panel",
+      "make": "Square D",
+      "model": "QO130M200P",
+      "serial_number": "EP-TEST-000003",
+      "install_date": "1998-06-01",
+      "warranty_start": null,
+      "warranty_length_months": null,
+      "manual_attachment_id": null,
+      "service_interval_days": null,
+      "last_serviced_at": null,
+      "condition": "needs_attention",
+      "level_id": "00000000-0000-4000-8000-000000000010",
+      "room_ids": ["00000000-0000-4000-8000-000000000022"],
+      "geometry": null,
+      "notes": "Original to the house, due for an inspection.",
+      "linked_component_id": null,
+      "custom_fields": {}
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000053",
+      "system_id": "00000000-0000-4000-8000-000000000046",
+      "name": "Bedroom Smoke Detector",
+      "component_type": "smoke_detector",
+      "make": "Kidde",
+      "model": "P4010ACSCO",
+      "serial_number": "SD-TEST-000004",
+      "install_date": "2016-01-01",
+      "warranty_start": null,
+      "warranty_length_months": null,
+      "manual_attachment_id": null,
+      "service_interval_days": 3650,
+      "last_serviced_at": null,
+      "condition": "needs_replacement",
+      "level_id": "00000000-0000-4000-8000-000000000011",
+      "room_ids": ["00000000-0000-4000-8000-000000000023"],
+      "geometry": null,
+      "notes": "Past 10-year service life, schedule replacement.",
+      "linked_component_id": null,
+      "custom_fields": {}
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000054",
+      "system_id": "00000000-0000-4000-8000-000000000046",
+      "name": "Living Room Thermostat",
+      "component_type": "thermostat",
+      "make": "Ecobee",
+      "model": "Ecobee Smart Thermostat Premium",
+      "serial_number": "TH-TEST-000005",
+      "install_date": "2023-03-10",
+      "warranty_start": "2023-03-10",
+      "warranty_length_months": 36,
+      "manual_attachment_id": null,
+      "service_interval_days": null,
+      "last_serviced_at": null,
+      "condition": "unknown",
+      "level_id": "00000000-0000-4000-8000-000000000010",
+      "room_ids": ["00000000-0000-4000-8000-000000000021"],
+      "geometry": {
+        "type": "point",
+        "coordinates": [[6.5, 1.2]]
+      },
+      "notes": "Controls the main floor furnace.",
+      "linked_component_id": "00000000-0000-4000-8000-000000000051",
+      "custom_fields": {
+        "firmware": {
+          "version": "6.5.2",
+          "last_updated": "2026-06-01"
+        },
+        "wifi_connected": true,
+        "schedule": {
+          "weekday": {
+            "wake": "06:30",
+            "away": "08:30",
+            "home": "17:30",
+            "sleep": "22:00"
+          }
+        }
+      }
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000055",
+      "system_id": "00000000-0000-4000-8000-000000000045",
+      "name": "Front Gutters",
+      "component_type": "gutter",
+      "make": null,
+      "model": null,
+      "serial_number": null,
+      "install_date": "2015-08-01",
+      "warranty_start": null,
+      "warranty_length_months": null,
+      "manual_attachment_id": null,
+      "service_interval_days": 180,
+      "last_serviced_at": "2026-03-15",
+      "condition": "good",
+      "level_id": "00000000-0000-4000-8000-000000000010",
+      "room_ids": [],
+      "geometry": null,
+      "notes": "Cleaned twice a year.",
+      "linked_component_id": null,
+      "custom_fields": {}
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000056",
+      "system_id": "00000000-0000-4000-8000-000000000046",
+      "name": "Garage Exterior Camera",
+      "component_type": "camera",
+      "make": "Google Nest",
+      "model": "Nest Cam (battery)",
+      "serial_number": "CAM-TEST-000006",
+      "install_date": "2022-07-01",
+      "warranty_start": "2022-07-01",
+      "warranty_length_months": 12,
+      "manual_attachment_id": null,
+      "service_interval_days": null,
+      "last_serviced_at": null,
+      "condition": "fair",
+      "level_id": "00000000-0000-4000-8000-000000000010",
+      "room_ids": ["00000000-0000-4000-8000-000000000022"],
+      "geometry": null,
+      "notes": "Battery drains faster in winter.",
+      "linked_component_id": null,
+      "custom_fields": {}
+    }
+  ],
+  "events": [
+    {
+      "id": "00000000-0000-4000-8000-000000000060",
+      "home_id": "00000000-0000-4000-8000-000000000001",
+      "system_id": null,
+      "component_id": "00000000-0000-4000-8000-000000000051",
+      "event_type": "inspection",
+      "occurred_at": "2026-04-01T09:00:00Z",
+      "performed_by": "Springfield HVAC Co.",
+      "cost_cents": 12500,
+      "notes": "Annual furnace inspection, minor rattle noted.",
+      "condition_after": "fair",
+      "reading_value": null,
+      "reading_unit": null,
+      "attachment_ids": ["00000000-0000-4000-8000-000000000070"]
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000061",
+      "home_id": "00000000-0000-4000-8000-000000000001",
+      "system_id": "00000000-0000-4000-8000-000000000042",
+      "component_id": null,
+      "event_type": "service",
+      "occurred_at": "2025-10-15T13:30:00Z",
+      "performed_by": "Springfield HVAC Co.",
+      "cost_cents": 18000,
+      "notes": "Seasonal HVAC system tune-up, filters replaced.",
+      "condition_after": null,
+      "reading_value": null,
+      "reading_unit": null,
+      "attachment_ids": []
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000062",
+      "home_id": "00000000-0000-4000-8000-000000000001",
+      "system_id": null,
+      "component_id": "00000000-0000-4000-8000-000000000052",
+      "event_type": "repair",
+      "occurred_at": "2026-02-20T10:00:00Z",
+      "performed_by": "Test Electric LLC",
+      "cost_cents": 24000,
+      "notes": "Replaced two failing breakers.",
+      "condition_after": "needs_attention",
+      "reading_value": null,
+      "reading_unit": null,
+      "attachment_ids": ["00000000-0000-4000-8000-000000000071"]
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000063",
+      "home_id": "00000000-0000-4000-8000-000000000001",
+      "system_id": null,
+      "component_id": "00000000-0000-4000-8000-000000000053",
+      "event_type": "replacement",
+      "occurred_at": "2016-01-01T12:00:00Z",
+      "performed_by": null,
+      "cost_cents": 3500,
+      "notes": "Installed new smoke detector after prior unit expired.",
+      "condition_after": "good",
+      "reading_value": null,
+      "reading_unit": null,
+      "attachment_ids": []
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000064",
+      "home_id": "00000000-0000-4000-8000-000000000001",
+      "system_id": null,
+      "component_id": "00000000-0000-4000-8000-000000000054",
+      "event_type": "reading",
+      "occurred_at": "2026-08-01T08:00:00Z",
+      "performed_by": null,
+      "cost_cents": null,
+      "notes": null,
+      "condition_after": null,
+      "reading_value": 21.5,
+      "reading_unit": "celsius",
+      "attachment_ids": []
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000065",
+      "home_id": "00000000-0000-4000-8000-000000000001",
+      "system_id": "00000000-0000-4000-8000-000000000046",
+      "component_id": null,
+      "event_type": "note",
+      "occurred_at": "2026-05-05T16:00:00Z",
+      "performed_by": null,
+      "cost_cents": null,
+      "notes": "Considering adding a second exterior camera near the driveway.",
+      "condition_after": null,
+      "reading_value": null,
+      "reading_unit": null,
+      "attachment_ids": []
+    }
+  ],
+  "attachments": [
+    {
+      "id": "00000000-0000-4000-8000-000000000070",
+      "home_id": "00000000-0000-4000-8000-000000000001",
+      "kind": "photo",
+      "storage_path": "homes/00000000-0000-4000-8000-000000000001/attachments/000070.jpg",
+      "mime_type": "image/jpeg",
+      "file_size_bytes": 2457600,
+      "captured_at": "2026-04-01T09:05:00Z",
+      "linked_event_id": "00000000-0000-4000-8000-000000000060",
+      "linked_component_id": "00000000-0000-4000-8000-000000000051"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000071",
+      "home_id": "00000000-0000-4000-8000-000000000001",
+      "kind": "receipt",
+      "storage_path": "homes/00000000-0000-4000-8000-000000000001/attachments/000071.pdf",
+      "mime_type": "application/pdf",
+      "file_size_bytes": 184320,
+      "captured_at": "2026-02-20T11:00:00Z",
+      "linked_event_id": "00000000-0000-4000-8000-000000000062",
+      "linked_component_id": null
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000072",
+      "home_id": "00000000-0000-4000-8000-000000000001",
+      "kind": "manual_pdf",
+      "storage_path": "homes/00000000-0000-4000-8000-000000000001/attachments/000072.pdf",
+      "mime_type": "application/pdf",
+      "file_size_bytes": 512000,
+      "captured_at": null,
+      "linked_event_id": null,
+      "linked_component_id": "00000000-0000-4000-8000-000000000050"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000073",
+      "home_id": "00000000-0000-4000-8000-000000000001",
+      "kind": "usdz_mesh",
+      "storage_path": "homes/00000000-0000-4000-8000-000000000001/attachments/000073.usdz",
+      "mime_type": "model/vnd.usdz+zip",
+      "file_size_bytes": 10485760,
+      "captured_at": "2026-01-05T14:00:00Z",
+      "linked_event_id": null,
+      "linked_component_id": null
+    }
+  ],
+  "smart_home_readings": [
+    {
+      "id": "00000000-0000-4000-8000-000000000080",
+      "component_id": "00000000-0000-4000-8000-000000000054",
+      "source": "homekit",
+      "metric": "temperature",
+      "value": 21.5,
+      "unit": "celsius",
+      "recorded_at": "2026-08-01T08:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000081",
+      "component_id": "00000000-0000-4000-8000-000000000054",
+      "source": "ecobee",
+      "metric": "temperature",
+      "value": 22.0,
+      "unit": "celsius",
+      "recorded_at": "2026-08-01T09:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000082",
+      "component_id": "00000000-0000-4000-8000-000000000054",
+      "source": "nest",
+      "metric": "temperature",
+      "value": 20.0,
+      "unit": "celsius",
+      "recorded_at": "2026-08-01T10:00:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000083",
+      "component_id": "00000000-0000-4000-8000-000000000053",
+      "source": "other",
+      "metric": "battery_level",
+      "value": 87,
+      "unit": "percent",
+      "recorded_at": "2026-08-01T11:00:00Z"
+    }
+  ],
+  "utility_bills": [
+    {
+      "id": "00000000-0000-4000-8000-000000000090",
+      "home_id": "00000000-0000-4000-8000-000000000001",
+      "utility_type": "gas",
+      "billing_period_start": "2026-07-01",
+      "billing_period_end": "2026-07-31",
+      "usage_amount": 25.4,
+      "usage_unit": "therms",
+      "cost_cents": 4200,
+      "source": "manual",
+      "attachment_id": null
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000091",
+      "home_id": "00000000-0000-4000-8000-000000000001",
+      "utility_type": "electric",
+      "billing_period_start": "2026-07-01",
+      "billing_period_end": "2026-07-31",
+      "usage_amount": 812.0,
+      "usage_unit": "kwh",
+      "cost_cents": 11500,
+      "source": "import",
+      "attachment_id": null
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000092",
+      "home_id": "00000000-0000-4000-8000-000000000001",
+      "utility_type": "water",
+      "billing_period_start": "2026-07-01",
+      "billing_period_end": "2026-07-31",
+      "usage_amount": 6.3,
+      "usage_unit": "ccf",
+      "cost_cents": 3800,
+      "source": "manual",
+      "attachment_id": null
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "schema_version": "0.1.0",
+  "home": {
+    "id": "10000000-0000-4000-8000-000000000001",
+    "owner_user_id": "10000000-0000-4000-8000-000000000002",
+    "name": "Fixture Home (Minimal)",
+    "address": "123 Fixture Lane, Testville, ZZ 00000",
+    "created_at": "2026-01-01T00:00:00Z"
+  },
+  "levels": [
+    {
+      "id": "10000000-0000-4000-8000-000000000010",
+      "home_id": "10000000-0000-4000-8000-000000000001",
+      "name": "Main Floor",
+      "sort_order": 0,
+      "elevation_offset_m": 0.0,
+      "scale_confidence": "measured"
+    }
+  ],
+  "rooms": [
+    {
+      "id": "10000000-0000-4000-8000-000000000020",
+      "level_id": "10000000-0000-4000-8000-000000000010",
+      "name": "Living Room",
+      "room_type": "living_room",
+      "geometry": {
+        "type": "polygon",
+        "coordinates": [[0, 0], [4, 0], [4, 3], [0, 3], [0, 0]]
+      }
+    }
+  ],
+  "plan_elements": [],
+  "systems": [],
+  "components": [],
+  "events": [],
+  "attachments": [],
+  "smart_home_readings": [],
+  "utility_bills": []
+}
