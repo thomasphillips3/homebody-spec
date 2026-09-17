@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://homebody.app/schema/entities/plan-geometry.schema.json",
+  "title": "PlanGeometry",
+  "description": "Shared geometry type embedded by Room, PlanElement, and Component. Coordinates are 2-element [x, y] pairs in meters, in per-level plan space (Y-down convention).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["type", "coordinates"],
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": ["point", "polyline", "polygon"]
+    },
+    "coordinates": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": { "type": "number" },
+        "minItems": 2,
+        "maxItems": 2
+      }
+    }
+  }
+}

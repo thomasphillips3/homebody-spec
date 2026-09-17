@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://homebody.app/schema/entities/home.schema.json",
+  "title": "Home",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "owner_user_id", "name", "address", "created_at"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "owner_user_id": { "type": "string", "format": "uuid" },
+    "name": { "type": "string" },
+    "address": { "type": "string" },
+    "parcel_id": { "type": ["string", "null"] },
+    "year_built": { "type": ["integer", "null"] },
+    "sq_ft": { "type": ["number", "null"] },
+    "beds": { "type": ["integer", "null"] },
+    "baths": { "type": ["number", "null"] },
+    "lot_size_m2": { "type": ["number", "null"] },
+    "created_at": { "type": "string", "format": "date-time" }
+  }
+}

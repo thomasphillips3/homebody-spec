@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://homebody.app/schema/entities/level.schema.json",
+  "title": "Level",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "home_id", "name", "sort_order", "elevation_offset_m", "scale_confidence"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "home_id": { "type": "string", "format": "uuid" },
+    "name": { "type": "string" },
+    "sort_order": { "type": "integer" },
+    "elevation_offset_m": { "type": "number" },
+    "scale_confidence": {
+      "type": "string",
+      "enum": ["measured", "estimated"]
+    }
+  }
+}

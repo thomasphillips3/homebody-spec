@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://homebody.app/schema/entities/room.schema.json",
+  "title": "Room",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "level_id", "name", "room_type", "geometry"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "level_id": { "type": "string", "format": "uuid" },
+    "name": { "type": "string" },
+    "room_type": {
+      "type": "string",
+      "enum": [
+        "bedroom",
+        "bathroom",
+        "kitchen",
+        "living_room",
+        "dining_room",
+        "garage",
+        "basement",
+        "attic",
+        "hallway",
+        "closet",
+        "laundry",
+        "office",
+        "other"
+      ]
+    },
+    "geometry": {
+      "allOf": [
+        { "$ref": "./plan-geometry.schema.json" },
+        { "properties": { "type": { "const": "polygon" } } }
+      ]
+    },
+    "area_computed_m2": { "type": ["number", "null"] }
+  }
+}

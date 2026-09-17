@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://homebody.app/schema/entities/plan-element.schema.json",
+  "title": "PlanElement",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "level_id", "kind", "geometry"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "level_id": { "type": "string", "format": "uuid" },
+    "kind": {
+      "type": "string",
+      "enum": ["wall", "door", "window", "opening"]
+    },
+    "geometry": { "$ref": "./plan-geometry.schema.json" },
+    "host_element_id": { "type": ["string", "null"], "format": "uuid" }
+  }
+}
