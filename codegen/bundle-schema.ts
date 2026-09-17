@@ -38,7 +38,16 @@ async function main() {
         canRead: (file: { url: string }) => file.url.startsWith(SCHEMA_ID_PREFIX),
         read: (file: { url: string }) => {
           const relativePath = file.url.slice(SCHEMA_ID_PREFIX.length);
-          const localPath = join(schemaRoot, relativePath);
+          const localPath = resolve(schemaRoot, relativePath);
+          // Reject any $id/$ref that resolves outside spec/schema/ (e.g. via
+          // "../" segments) - this repo is public and accepts external PRs,
+          // so a malicious schema file must not be able to make this script
+          // read arbitrary files off the CI runner's disk.
+          if (localPath !== schemaRoot && !localPath.startsWith(schemaRoot + "/")) {
+            throw new Error(
+              `Refusing to read outside spec/schema/: ${file.url} resolved to ${localPath}`
+            );
+          }
           return readFileSync(localPath);
         },
       },
