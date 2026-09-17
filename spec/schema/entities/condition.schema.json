@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://homebody.app/schema/entities/condition.schema.json",
+  "title": "Condition",
+  "description": "Shared condition scale used by Component.condition and Event.condition_after, so the two cannot drift. Matches REQUIREMENTS.md SYS-08's four-value scale plus unknown for not-yet-assessed.",
+  "type": "string",
+  "enum": ["good", "fair", "needs_attention", "needs_replacement", "unknown"]
+}

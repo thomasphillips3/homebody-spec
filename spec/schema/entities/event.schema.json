@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://homebody.app/schema/entities/event.schema.json",
+  "title": "Event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "home_id", "event_type", "occurred_at", "attachment_ids"],
+  "anyOf": [
+    { "required": ["system_id"] },
+    { "required": ["component_id"] }
+  ],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "home_id": { "type": "string", "format": "uuid" },
+    "system_id": { "type": ["string", "null"], "format": "uuid" },
+    "component_id": { "type": ["string", "null"], "format": "uuid" },
+    "event_type": {
+      "type": "string",
+      "enum": ["inspection", "service", "repair", "replacement", "reading", "note"]
+    },
+    "occurred_at": { "type": "string", "format": "date-time" },
+    "performed_by": { "type": ["string", "null"] },
+    "cost_cents": { "type": ["integer", "null"] },
+    "notes": { "type": ["string", "null"] },
+    "condition_after": {
+      "anyOf": [
+        { "$ref": "./condition.schema.json" },
+        { "type": "null" }
+      ],
+      "default": null
+    },
+    "reading_value": { "type": ["number", "null"] },
+    "reading_unit": { "type": ["string", "null"] },
+    "attachment_ids": {
+      "type": "array",
+      "items": { "type": "string", "format": "uuid" },
+      "default": []
+    }
+  }
+}

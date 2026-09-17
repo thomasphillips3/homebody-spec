@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://homebody.app/schema/entities/component.schema.json",
+  "title": "Component",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "system_id",
+    "name",
+    "component_type",
+    "condition",
+    "room_ids",
+    "custom_fields"
+  ],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "system_id": { "type": "string", "format": "uuid" },
+    "name": { "type": "string" },
+    "component_type": {
+      "type": "string",
+      "enum": [
+        "water_heater",
+        "hvac_furnace",
+        "hvac_ac_unit",
+        "electrical_panel",
+        "outlet",
+        "light_fixture",
+        "plumbing_fixture",
+        "gutter",
+        "downspout",
+        "smoke_detector",
+        "thermostat",
+        "camera",
+        "network_router",
+        "appliance_generic",
+        "other"
+      ]
+    },
+    "make": { "type": ["string", "null"] },
+    "model": { "type": ["string", "null"] },
+    "serial_number": { "type": ["string", "null"] },
+    "install_date": { "type": ["string", "null"], "format": "date" },
+    "warranty_start": { "type": ["string", "null"], "format": "date" },
+    "warranty_length_months": { "type": ["integer", "null"] },
+    "manual_attachment_id": { "type": ["string", "null"], "format": "uuid" },
+    "service_interval_days": { "type": ["integer", "null"] },
+    "last_serviced_at": { "type": ["string", "null"], "format": "date" },
+    "condition": { "$ref": "./condition.schema.json" },
+    "level_id": { "type": ["string", "null"], "format": "uuid" },
+    "room_ids": {
+      "type": "array",
+      "items": { "type": "string", "format": "uuid" },
+      "default": []
+    },
+    "geometry": {
+      "anyOf": [
+        { "$ref": "./plan-geometry.schema.json" },
+        { "type": "null" }
+      ],
+      "default": null
+    },
+    "notes": { "type": ["string", "null"] },
+    "linked_component_id": { "type": ["string", "null"], "format": "uuid" },
+    "custom_fields": {
+      "type": "object",
+      "additionalProperties": true,
+      "default": {}
+    }
+  }
+}

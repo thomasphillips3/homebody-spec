@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://homebody.app/schema/entities/smart-home-reading.schema.json",
+  "title": "SmartHomeReading",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "component_id", "source", "metric", "value", "unit", "recorded_at"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "component_id": { "type": "string", "format": "uuid" },
+    "source": {
+      "type": "string",
+      "enum": ["homekit", "ecobee", "nest", "other"]
+    },
+    "metric": { "type": "string" },
+    "value": { "type": "number" },
+    "unit": { "type": "string" },
+    "recorded_at": { "type": "string", "format": "date-time" }
+  }
+}

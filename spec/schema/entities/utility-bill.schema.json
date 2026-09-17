@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://homebody.app/schema/entities/utility-bill.schema.json",
+  "title": "UtilityBill",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "home_id",
+    "utility_type",
+    "billing_period_start",
+    "billing_period_end",
+    "usage_amount",
+    "usage_unit",
+    "source"
+  ],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "home_id": { "type": "string", "format": "uuid" },
+    "utility_type": {
+      "type": "string",
+      "enum": ["gas", "electric", "water"]
+    },
+    "billing_period_start": { "type": "string", "format": "date" },
+    "billing_period_end": { "type": "string", "format": "date" },
+    "usage_amount": { "type": "number" },
+    "usage_unit": { "type": "string" },
+    "cost_cents": { "type": ["integer", "null"] },
+    "source": {
+      "type": "string",
+      "enum": ["manual", "import"]
+    },
+    "attachment_id": { "type": ["string", "null"], "format": "uuid" }
+  }
+}

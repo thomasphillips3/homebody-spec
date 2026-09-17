@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://homebody.app/schema/entities/system.schema.json",
+  "title": "System",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "home_id", "category", "name"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "home_id": { "type": "string", "format": "uuid" },
+    "category": {
+      "type": "string",
+      "enum": [
+        "plumbing",
+        "electrical",
+        "hvac",
+        "roof_structure",
+        "appliances_and_water_heater",
+        "exterior_and_site",
+        "low_voltage_and_smart_home"
+      ]
+    },
+    "name": { "type": "string" },
+    "notes": { "type": ["string", "null"] }
+  }
+}

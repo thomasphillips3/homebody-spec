@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://homebody.app/schema/entities/attachment.schema.json",
+  "title": "Attachment",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "home_id", "kind", "storage_path", "mime_type", "file_size_bytes"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "home_id": { "type": "string", "format": "uuid" },
+    "kind": {
+      "type": "string",
+      "enum": ["photo", "receipt", "manual_pdf", "usdz_mesh"]
+    },
+    "storage_path": { "type": "string" },
+    "mime_type": { "type": "string" },
+    "file_size_bytes": { "type": "integer" },
+    "captured_at": { "type": ["string", "null"], "format": "date-time" },
+    "linked_event_id": { "type": ["string", "null"], "format": "uuid" },
+    "linked_component_id": { "type": ["string", "null"], "format": "uuid" }
+  }
+}
