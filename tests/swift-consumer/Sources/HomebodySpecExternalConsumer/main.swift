@@ -1,0 +1,30 @@
+import Foundation
+import HomebodySpec
+
+let json = """
+{
+  "schema_version": "0.1.1",
+  "home": {
+    "id": "10000000-0000-4000-8000-000000000001",
+    "owner_user_id": "10000000-0000-4000-8000-000000000002",
+    "name": "External Consumer Home",
+    "address": "123 Consumer Lane",
+    "created_at": "2026-01-01T00:00:00Z"
+  },
+  "levels": [],
+  "rooms": [],
+  "plan_elements": [],
+  "systems": [],
+  "components": [],
+  "events": [],
+  "attachments": [],
+  "smart_home_readings": [],
+  "utility_bills": []
+}
+"""
+
+let decoder = JSONDecoder()
+decoder.dateDecodingStrategy = .iso8601
+let record = try decoder.decode(HomeRecord.self, from: Data(json.utf8))
+precondition(record.schemaVersion == "0.1.1")
+print("Decoded HomeRecord \(record.home.name)")

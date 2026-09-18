@@ -1,303 +1,211 @@
-import * as z from "zod";
+/**
+ * Root document for a Home Record export. Flat, database-table-mirroring shape - one home,
+ * plus arrays of every other entity, each keyed by an id and its parent foreign keys rather
+ * than deep nesting.
+ */
+export interface HomeRecord {
+    attachments:   Attachment[];
+    components:    Component[];
+    events:        Event[];
+    home:          Home;
+    levels:        Level[];
+    plan_elements: PlanElement[];
+    rooms:         Room[];
+    /**
+     * Semver of the Home Record spec this document conforms to, e.g. 0.1.0. Downstream import
+     * validation rejects unknown versions rather than duck-typing.
+     */
+    schema_version:      string;
+    smart_home_readings: SmartHomeReading[];
+    systems:             System[];
+    utility_bills:       UtilityBill[];
+}
 
+export interface Attachment {
+    captured_at?:         null | string;
+    file_size_bytes:      number;
+    home_id:              string;
+    id:                   string;
+    kind:                 AttachmentKind;
+    linked_component_id?: null | string;
+    linked_event_id?:     null | string;
+    mime_type:            string;
+    storage_path:         string;
+}
 
-export const AttachmentKindSchema = z.enum([
-    "manual_pdf",
-    "photo",
-    "receipt",
-    "usdz_mesh",
-]);
-export type AttachmentKind = z.infer<typeof AttachmentKindSchema>;
+export type AttachmentKind = "photo" | "receipt" | "manual_pdf" | "usdz_mesh";
 
+export interface Component {
+    component_type: ComponentType;
+    /**
+     * Shared condition scale used by Component.condition and Event.condition_after, so the two
+     * cannot drift. Matches REQUIREMENTS.md SYS-08's four-value scale plus unknown for
+     * not-yet-assessed.
+     */
+    condition:               Condition;
+    custom_fields:           { [key: string]: unknown };
+    geometry?:               PlanGeometry | null;
+    id:                      string;
+    install_date?:           null | string;
+    last_serviced_at?:       null | string;
+    level_id?:               null | string;
+    linked_component_id?:    null | string;
+    make?:                   null | string;
+    manual_attachment_id?:   null | string;
+    model?:                  null | string;
+    name:                    string;
+    notes?:                  null | string;
+    room_ids:                string[];
+    serial_number?:          null | string;
+    service_interval_days?:  number | null;
+    system_id:               string;
+    warranty_length_months?: number | null;
+    warranty_start?:         null | string;
+}
 
-export const ComponentTypeSchema = z.enum([
-    "appliance_generic",
-    "camera",
-    "downspout",
-    "electrical_panel",
-    "gutter",
-    "hvac_ac_unit",
-    "hvac_furnace",
-    "light_fixture",
-    "network_router",
-    "other",
-    "outlet",
-    "plumbing_fixture",
-    "smoke_detector",
-    "thermostat",
-    "water_heater",
-]);
-export type ComponentType = z.infer<typeof ComponentTypeSchema>;
+export type ComponentType = "water_heater" | "hvac_furnace" | "hvac_ac_unit" | "electrical_panel" | "outlet" | "light_fixture" | "plumbing_fixture" | "gutter" | "downspout" | "smoke_detector" | "thermostat" | "camera" | "network_router" | "appliance_generic" | "other";
 
-// Shared condition scale used by Component.condition and Event.condition_after, so the two
-// cannot drift. Matches REQUIREMENTS.md SYS-08's four-value scale plus unknown for
-// not-yet-assessed.
+/**
+ * Shared condition scale used by Component.condition and Event.condition_after, so the two
+ * cannot drift. Matches REQUIREMENTS.md SYS-08's four-value scale plus unknown for
+ * not-yet-assessed.
+ */
+export type Condition = "good" | "fair" | "needs_attention" | "needs_replacement" | "unknown";
 
-export const ConditionSchema = z.enum([
-    "fair",
-    "good",
-    "needs_attention",
-    "needs_replacement",
-    "unknown",
-]);
-export type Condition = z.infer<typeof ConditionSchema>;
+/**
+ * Shared geometry type embedded by Room, PlanElement, and Component. Coordinates are
+ * 2-element [x, y] pairs in meters, in per-level plan space (Y-down convention).
+ */
+export interface PlanGeometry {
+    coordinates: Array<[number, number, ...number[]]>;
+    type:        PlanGeometryType;
+}
 
+export type PlanGeometryType = "point" | "polyline" | "polygon";
 
-export const PlanGeometryTypeSchema = z.enum([
-    "point",
-    "polygon",
-    "polyline",
-]);
-export type PlanGeometryType = z.infer<typeof PlanGeometryTypeSchema>;
+export interface Event {
+    attachment_ids:   string[];
+    component_id?:    string;
+    condition_after?: Condition | null;
+    cost_cents?:      number | null;
+    event_type:       EventType;
+    home_id:          string;
+    id:               string;
+    notes?:           null | string;
+    occurred_at:      string;
+    performed_by?:    null | string;
+    reading_unit?:    null | string;
+    reading_value?:   number | null;
+    system_id?:       string;
+}
 
+export type EventType = "inspection" | "service" | "repair" | "replacement" | "reading" | "note";
 
-export const EventTypeSchema = z.enum([
-    "inspection",
-    "note",
-    "reading",
-    "repair",
-    "replacement",
-    "service",
-]);
-export type EventType = z.infer<typeof EventTypeSchema>;
+export interface Home {
+    address:       string;
+    baths?:        number | null;
+    beds?:         number | null;
+    created_at:    string;
+    id:            string;
+    lot_size_m2?:  number | null;
+    name:          string;
+    owner_user_id: string;
+    parcel_id?:    null | string;
+    sq_ft?:        number | null;
+    year_built?:   number | null;
+}
 
+export interface Level {
+    elevation_offset_m: number;
+    home_id:            string;
+    id:                 string;
+    name:               string;
+    scale_confidence:   ScaleConfidence;
+    sort_order:         number;
+}
 
-export const ScaleConfidenceSchema = z.enum([
-    "estimated",
-    "measured",
-]);
-export type ScaleConfidence = z.infer<typeof ScaleConfidenceSchema>;
+export type ScaleConfidence = "measured" | "estimated";
 
+export interface PlanElement {
+    /**
+     * Shared geometry type embedded by Room, PlanElement, and Component. Coordinates are
+     * 2-element [x, y] pairs in meters, in per-level plan space (Y-down convention).
+     */
+    geometry:         GeometryClass;
+    host_element_id?: null | string;
+    id:               string;
+    kind:             PlanElementKind;
+    level_id:         string;
+}
 
-export const PlanElementKindSchema = z.enum([
-    "door",
-    "opening",
-    "wall",
-    "window",
-]);
-export type PlanElementKind = z.infer<typeof PlanElementKindSchema>;
+/**
+ * Shared geometry type embedded by Room, PlanElement, and Component. Coordinates are
+ * 2-element [x, y] pairs in meters, in per-level plan space (Y-down convention).
+ */
+export interface GeometryClass {
+    coordinates: Array<[number, number, ...number[]]>;
+    type:        PlanGeometryType;
+}
 
+export type PlanElementKind = "wall" | "door" | "window" | "opening";
 
-export const PurpleTypeSchema = z.enum([
-    "polygon",
-]);
-export type PurpleType = z.infer<typeof PurpleTypeSchema>;
+export interface Room {
+    area_computed_m2?: number | null;
+    geometry:          Geometry;
+    id:                string;
+    level_id:          string;
+    name:              string;
+    room_type:         RoomType;
+}
 
+/**
+ * Shared geometry type embedded by Room, PlanElement, and Component. Coordinates are
+ * 2-element [x, y] pairs in meters, in per-level plan space (Y-down convention).
+ */
+export interface Geometry {
+    coordinates: Array<[number, number, ...number[]]>;
+    type:        PurpleType;
+}
 
-export const RoomTypeSchema = z.enum([
-    "attic",
-    "basement",
-    "bathroom",
-    "bedroom",
-    "closet",
-    "dining_room",
-    "garage",
-    "hallway",
-    "kitchen",
-    "laundry",
-    "living_room",
-    "office",
-    "other",
-]);
-export type RoomType = z.infer<typeof RoomTypeSchema>;
+export type PurpleType = "polygon";
 
+export type RoomType = "bedroom" | "bathroom" | "kitchen" | "living_room" | "dining_room" | "garage" | "basement" | "attic" | "hallway" | "closet" | "laundry" | "office" | "other";
 
-export const SmartHomeReadingSourceSchema = z.enum([
-    "ecobee",
-    "homekit",
-    "nest",
-    "other",
-]);
-export type SmartHomeReadingSource = z.infer<typeof SmartHomeReadingSourceSchema>;
+export interface SmartHomeReading {
+    component_id: string;
+    id:           string;
+    metric:       string;
+    recorded_at:  string;
+    source:       SmartHomeReadingSource;
+    unit:         string;
+    value:        number;
+}
 
+export type SmartHomeReadingSource = "homekit" | "ecobee" | "nest" | "other";
 
-export const CategorySchema = z.enum([
-    "appliances_and_water_heater",
-    "electrical",
-    "exterior_and_site",
-    "hvac",
-    "low_voltage_and_smart_home",
-    "plumbing",
-    "roof_structure",
-]);
-export type Category = z.infer<typeof CategorySchema>;
+export interface System {
+    category: Category;
+    home_id:  string;
+    id:       string;
+    name:     string;
+    notes?:   null | string;
+}
 
+export type Category = "plumbing" | "electrical" | "hvac" | "roof_structure" | "appliances_and_water_heater" | "exterior_and_site" | "low_voltage_and_smart_home";
 
-export const UtilityBillSourceSchema = z.enum([
-    "import",
-    "manual",
-]);
-export type UtilityBillSource = z.infer<typeof UtilityBillSourceSchema>;
+export interface UtilityBill {
+    attachment_id?:       null | string;
+    billing_period_end:   string;
+    billing_period_start: string;
+    cost_cents?:          number | null;
+    home_id:              string;
+    id:                   string;
+    source:               UtilityBillSource;
+    usage_amount:         number;
+    usage_unit:           string;
+    utility_type:         UtilityType;
+}
 
+export type UtilityBillSource = "manual" | "import";
 
-export const UtilityTypeSchema = z.enum([
-    "electric",
-    "gas",
-    "water",
-]);
-export type UtilityType = z.infer<typeof UtilityTypeSchema>;
-
-export const AttachmentSchema = z.object({
-    "captured_at": z.union([z.coerce.date(), z.null()]).optional(),
-    "file_size_bytes": z.number(),
-    "home_id": z.string(),
-    "id": z.string(),
-    "kind": AttachmentKindSchema,
-    "linked_component_id": z.union([z.null(), z.string()]).optional(),
-    "linked_event_id": z.union([z.null(), z.string()]).optional(),
-    "mime_type": z.string(),
-    "storage_path": z.string(),
-});
-export type Attachment = z.infer<typeof AttachmentSchema>;
-
-export const PlanGeometrySchema = z.object({
-    "coordinates": z.array(z.array(z.number()).min(2).max(2)),
-    "type": PlanGeometryTypeSchema,
-});
-export type PlanGeometry = z.infer<typeof PlanGeometrySchema>;
-
-export const EventSchema = z.object({
-    "attachment_ids": z.array(z.string()),
-    "component_id": z.union([z.null(), z.string()]).optional(),
-    "condition_after": z.union([ConditionSchema, z.null()]).optional(),
-    "cost_cents": z.union([z.number(), z.null()]).optional(),
-    "event_type": EventTypeSchema,
-    "home_id": z.string(),
-    "id": z.string(),
-    "notes": z.union([z.null(), z.string()]).optional(),
-    "occurred_at": z.coerce.date(),
-    "performed_by": z.union([z.null(), z.string()]).optional(),
-    "reading_unit": z.union([z.null(), z.string()]).optional(),
-    "reading_value": z.union([z.number(), z.null()]).optional(),
-    "system_id": z.union([z.null(), z.string()]).optional(),
-});
-export type Event = z.infer<typeof EventSchema>;
-
-export const HomeSchema = z.object({
-    "address": z.string(),
-    "baths": z.union([z.number(), z.null()]).optional(),
-    "beds": z.union([z.number(), z.null()]).optional(),
-    "created_at": z.coerce.date(),
-    "id": z.string(),
-    "lot_size_m2": z.union([z.number(), z.null()]).optional(),
-    "name": z.string(),
-    "owner_user_id": z.string(),
-    "parcel_id": z.union([z.null(), z.string()]).optional(),
-    "sq_ft": z.union([z.number(), z.null()]).optional(),
-    "year_built": z.union([z.number(), z.null()]).optional(),
-});
-export type Home = z.infer<typeof HomeSchema>;
-
-export const LevelSchema = z.object({
-    "elevation_offset_m": z.number(),
-    "home_id": z.string(),
-    "id": z.string(),
-    "name": z.string(),
-    "scale_confidence": ScaleConfidenceSchema,
-    "sort_order": z.number(),
-});
-export type Level = z.infer<typeof LevelSchema>;
-
-export const GeometryClassSchema = z.object({
-    "coordinates": z.array(z.array(z.number()).min(2).max(2)),
-    "type": PlanGeometryTypeSchema,
-});
-export type GeometryClass = z.infer<typeof GeometryClassSchema>;
-
-export const GeometrySchema = z.object({
-    "coordinates": z.array(z.array(z.number()).min(2).max(2)),
-    "type": PurpleTypeSchema,
-});
-export type Geometry = z.infer<typeof GeometrySchema>;
-
-export const SmartHomeReadingSchema = z.object({
-    "component_id": z.string(),
-    "id": z.string(),
-    "metric": z.string(),
-    "recorded_at": z.coerce.date(),
-    "source": SmartHomeReadingSourceSchema,
-    "unit": z.string(),
-    "value": z.number(),
-});
-export type SmartHomeReading = z.infer<typeof SmartHomeReadingSchema>;
-
-export const SystemSchema = z.object({
-    "category": CategorySchema,
-    "home_id": z.string(),
-    "id": z.string(),
-    "name": z.string(),
-    "notes": z.union([z.null(), z.string()]).optional(),
-});
-export type System = z.infer<typeof SystemSchema>;
-
-export const UtilityBillSchema = z.object({
-    "attachment_id": z.union([z.null(), z.string()]).optional(),
-    "billing_period_end": z.string(),
-    "billing_period_start": z.string(),
-    "cost_cents": z.union([z.number(), z.null()]).optional(),
-    "home_id": z.string(),
-    "id": z.string(),
-    "source": UtilityBillSourceSchema,
-    "usage_amount": z.number(),
-    "usage_unit": z.string(),
-    "utility_type": UtilityTypeSchema,
-});
-export type UtilityBill = z.infer<typeof UtilityBillSchema>;
-
-export const ComponentSchema = z.object({
-    "component_type": ComponentTypeSchema,
-    "condition": ConditionSchema,
-    "custom_fields": z.record(z.string(), z.any()),
-    "geometry": z.union([PlanGeometrySchema, z.null()]).optional(),
-    "id": z.string(),
-    "install_date": z.union([z.null(), z.string()]).optional(),
-    "last_serviced_at": z.union([z.null(), z.string()]).optional(),
-    "level_id": z.union([z.null(), z.string()]).optional(),
-    "linked_component_id": z.union([z.null(), z.string()]).optional(),
-    "make": z.union([z.null(), z.string()]).optional(),
-    "manual_attachment_id": z.union([z.null(), z.string()]).optional(),
-    "model": z.union([z.null(), z.string()]).optional(),
-    "name": z.string(),
-    "notes": z.union([z.null(), z.string()]).optional(),
-    "room_ids": z.array(z.string()),
-    "serial_number": z.union([z.null(), z.string()]).optional(),
-    "service_interval_days": z.union([z.number(), z.null()]).optional(),
-    "system_id": z.string(),
-    "warranty_length_months": z.union([z.number(), z.null()]).optional(),
-    "warranty_start": z.union([z.null(), z.string()]).optional(),
-});
-export type Component = z.infer<typeof ComponentSchema>;
-
-export const PlanElementSchema = z.object({
-    "geometry": GeometryClassSchema,
-    "host_element_id": z.union([z.null(), z.string()]).optional(),
-    "id": z.string(),
-    "kind": PlanElementKindSchema,
-    "level_id": z.string(),
-});
-export type PlanElement = z.infer<typeof PlanElementSchema>;
-
-export const RoomSchema = z.object({
-    "area_computed_m2": z.union([z.number(), z.null()]).optional(),
-    "geometry": GeometrySchema,
-    "id": z.string(),
-    "level_id": z.string(),
-    "name": z.string(),
-    "room_type": RoomTypeSchema,
-});
-export type Room = z.infer<typeof RoomSchema>;
-
-export const HomeRecordSchema = z.object({
-    "attachments": z.array(AttachmentSchema),
-    "components": z.array(ComponentSchema),
-    "events": z.array(EventSchema),
-    "home": HomeSchema,
-    "levels": z.array(LevelSchema),
-    "plan_elements": z.array(PlanElementSchema),
-    "rooms": z.array(RoomSchema),
-    "schema_version": z.string(),
-    "smart_home_readings": z.array(SmartHomeReadingSchema),
-    "systems": z.array(SystemSchema),
-    "utility_bills": z.array(UtilityBillSchema),
-});
-export type HomeRecord = z.infer<typeof HomeRecordSchema>;
+export type UtilityType = "gas" | "electric" | "water";

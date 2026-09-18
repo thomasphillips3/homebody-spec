@@ -30,7 +30,10 @@
     "geometry": {
       "allOf": [
         { "$ref": "./plan-geometry.schema.json" },
-        { "properties": { "type": { "const": "polygon" } } }
+        {
+          "type": "object",
+          "properties": { "type": { "const": "polygon" } }
+        }
       ]
     },
     "area_computed_m2": { "type": ["number", "null"] }

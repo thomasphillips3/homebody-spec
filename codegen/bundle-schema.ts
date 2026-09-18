@@ -2,26 +2,15 @@
  * Bundles the multi-file, $ref-composed Home Record JSON Schema into a single,
  * fully-dereferenced document that quicktype can consume directly.
  *
- * Every entity schema file declares an absolute $id
- * (https://homebody.app/schema/...), which is not a reachable host. Per JSON
- * Schema resolution rules, that $id becomes the base URI for resolving
- * relative $refs inside the document, so a naive dereference() call tries to
- * fetch https://homebody.app/schema/entities/... over the network instead of
- * reading the local file. To avoid that, this script registers a custom
- * resolver that maps the https://homebody.app/schema/ URL prefix back onto
- * the local spec/schema/ directory on disk, and disables the default http
- * resolver entirely so nothing ever hits the network.
- *
- * This is the permanent version of the one-off resolver scripts 01-03 and
- * 01-04 used in their session scratchpads to work around the same issue.
+ * All reference loading uses a realpath-confined resolver. The parser's
+ * built-in file and HTTP resolvers are disabled, so schema changes cannot
+ * read outside spec/schema or access the network in local builds or CI.
  */
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import $RefParser from "@apidevtools/json-schema-ref-parser";
-
-const SCHEMA_ID_PREFIX = "https://homebody.app/schema/";
+import { dereferenceWithConfinedResolver } from "./schema-resolver.js";
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const schemaRoot = join(repoRoot, "spec", "schema");
@@ -30,29 +19,8 @@ const outDir = join(repoRoot, "build");
 const outFile = join(outDir, "home-record.bundled.json");
 
 async function main() {
-  const bundled = await $RefParser.dereference(entryPoint, {
-    resolve: {
-      http: false,
-      homebodySchemaId: {
-        order: 1,
-        canRead: (file: { url: string }) => file.url.startsWith(SCHEMA_ID_PREFIX),
-        read: (file: { url: string }) => {
-          const relativePath = file.url.slice(SCHEMA_ID_PREFIX.length);
-          const localPath = resolve(schemaRoot, relativePath);
-          // Reject any $id/$ref that resolves outside spec/schema/ (e.g. via
-          // "../" segments) - this repo is public and accepts external PRs,
-          // so a malicious schema file must not be able to make this script
-          // read arbitrary files off the CI runner's disk.
-          if (localPath !== schemaRoot && !localPath.startsWith(schemaRoot + "/")) {
-            throw new Error(
-              `Refusing to read outside spec/schema/: ${file.url} resolved to ${localPath}`
-            );
-          }
-          return readFileSync(localPath);
-        },
-      },
-    },
-  } as Parameters<typeof $RefParser.dereference>[1]);
+  const rootSchema = JSON.parse(readFileSync(entryPoint, "utf-8")) as object;
+  const bundled = await dereferenceWithConfinedResolver(rootSchema, schemaRoot);
 
   mkdirSync(outDir, { recursive: true });
   writeFileSync(outFile, JSON.stringify(bundled, null, 2) + "\n", "utf-8");

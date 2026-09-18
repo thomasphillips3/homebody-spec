@@ -6,8 +6,18 @@
   "additionalProperties": false,
   "required": ["id", "home_id", "event_type", "occurred_at", "attachment_ids"],
   "anyOf": [
-    { "required": ["system_id"] },
-    { "required": ["component_id"] }
+    {
+      "required": ["system_id"],
+      "properties": {
+        "system_id": { "type": "string", "format": "uuid" }
+      }
+    },
+    {
+      "required": ["component_id"],
+      "properties": {
+        "component_id": { "type": "string", "format": "uuid" }
+      }
+    }
   ],
   "properties": {
     "id": { "type": "string", "format": "uuid" },

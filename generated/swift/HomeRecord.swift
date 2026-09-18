@@ -9,22 +9,22 @@ import Foundation
 /// plus arrays of every other entity, each keyed by an id and its parent foreign keys rather
 /// than deep nesting.
 // MARK: - HomeRecord
-struct HomeRecord: Codable {
-    let attachments: [Attachment]
-    let components: [Component]
-    let events: [Event]
-    let home: Home
-    let levels: [Level]
-    let planElements: [PlanElement]
-    let rooms: [Room]
+public struct HomeRecord: Codable {
+    public let attachments: [Attachment]
+    public let components: [Component]
+    public let events: [Event]
+    public let home: Home
+    public let levels: [Level]
+    public let planElements: [PlanElement]
+    public let rooms: [Room]
     /// Semver of the Home Record spec this document conforms to, e.g. 0.1.0. Downstream import
     /// validation rejects unknown versions rather than duck-typing.
-    let schemaVersion: String
-    let smartHomeReadings: [SmartHomeReading]
-    let systems: [System]
-    let utilityBills: [UtilityBill]
+    public let schemaVersion: String
+    public let smartHomeReadings: [SmartHomeReading]
+    public let systems: [System]
+    public let utilityBills: [UtilityBill]
 
-    enum CodingKeys: String, CodingKey {
+    public enum CodingKeys: String, CodingKey {
         case attachments = "attachments"
         case components = "components"
         case events = "events"
@@ -37,11 +37,25 @@ struct HomeRecord: Codable {
         case systems = "systems"
         case utilityBills = "utility_bills"
     }
+
+    public init(attachments: [Attachment], components: [Component], events: [Event], home: Home, levels: [Level], planElements: [PlanElement], rooms: [Room], schemaVersion: String, smartHomeReadings: [SmartHomeReading], systems: [System], utilityBills: [UtilityBill]) {
+        self.attachments = attachments
+        self.components = components
+        self.events = events
+        self.home = home
+        self.levels = levels
+        self.planElements = planElements
+        self.rooms = rooms
+        self.schemaVersion = schemaVersion
+        self.smartHomeReadings = smartHomeReadings
+        self.systems = systems
+        self.utilityBills = utilityBills
+    }
 }
 
 // MARK: HomeRecord convenience initializers and mutators
 
-extension HomeRecord {
+public extension HomeRecord {
     init(data: Data) throws {
         self = try newJSONDecoder().decode(HomeRecord.self, from: data)
     }
@@ -95,18 +109,18 @@ extension HomeRecord {
 }
 
 // MARK: - Attachment
-struct Attachment: Codable {
-    let capturedAt: Date?
-    let fileSizeBytes: Int
-    let homeID: String
-    let id: String
-    let kind: AttachmentKind
-    let linkedComponentID: String?
-    let linkedEventID: String?
-    let mimeType: String
-    let storagePath: String
+public struct Attachment: Codable {
+    public let capturedAt: Date?
+    public let fileSizeBytes: Int
+    public let homeID: String
+    public let id: String
+    public let kind: AttachmentKind
+    public let linkedComponentID: String?
+    public let linkedEventID: String?
+    public let mimeType: String
+    public let storagePath: String
 
-    enum CodingKeys: String, CodingKey {
+    public enum CodingKeys: String, CodingKey {
         case capturedAt = "captured_at"
         case fileSizeBytes = "file_size_bytes"
         case homeID = "home_id"
@@ -117,11 +131,23 @@ struct Attachment: Codable {
         case mimeType = "mime_type"
         case storagePath = "storage_path"
     }
+
+    public init(capturedAt: Date?, fileSizeBytes: Int, homeID: String, id: String, kind: AttachmentKind, linkedComponentID: String?, linkedEventID: String?, mimeType: String, storagePath: String) {
+        self.capturedAt = capturedAt
+        self.fileSizeBytes = fileSizeBytes
+        self.homeID = homeID
+        self.id = id
+        self.kind = kind
+        self.linkedComponentID = linkedComponentID
+        self.linkedEventID = linkedEventID
+        self.mimeType = mimeType
+        self.storagePath = storagePath
+    }
 }
 
 // MARK: Attachment convenience initializers and mutators
 
-extension Attachment {
+public extension Attachment {
     init(data: Data) throws {
         self = try newJSONDecoder().decode(Attachment.self, from: data)
     }
@@ -170,7 +196,7 @@ extension Attachment {
     }
 }
 
-enum AttachmentKind: String, Codable {
+public enum AttachmentKind: String, Codable {
     case manualPDF = "manual_pdf"
     case photo = "photo"
     case receipt = "receipt"
@@ -178,32 +204,32 @@ enum AttachmentKind: String, Codable {
 }
 
 // MARK: - Component
-struct Component: Codable {
-    let componentType: ComponentType
+public struct Component: Codable {
+    public let componentType: ComponentType
     /// Shared condition scale used by Component.condition and Event.condition_after, so the two
     /// cannot drift. Matches REQUIREMENTS.md SYS-08's four-value scale plus unknown for
     /// not-yet-assessed.
-    let condition: Condition
-    let customFields: [String: JSONAny]
-    let geometry: PlanGeometry?
-    let id: String
-    let installDate: String?
-    let lastServicedAt: String?
-    let levelID: String?
-    let linkedComponentID: String?
-    let make: String?
-    let manualAttachmentID: String?
-    let model: String?
-    let name: String
-    let notes: String?
-    let roomIDS: [String]
-    let serialNumber: String?
-    let serviceIntervalDays: Int?
-    let systemID: String
-    let warrantyLengthMonths: Int?
-    let warrantyStart: String?
+    public let condition: Condition
+    public let customFields: [String: JSONAny]
+    public let geometry: PlanGeometry?
+    public let id: String
+    public let installDate: String?
+    public let lastServicedAt: String?
+    public let levelID: String?
+    public let linkedComponentID: String?
+    public let make: String?
+    public let manualAttachmentID: String?
+    public let model: String?
+    public let name: String
+    public let notes: String?
+    public let roomIDS: [String]
+    public let serialNumber: String?
+    public let serviceIntervalDays: Int?
+    public let systemID: String
+    public let warrantyLengthMonths: Int?
+    public let warrantyStart: String?
 
-    enum CodingKeys: String, CodingKey {
+    public enum CodingKeys: String, CodingKey {
         case componentType = "component_type"
         case condition = "condition"
         case customFields = "custom_fields"
@@ -225,11 +251,34 @@ struct Component: Codable {
         case warrantyLengthMonths = "warranty_length_months"
         case warrantyStart = "warranty_start"
     }
+
+    public init(componentType: ComponentType, condition: Condition, customFields: [String: JSONAny], geometry: PlanGeometry?, id: String, installDate: String?, lastServicedAt: String?, levelID: String?, linkedComponentID: String?, make: String?, manualAttachmentID: String?, model: String?, name: String, notes: String?, roomIDS: [String], serialNumber: String?, serviceIntervalDays: Int?, systemID: String, warrantyLengthMonths: Int?, warrantyStart: String?) {
+        self.componentType = componentType
+        self.condition = condition
+        self.customFields = customFields
+        self.geometry = geometry
+        self.id = id
+        self.installDate = installDate
+        self.lastServicedAt = lastServicedAt
+        self.levelID = levelID
+        self.linkedComponentID = linkedComponentID
+        self.make = make
+        self.manualAttachmentID = manualAttachmentID
+        self.model = model
+        self.name = name
+        self.notes = notes
+        self.roomIDS = roomIDS
+        self.serialNumber = serialNumber
+        self.serviceIntervalDays = serviceIntervalDays
+        self.systemID = systemID
+        self.warrantyLengthMonths = warrantyLengthMonths
+        self.warrantyStart = warrantyStart
+    }
 }
 
 // MARK: Component convenience initializers and mutators
 
-extension Component {
+public extension Component {
     init(data: Data) throws {
         self = try newJSONDecoder().decode(Component.self, from: data)
     }
@@ -300,7 +349,7 @@ extension Component {
     }
 }
 
-enum ComponentType: String, Codable {
+public enum ComponentType: String, Codable {
     case applianceGeneric = "appliance_generic"
     case camera = "camera"
     case downspout = "downspout"
@@ -321,7 +370,7 @@ enum ComponentType: String, Codable {
 /// Shared condition scale used by Component.condition and Event.condition_after, so the two
 /// cannot drift. Matches REQUIREMENTS.md SYS-08's four-value scale plus unknown for
 /// not-yet-assessed.
-enum Condition: String, Codable {
+public enum Condition: String, Codable {
     case fair = "fair"
     case good = "good"
     case needsAttention = "needs_attention"
@@ -332,19 +381,24 @@ enum Condition: String, Codable {
 /// Shared geometry type embedded by Room, PlanElement, and Component. Coordinates are
 /// 2-element [x, y] pairs in meters, in per-level plan space (Y-down convention).
 // MARK: - PlanGeometry
-struct PlanGeometry: Codable {
-    let coordinates: [[Double]]
-    let type: PlanGeometryType
+public struct PlanGeometry: Codable {
+    public let coordinates: [[Double]]
+    public let type: PlanGeometryType
 
-    enum CodingKeys: String, CodingKey {
+    public enum CodingKeys: String, CodingKey {
         case coordinates = "coordinates"
         case type = "type"
+    }
+
+    public init(coordinates: [[Double]], type: PlanGeometryType) {
+        self.coordinates = coordinates
+        self.type = type
     }
 }
 
 // MARK: PlanGeometry convenience initializers and mutators
 
-extension PlanGeometry {
+public extension PlanGeometry {
     init(data: Data) throws {
         self = try newJSONDecoder().decode(PlanGeometry.self, from: data)
     }
@@ -379,29 +433,29 @@ extension PlanGeometry {
     }
 }
 
-enum PlanGeometryType: String, Codable {
+public enum PlanGeometryType: String, Codable {
     case point = "point"
     case polygon = "polygon"
     case polyline = "polyline"
 }
 
 // MARK: - Event
-struct Event: Codable {
-    let attachmentIDS: [String]
-    let componentID: String?
-    let conditionAfter: Condition?
-    let costCents: Int?
-    let eventType: EventType
-    let homeID: String
-    let id: String
-    let notes: String?
-    let occurredAt: Date
-    let performedBy: String?
-    let readingUnit: String?
-    let readingValue: Double?
-    let systemID: String?
+public struct Event: Codable {
+    public let attachmentIDS: [String]
+    public let componentID: String?
+    public let conditionAfter: Condition?
+    public let costCents: Int?
+    public let eventType: EventType
+    public let homeID: String
+    public let id: String
+    public let notes: String?
+    public let occurredAt: Date
+    public let performedBy: String?
+    public let readingUnit: String?
+    public let readingValue: Double?
+    public let systemID: String?
 
-    enum CodingKeys: String, CodingKey {
+    public enum CodingKeys: String, CodingKey {
         case attachmentIDS = "attachment_ids"
         case componentID = "component_id"
         case conditionAfter = "condition_after"
@@ -416,11 +470,27 @@ struct Event: Codable {
         case readingValue = "reading_value"
         case systemID = "system_id"
     }
+
+    public init(attachmentIDS: [String], componentID: String?, conditionAfter: Condition?, costCents: Int?, eventType: EventType, homeID: String, id: String, notes: String?, occurredAt: Date, performedBy: String?, readingUnit: String?, readingValue: Double?, systemID: String?) {
+        self.attachmentIDS = attachmentIDS
+        self.componentID = componentID
+        self.conditionAfter = conditionAfter
+        self.costCents = costCents
+        self.eventType = eventType
+        self.homeID = homeID
+        self.id = id
+        self.notes = notes
+        self.occurredAt = occurredAt
+        self.performedBy = performedBy
+        self.readingUnit = readingUnit
+        self.readingValue = readingValue
+        self.systemID = systemID
+    }
 }
 
 // MARK: Event convenience initializers and mutators
 
-extension Event {
+public extension Event {
     init(data: Data) throws {
         self = try newJSONDecoder().decode(Event.self, from: data)
     }
@@ -477,7 +547,7 @@ extension Event {
     }
 }
 
-enum EventType: String, Codable {
+public enum EventType: String, Codable {
     case inspection = "inspection"
     case note = "note"
     case reading = "reading"
@@ -487,20 +557,20 @@ enum EventType: String, Codable {
 }
 
 // MARK: - Home
-struct Home: Codable {
-    let address: String
-    let baths: Double?
-    let beds: Int?
-    let createdAt: Date
-    let id: String
-    let lotSizeM2: Double?
-    let name: String
-    let ownerUserID: String
-    let parcelID: String?
-    let sqFt: Double?
-    let yearBuilt: Int?
+public struct Home: Codable {
+    public let address: String
+    public let baths: Double?
+    public let beds: Int?
+    public let createdAt: Date
+    public let id: String
+    public let lotSizeM2: Double?
+    public let name: String
+    public let ownerUserID: String
+    public let parcelID: String?
+    public let sqFt: Double?
+    public let yearBuilt: Int?
 
-    enum CodingKeys: String, CodingKey {
+    public enum CodingKeys: String, CodingKey {
         case address = "address"
         case baths = "baths"
         case beds = "beds"
@@ -513,11 +583,25 @@ struct Home: Codable {
         case sqFt = "sq_ft"
         case yearBuilt = "year_built"
     }
+
+    public init(address: String, baths: Double?, beds: Int?, createdAt: Date, id: String, lotSizeM2: Double?, name: String, ownerUserID: String, parcelID: String?, sqFt: Double?, yearBuilt: Int?) {
+        self.address = address
+        self.baths = baths
+        self.beds = beds
+        self.createdAt = createdAt
+        self.id = id
+        self.lotSizeM2 = lotSizeM2
+        self.name = name
+        self.ownerUserID = ownerUserID
+        self.parcelID = parcelID
+        self.sqFt = sqFt
+        self.yearBuilt = yearBuilt
+    }
 }
 
 // MARK: Home convenience initializers and mutators
 
-extension Home {
+public extension Home {
     init(data: Data) throws {
         self = try newJSONDecoder().decode(Home.self, from: data)
     }
@@ -571,15 +655,15 @@ extension Home {
 }
 
 // MARK: - Level
-struct Level: Codable {
-    let elevationOffsetM: Double
-    let homeID: String
-    let id: String
-    let name: String
-    let scaleConfidence: ScaleConfidence
-    let sortOrder: Int
+public struct Level: Codable {
+    public let elevationOffsetM: Double
+    public let homeID: String
+    public let id: String
+    public let name: String
+    public let scaleConfidence: ScaleConfidence
+    public let sortOrder: Int
 
-    enum CodingKeys: String, CodingKey {
+    public enum CodingKeys: String, CodingKey {
         case elevationOffsetM = "elevation_offset_m"
         case homeID = "home_id"
         case id = "id"
@@ -587,11 +671,20 @@ struct Level: Codable {
         case scaleConfidence = "scale_confidence"
         case sortOrder = "sort_order"
     }
+
+    public init(elevationOffsetM: Double, homeID: String, id: String, name: String, scaleConfidence: ScaleConfidence, sortOrder: Int) {
+        self.elevationOffsetM = elevationOffsetM
+        self.homeID = homeID
+        self.id = id
+        self.name = name
+        self.scaleConfidence = scaleConfidence
+        self.sortOrder = sortOrder
+    }
 }
 
 // MARK: Level convenience initializers and mutators
 
-extension Level {
+public extension Level {
     init(data: Data) throws {
         self = try newJSONDecoder().decode(Level.self, from: data)
     }
@@ -634,33 +727,41 @@ extension Level {
     }
 }
 
-enum ScaleConfidence: String, Codable {
+public enum ScaleConfidence: String, Codable {
     case estimated = "estimated"
     case measured = "measured"
 }
 
 // MARK: - PlanElement
-struct PlanElement: Codable {
+public struct PlanElement: Codable {
     /// Shared geometry type embedded by Room, PlanElement, and Component. Coordinates are
     /// 2-element [x, y] pairs in meters, in per-level plan space (Y-down convention).
-    let geometry: GeometryClass
-    let hostElementID: String?
-    let id: String
-    let kind: PlanElementKind
-    let levelID: String
+    public let geometry: GeometryClass
+    public let hostElementID: String?
+    public let id: String
+    public let kind: PlanElementKind
+    public let levelID: String
 
-    enum CodingKeys: String, CodingKey {
+    public enum CodingKeys: String, CodingKey {
         case geometry = "geometry"
         case hostElementID = "host_element_id"
         case id = "id"
         case kind = "kind"
         case levelID = "level_id"
     }
+
+    public init(geometry: GeometryClass, hostElementID: String?, id: String, kind: PlanElementKind, levelID: String) {
+        self.geometry = geometry
+        self.hostElementID = hostElementID
+        self.id = id
+        self.kind = kind
+        self.levelID = levelID
+    }
 }
 
 // MARK: PlanElement convenience initializers and mutators
 
-extension PlanElement {
+public extension PlanElement {
     init(data: Data) throws {
         self = try newJSONDecoder().decode(PlanElement.self, from: data)
     }
@@ -704,19 +805,24 @@ extension PlanElement {
 /// Shared geometry type embedded by Room, PlanElement, and Component. Coordinates are
 /// 2-element [x, y] pairs in meters, in per-level plan space (Y-down convention).
 // MARK: - GeometryClass
-struct GeometryClass: Codable {
-    let coordinates: [[Double]]
-    let type: PlanGeometryType
+public struct GeometryClass: Codable {
+    public let coordinates: [[Double]]
+    public let type: PlanGeometryType
 
-    enum CodingKeys: String, CodingKey {
+    public enum CodingKeys: String, CodingKey {
         case coordinates = "coordinates"
         case type = "type"
+    }
+
+    public init(coordinates: [[Double]], type: PlanGeometryType) {
+        self.coordinates = coordinates
+        self.type = type
     }
 }
 
 // MARK: GeometryClass convenience initializers and mutators
 
-extension GeometryClass {
+public extension GeometryClass {
     init(data: Data) throws {
         self = try newJSONDecoder().decode(GeometryClass.self, from: data)
     }
@@ -751,7 +857,7 @@ extension GeometryClass {
     }
 }
 
-enum PlanElementKind: String, Codable {
+public enum PlanElementKind: String, Codable {
     case door = "door"
     case opening = "opening"
     case wall = "wall"
@@ -759,15 +865,15 @@ enum PlanElementKind: String, Codable {
 }
 
 // MARK: - Room
-struct Room: Codable {
-    let areaComputedM2: Double?
-    let geometry: Geometry
-    let id: String
-    let levelID: String
-    let name: String
-    let roomType: RoomType
+public struct Room: Codable {
+    public let areaComputedM2: Double?
+    public let geometry: Geometry
+    public let id: String
+    public let levelID: String
+    public let name: String
+    public let roomType: RoomType
 
-    enum CodingKeys: String, CodingKey {
+    public enum CodingKeys: String, CodingKey {
         case areaComputedM2 = "area_computed_m2"
         case geometry = "geometry"
         case id = "id"
@@ -775,11 +881,20 @@ struct Room: Codable {
         case name = "name"
         case roomType = "room_type"
     }
+
+    public init(areaComputedM2: Double?, geometry: Geometry, id: String, levelID: String, name: String, roomType: RoomType) {
+        self.areaComputedM2 = areaComputedM2
+        self.geometry = geometry
+        self.id = id
+        self.levelID = levelID
+        self.name = name
+        self.roomType = roomType
+    }
 }
 
 // MARK: Room convenience initializers and mutators
 
-extension Room {
+public extension Room {
     init(data: Data) throws {
         self = try newJSONDecoder().decode(Room.self, from: data)
     }
@@ -825,19 +940,24 @@ extension Room {
 /// Shared geometry type embedded by Room, PlanElement, and Component. Coordinates are
 /// 2-element [x, y] pairs in meters, in per-level plan space (Y-down convention).
 // MARK: - Geometry
-struct Geometry: Codable {
-    let coordinates: [[Double]]
-    let type: PurpleType
+public struct Geometry: Codable {
+    public let coordinates: [[Double]]
+    public let type: PurpleType
 
-    enum CodingKeys: String, CodingKey {
+    public enum CodingKeys: String, CodingKey {
         case coordinates = "coordinates"
         case type = "type"
+    }
+
+    public init(coordinates: [[Double]], type: PurpleType) {
+        self.coordinates = coordinates
+        self.type = type
     }
 }
 
 // MARK: Geometry convenience initializers and mutators
 
-extension Geometry {
+public extension Geometry {
     init(data: Data) throws {
         self = try newJSONDecoder().decode(Geometry.self, from: data)
     }
@@ -872,11 +992,11 @@ extension Geometry {
     }
 }
 
-enum PurpleType: String, Codable {
+public enum PurpleType: String, Codable {
     case polygon = "polygon"
 }
 
-enum RoomType: String, Codable {
+public enum RoomType: String, Codable {
     case attic = "attic"
     case basement = "basement"
     case bathroom = "bathroom"
@@ -893,16 +1013,16 @@ enum RoomType: String, Codable {
 }
 
 // MARK: - SmartHomeReading
-struct SmartHomeReading: Codable {
-    let componentID: String
-    let id: String
-    let metric: String
-    let recordedAt: Date
-    let source: SmartHomeReadingSource
-    let unit: String
-    let value: Double
+public struct SmartHomeReading: Codable {
+    public let componentID: String
+    public let id: String
+    public let metric: String
+    public let recordedAt: Date
+    public let source: SmartHomeReadingSource
+    public let unit: String
+    public let value: Double
 
-    enum CodingKeys: String, CodingKey {
+    public enum CodingKeys: String, CodingKey {
         case componentID = "component_id"
         case id = "id"
         case metric = "metric"
@@ -911,11 +1031,21 @@ struct SmartHomeReading: Codable {
         case unit = "unit"
         case value = "value"
     }
+
+    public init(componentID: String, id: String, metric: String, recordedAt: Date, source: SmartHomeReadingSource, unit: String, value: Double) {
+        self.componentID = componentID
+        self.id = id
+        self.metric = metric
+        self.recordedAt = recordedAt
+        self.source = source
+        self.unit = unit
+        self.value = value
+    }
 }
 
 // MARK: SmartHomeReading convenience initializers and mutators
 
-extension SmartHomeReading {
+public extension SmartHomeReading {
     init(data: Data) throws {
         self = try newJSONDecoder().decode(SmartHomeReading.self, from: data)
     }
@@ -960,7 +1090,7 @@ extension SmartHomeReading {
     }
 }
 
-enum SmartHomeReadingSource: String, Codable {
+public enum SmartHomeReadingSource: String, Codable {
     case ecobee = "ecobee"
     case homekit = "homekit"
     case nest = "nest"
@@ -968,25 +1098,33 @@ enum SmartHomeReadingSource: String, Codable {
 }
 
 // MARK: - System
-struct System: Codable {
-    let category: Category
-    let homeID: String
-    let id: String
-    let name: String
-    let notes: String?
+public struct System: Codable {
+    public let category: Category
+    public let homeID: String
+    public let id: String
+    public let name: String
+    public let notes: String?
 
-    enum CodingKeys: String, CodingKey {
+    public enum CodingKeys: String, CodingKey {
         case category = "category"
         case homeID = "home_id"
         case id = "id"
         case name = "name"
         case notes = "notes"
     }
+
+    public init(category: Category, homeID: String, id: String, name: String, notes: String?) {
+        self.category = category
+        self.homeID = homeID
+        self.id = id
+        self.name = name
+        self.notes = notes
+    }
 }
 
 // MARK: System convenience initializers and mutators
 
-extension System {
+public extension System {
     init(data: Data) throws {
         self = try newJSONDecoder().decode(System.self, from: data)
     }
@@ -1027,7 +1165,7 @@ extension System {
     }
 }
 
-enum Category: String, Codable {
+public enum Category: String, Codable {
     case appliancesAndWaterHeater = "appliances_and_water_heater"
     case electrical = "electrical"
     case exteriorAndSite = "exterior_and_site"
@@ -1038,19 +1176,19 @@ enum Category: String, Codable {
 }
 
 // MARK: - UtilityBill
-struct UtilityBill: Codable {
-    let attachmentID: String?
-    let billingPeriodEnd: String
-    let billingPeriodStart: String
-    let costCents: Int?
-    let homeID: String
-    let id: String
-    let source: UtilityBillSource
-    let usageAmount: Double
-    let usageUnit: String
-    let utilityType: UtilityType
+public struct UtilityBill: Codable {
+    public let attachmentID: String?
+    public let billingPeriodEnd: String
+    public let billingPeriodStart: String
+    public let costCents: Int?
+    public let homeID: String
+    public let id: String
+    public let source: UtilityBillSource
+    public let usageAmount: Double
+    public let usageUnit: String
+    public let utilityType: UtilityType
 
-    enum CodingKeys: String, CodingKey {
+    public enum CodingKeys: String, CodingKey {
         case attachmentID = "attachment_id"
         case billingPeriodEnd = "billing_period_end"
         case billingPeriodStart = "billing_period_start"
@@ -1062,11 +1200,24 @@ struct UtilityBill: Codable {
         case usageUnit = "usage_unit"
         case utilityType = "utility_type"
     }
+
+    public init(attachmentID: String?, billingPeriodEnd: String, billingPeriodStart: String, costCents: Int?, homeID: String, id: String, source: UtilityBillSource, usageAmount: Double, usageUnit: String, utilityType: UtilityType) {
+        self.attachmentID = attachmentID
+        self.billingPeriodEnd = billingPeriodEnd
+        self.billingPeriodStart = billingPeriodStart
+        self.costCents = costCents
+        self.homeID = homeID
+        self.id = id
+        self.source = source
+        self.usageAmount = usageAmount
+        self.usageUnit = usageUnit
+        self.utilityType = utilityType
+    }
 }
 
 // MARK: UtilityBill convenience initializers and mutators
 
-extension UtilityBill {
+public extension UtilityBill {
     init(data: Data) throws {
         self = try newJSONDecoder().decode(UtilityBill.self, from: data)
     }
@@ -1117,12 +1268,12 @@ extension UtilityBill {
     }
 }
 
-enum UtilityBillSource: String, Codable {
+public enum UtilityBillSource: String, Codable {
     case manual = "manual"
     case sourceImport = "import"
 }
 
-enum UtilityType: String, Codable {
+public enum UtilityType: String, Codable {
     case electric = "electric"
     case gas = "gas"
     case water = "water"
@@ -1132,23 +1283,41 @@ enum UtilityType: String, Codable {
 
 func newJSONDecoder() -> JSONDecoder {
     let decoder = JSONDecoder()
-    if #available(iOS 10.0, OSX 10.12, tvOS 10.0, watchOS 3.0, *) {
-        decoder.dateDecodingStrategy = .iso8601
-    }
+    decoder.dateDecodingStrategy = .custom({ (decoder) -> Date in
+        let container = try decoder.singleValueContainer()
+        let dateStr = try container.decode(String.self)
+
+        let formatter = DateFormatter()
+        formatter.calendar = Calendar(identifier: .iso8601)
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX"
+        if let date = formatter.date(from: dateStr) {
+            return date
+        }
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssXXXXX"
+        if let date = formatter.date(from: dateStr) {
+            return date
+        }
+        throw DecodingError.typeMismatch(Date.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Could not decode date"))
+    })
     return decoder
 }
 
 func newJSONEncoder() -> JSONEncoder {
     let encoder = JSONEncoder()
-    if #available(iOS 10.0, OSX 10.12, tvOS 10.0, watchOS 3.0, *) {
-        encoder.dateEncodingStrategy = .iso8601
-    }
+    let formatter = DateFormatter()
+    formatter.calendar = Calendar(identifier: .iso8601)
+    formatter.locale = Locale(identifier: "en_US_POSIX")
+    formatter.timeZone = TimeZone(secondsFromGMT: 0)
+    formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssXXXXX"
+    encoder.dateEncodingStrategy = .formatted(formatter)
     return encoder
 }
 
 // MARK: - Encode/decode helpers
 
-class JSONNull: Codable, Hashable {
+public class JSONNull: Codable, Hashable {
 
     public static func == (lhs: JSONNull, rhs: JSONNull) -> Bool {
         return true
@@ -1197,9 +1366,9 @@ class JSONCodingKey: CodingKey {
     }
 }
 
-class JSONAny: Codable {
+public class JSONAny: Codable {
 
-    let value: Any
+    public let value: Any
 
     static func decodingError(forCodingPath codingPath: [CodingKey]) -> DecodingError {
         let context = DecodingError.Context(codingPath: codingPath, debugDescription: "Cannot decode JSONAny")

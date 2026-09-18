@@ -1,5 +1,6 @@
 /**
- * Generates Swift, Kotlin, and TypeScript+Zod models from the bundled,
+ * Generates Swift, Kotlin, and TypeScript models plus a standalone AJV
+ * validator from the bundled,
  * fully-dereferenced Home Record schema (build/home-record.bundled.json,
  * produced by `npm run bundle-schema`).
  *
@@ -9,9 +10,18 @@
  * duplicating this script.
  */
 import { execFileSync } from "node:child_process";
-import { existsSync, mkdirSync } from "node:fs";
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  writeFileSync,
+} from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+
+import Ajv2020 from "ajv/dist/2020.js";
+import standaloneCode from "ajv/dist/standalone/index.js";
+import addFormats from "ajv-formats";
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const bundledSchema = join(repoRoot, "build", "home-record.bundled.json");
@@ -30,6 +40,28 @@ function parseOutDir(): string {
 
 function runQuicktype(args: string[]) {
   execFileSync(quicktypeBin, args, { stdio: "inherit" });
+}
+
+function removeNestedSchemaIdentifiers(
+  value: unknown,
+  isRoot = true,
+): unknown {
+  if (Array.isArray(value)) {
+    return value.map((item) => removeNestedSchemaIdentifiers(item, false));
+  }
+
+  if (value !== null && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value).flatMap(([key, child]) => {
+        if (!isRoot && (key === "$id" || key === "$schema")) {
+          return [];
+        }
+        return [[key, removeNestedSchemaIdentifiers(child, false)]];
+      }),
+    );
+  }
+
+  return value;
 }
 
 function main() {
@@ -57,6 +89,9 @@ function main() {
     "swift",
     "--top-level",
     "HomeRecord",
+    "--access-level",
+    "public",
+    "--support-linux",
     "-o",
     join(swiftDir, "HomeRecord.swift"),
   ]);
@@ -80,14 +115,75 @@ function main() {
     "schema",
     bundledSchema,
     "--lang",
-    "typescript-zod",
+    "typescript",
     "--top-level",
     "HomeRecord",
+    "--just-types",
+    "--no-date-times",
     "-o",
     join(typescriptDir, "homeRecord.ts"),
   ]);
 
-  console.log(`Generated Swift, Kotlin, and TypeScript models into ${outDir}`);
+  const schema = removeNestedSchemaIdentifiers(
+    JSON.parse(readFileSync(bundledSchema, "utf-8")),
+  );
+  const ajv = new Ajv2020({
+    allErrors: true,
+    strict: true,
+    validateFormats: true,
+    code: {
+      lines: true,
+      source: true,
+    },
+  });
+  addFormats(ajv, { mode: "full" });
+  const validate = ajv.compile(schema);
+  const validatorCode = standaloneCode(ajv, validate);
+
+  writeFileSync(
+    join(typescriptDir, "validateHomeRecord.js"),
+    `// Generated from spec/schema. Do not edit directly.\n${validatorCode}`,
+    "utf-8",
+  );
+  writeFileSync(
+    join(typescriptDir, "validateHomeRecord.d.ts"),
+    `import type { ErrorObject } from "ajv";
+import type { HomeRecord } from "./homeRecord.js";
+
+export interface HomeRecordValidator {
+  (data: unknown): data is HomeRecord;
+  errors: ErrorObject[] | null;
+}
+
+declare const validateHomeRecord: HomeRecordValidator;
+export default validateHomeRecord;
+`,
+    "utf-8",
+  );
+  writeFileSync(
+    join(typescriptDir, "index.js"),
+    `"use strict";
+
+const validateHomeRecord = require("./validateHomeRecord.js");
+
+exports.validateHomeRecord = validateHomeRecord;
+`,
+    "utf-8",
+  );
+  writeFileSync(
+    join(typescriptDir, "index.d.ts"),
+    `export type * from "./homeRecord.js";
+export { default as validateHomeRecord } from "./validateHomeRecord.js";
+export type {
+  HomeRecordValidator,
+} from "./validateHomeRecord.js";
+`,
+    "utf-8",
+  );
+
+  console.log(
+    `Generated Swift, Kotlin, TypeScript, and runtime validator output into ${outDir}`,
+  );
 }
 
 main();
