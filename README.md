@@ -31,3 +31,44 @@ Homebody's private app repo consumes this spec via SPM (iOS), JitPack
 (Android), and npm (web), all pinned to git tags in this repo. This repo is
 not published to a private package registry - it's public, and tags are the
 versioning mechanism.
+
+### JavaScript and TypeScript
+
+Install a tagged release directly from GitHub:
+
+```sh
+npm install github:thomasphillips3/homebody-spec#v0.1.1
+```
+
+The package exports TypeScript declarations and a schema-faithful standalone
+runtime validator as compiled JavaScript:
+
+```ts
+import {
+  type HomeRecord,
+  validateHomeRecord,
+} from "homebody-spec";
+
+const candidate: unknown = JSON.parse(input);
+if (!validateHomeRecord(candidate)) {
+  console.error(validateHomeRecord.errors);
+  throw new Error("Invalid Home Record");
+}
+
+const record: HomeRecord = candidate;
+```
+
+The authoritative root schema is also exported as `homebody-spec/schema`.
+
+### Swift
+
+Add this repository as a Swift package dependency pinned to `v0.1.1`, then:
+
+```swift
+import HomebodySpec
+
+let record: HomeRecord = try HomeRecord(data: data)
+```
+
+All generated model types and their Codable members are public. External
+Release consumers do not need `@testable`.

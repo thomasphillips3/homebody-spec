@@ -1,6 +1,6 @@
 {
   "name": "homebody-spec",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "The Home Record spec: open, versioned JSON Schema plus generated Swift/Kotlin/TypeScript models and golden fixtures.",
   "license": "MIT",
   "main": "./dist/index.js",
@@ -31,8 +31,9 @@
     "test:resolver": "tsx --test tests/schema-resolver.test.ts",
     "test:validator": "node --test tests/validator.test.mjs",
     "test:fixtures": "node --test tests/fixture-references.test.mjs",
+    "test:version": "node --test tests/version-consistency.test.mjs",
     "test:consumer": "node tests/package-consumer.mjs",
-    "test": "npm run build && npm run test:resolver && npm run test:validator && npm run test:fixtures && npm run test:consumer",
+    "test": "npm run build && npm run test:resolver && npm run test:validator && npm run test:fixtures && npm run test:version && npm run test:consumer",
     "prepare": "npm run build",
     "prepack": "npm run build"
   },
@@ -41,7 +42,7 @@
   },
   "devDependencies": {
     "@apidevtools/json-schema-ref-parser": "16.0.2",
-    "ajv": "8.17.1",
+    "ajv": "^8.20.0",
     "json-canonicalize": "3.0.1",
     "quicktype": "26.0.0",
     "tsx": "4.23.13",

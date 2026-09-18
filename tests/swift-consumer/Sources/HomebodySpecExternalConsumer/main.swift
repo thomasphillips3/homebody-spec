@@ -23,8 +23,6 @@ let json = """
 }
 """
 
-let decoder = JSONDecoder()
-decoder.dateDecodingStrategy = .iso8601
-let record = try decoder.decode(HomeRecord.self, from: Data(json.utf8))
+let record: HomeRecord = try HomeRecord(data: Data(json.utf8))
 precondition(record.schemaVersion == "0.1.1")
 print("Decoded HomeRecord \(record.home.name)")

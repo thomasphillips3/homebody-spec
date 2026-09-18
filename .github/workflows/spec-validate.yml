@@ -1,16 +1,53 @@
 name: spec-validate
-on: [push, pull_request]
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
 jobs:
-  codegen-drift-check:
+  validate:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Check out repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
-          node-version: 22
-      - run: npm ci
-      - run: npm run bundle-schema
-      - run: npm run codegen -- --out-dir /tmp/codegen-output
-      - run: |
-          diff -r generated/ /tmp/codegen-output/ || \
-          (echo "Generated code is stale - run 'npm run codegen' and commit the result" && exit 1)
+          persist-credentials: false
+
+      - name: Set up Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22.19.0
+          cache: npm
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Regenerate schema artifacts
+        run: |
+          npm run bundle-schema
+          npm run codegen
+
+      - name: Check generated artifact drift
+        run: |
+          if [ -n "$(git status --short -- generated)" ]; then
+            git status --short -- generated
+            echo "Generated code is stale - run npm run bundle-schema and npm run codegen"
+            exit 1
+          fi
+
+      - name: Test validator, references, versions, and npm package
+        run: npm test
+
+      - name: Build Swift package in Release
+        run: swift build -c release
+
+      - name: Run external Swift consumer in Release
+        run: swift run -c release --package-path tests/swift-consumer
+
+      - name: Build Gradle package
+        run: ./gradlew build --no-daemon
