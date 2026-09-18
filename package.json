@@ -30,8 +30,9 @@
     "build": "tsx codegen/build-package.ts",
     "test:resolver": "tsx --test tests/schema-resolver.test.ts",
     "test:validator": "node --test tests/validator.test.mjs",
+    "test:fixtures": "node --test tests/fixture-references.test.mjs",
     "test:consumer": "node tests/package-consumer.mjs",
-    "test": "npm run build && npm run test:resolver && npm run test:validator && npm run test:consumer",
+    "test": "npm run build && npm run test:resolver && npm run test:validator && npm run test:fixtures && npm run test:consumer",
     "prepare": "npm run build",
     "prepack": "npm run build"
   },

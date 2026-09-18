@@ -6,10 +6,13 @@ are **referenced, not embedded**, in a Home Record JSON document.
 ## What is actually stored
 
 An `Attachment` entity's `storage_path` field holds a Supabase Storage key -
-a path like `homes/{home_id}/attachments/{attachment_id}.jpg` that resolves
-to the actual bytes in Supabase Storage. The JSON document itself never
-contains attachment bytes: no `base64`-encoded image data, no inline PDF
-content, no embedded USDZ mesh. `Event.attachment_ids`,
+a path like
+`{owner_user_id}/homes/{home_id}/attachments/{attachment_id}.jpg` that
+resolves to the actual bytes in Supabase Storage. The first path segment is
+always the owning user's UUID, matching the deployed Storage RLS policy. The
+JSON document itself never contains attachment bytes: no `base64`-encoded
+image data, no inline PDF content, no embedded USDZ mesh.
+`Event.attachment_ids`,
 `Component.manual_attachment_id`, `Attachment.linked_event_id`, and
 `Attachment.linked_component_id` are all references by id - the same pattern
 as every other foreign-key-shaped field in the spec.
