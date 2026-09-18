@@ -74,6 +74,13 @@ test("rejects a non-canonical attachment storage path", () => {
   expectInvalid(record);
 });
 
+test("rejects canonical-looking paths with mismatched entity IDs", () => {
+  const record = readFixture("maximal-home.json");
+  record.attachments[0].storage_path =
+    "10000000-0000-4000-8000-000000000099/homes/00000000-0000-4000-8000-000000000001/attachments/00000000-0000-4000-8000-000000000070.jpg";
+  expectInvalid(record);
+});
+
 test("enforces coordinate cardinality by geometry type", () => {
   const record = readFixture("maximal-home.json");
   record.components[4].geometry.coordinates.push([7, 1.2]);
