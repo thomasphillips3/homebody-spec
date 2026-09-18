@@ -118,6 +118,8 @@ public struct Attachment: Codable {
     public let linkedComponentID: String?
     public let linkedEventID: String?
     public let mimeType: String
+    /// Canonical owner-scoped Storage key:
+    /// {owner_user_id}/homes/{home_id}/attachments/{attachment_id}.ext.
     public let storagePath: String
 
     public enum CodingKeys: String, CodingKey {
@@ -1369,6 +1371,10 @@ class JSONCodingKey: CodingKey {
 public class JSONAny: Codable {
 
     public let value: Any
+
+    public init(_ value: Any) {
+        self.value = value
+    }
 
     static func decodingError(forCodingPath codingPath: [CodingKey]) -> DecodingError {
         let context = DecodingError.Context(codingPath: codingPath, debugDescription: "Cannot decode JSONAny")

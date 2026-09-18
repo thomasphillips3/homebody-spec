@@ -25,4 +25,6 @@ let json = """
 
 let record: HomeRecord = try HomeRecord(data: Data(json.utf8))
 precondition(record.schemaVersion == "0.1.1")
+let customField = JSONAny(Int64(42))
+precondition(customField.value as? Int64 == 42)
 print("Decoded HomeRecord \(record.home.name)")

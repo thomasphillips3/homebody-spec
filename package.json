@@ -32,8 +32,9 @@
     "test:validator": "node --test tests/validator.test.mjs",
     "test:fixtures": "node --test tests/fixture-references.test.mjs",
     "test:version": "node --test tests/version-consistency.test.mjs",
+    "test:types": "tsc --noEmit --strict --module Node16 --moduleResolution Node16 --target ES2022 tests/typescript-consumer.ts",
     "test:consumer": "node tests/package-consumer.mjs",
-    "test": "npm run build && npm run test:resolver && npm run test:validator && npm run test:fixtures && npm run test:version && npm run test:consumer",
+    "test": "npm run build && npm run test:resolver && npm run test:validator && npm run test:fixtures && npm run test:version && npm run test:types && npm run test:consumer",
     "prepare": "npm run build",
     "prepack": "npm run build"
   },

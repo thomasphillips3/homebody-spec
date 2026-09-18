@@ -25,6 +25,7 @@ import addFormats from "ajv-formats";
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const bundledSchema = join(repoRoot, "build", "home-record.bundled.json");
+const modelSchema = join(repoRoot, "build", "home-record.models.json");
 const quicktypeBin = join(repoRoot, "node_modules", ".bin", "quicktype");
 
 function parseOutDir(): string {
@@ -64,6 +65,67 @@ function removeNestedSchemaIdentifiers(
   return value;
 }
 
+function writeModelSchema(schema: Record<string, unknown>) {
+  const modelInput = structuredClone(schema) as {
+    properties?: {
+      schema_version?: Record<string, unknown>;
+    };
+  };
+
+  // Runtime validation accepts only known versions. Keep generated model APIs
+  // string-based so adding a compatible version does not change public types.
+  delete modelInput.properties?.schema_version?.enum;
+  writeFileSync(modelSchema, `${JSON.stringify(modelInput, null, 2)}\n`, "utf-8");
+}
+
+function postprocessSwiftOutput(filePath: string) {
+  const marker = "public class JSONAny: Codable {\n\n    public let value: Any\n";
+  const source = readFileSync(filePath, "utf-8");
+  if (!source.includes(marker)) {
+    throw new Error("Unable to add public JSONAny initializer to Swift output");
+  }
+
+  writeFileSync(
+    filePath,
+    source.replace(
+      marker,
+      `${marker}
+    public init(_ value: Any) {
+        self.value = value
+    }
+`,
+    ),
+    "utf-8",
+  );
+}
+
+function postprocessTypeScriptOutput(filePath: string) {
+  const source = readFileSync(filePath, "utf-8");
+  const eventPattern = /export interface Event \{\n([\s\S]*?)\n\}\n/;
+  const eventMatch = source.match(eventPattern);
+  if (!eventMatch) {
+    throw new Error("Unable to locate Event in TypeScript output");
+  }
+
+  const commonFields = eventMatch[1]
+    .split("\n")
+    .filter(
+      (line) =>
+        !line.includes("component_id?:") && !line.includes("system_id?:"),
+    )
+    .join("\n");
+  const replacement = `export type Event =
+    | (EventFields & { system_id: string; component_id?: string | null })
+    | (EventFields & { component_id: string; system_id?: string | null });
+
+export interface EventFields {
+${commonFields}
+}
+`;
+
+  writeFileSync(filePath, source.replace(eventPattern, replacement), "utf-8");
+}
+
 function main() {
   if (!existsSync(bundledSchema)) {
     console.error(
@@ -81,10 +143,15 @@ function main() {
     mkdirSync(dir, { recursive: true });
   }
 
+  const bundledInput = JSON.parse(
+    readFileSync(bundledSchema, "utf-8"),
+  ) as Record<string, unknown>;
+  writeModelSchema(bundledInput);
+
   runQuicktype([
     "-s",
     "schema",
-    bundledSchema,
+    modelSchema,
     "--lang",
     "swift",
     "--top-level",
@@ -95,11 +162,12 @@ function main() {
     "-o",
     join(swiftDir, "HomeRecord.swift"),
   ]);
+  postprocessSwiftOutput(join(swiftDir, "HomeRecord.swift"));
 
   runQuicktype([
     "-s",
     "schema",
-    bundledSchema,
+    modelSchema,
     "--lang",
     "kotlin",
     "--framework",
@@ -113,7 +181,7 @@ function main() {
   runQuicktype([
     "-s",
     "schema",
-    bundledSchema,
+    modelSchema,
     "--lang",
     "typescript",
     "--top-level",
@@ -123,9 +191,10 @@ function main() {
     "-o",
     join(typescriptDir, "homeRecord.ts"),
   ]);
+  postprocessTypeScriptOutput(join(typescriptDir, "homeRecord.ts"));
 
   const schema = removeNestedSchemaIdentifiers(
-    JSON.parse(readFileSync(bundledSchema, "utf-8")),
+    bundledInput,
   );
   const ajv = new Ajv2020({
     allErrors: true,
@@ -147,12 +216,19 @@ function main() {
   );
   writeFileSync(
     join(typescriptDir, "validateHomeRecord.d.ts"),
-    `import type { ErrorObject } from "ajv";
-import type { HomeRecord } from "./homeRecord.js";
+    `import type { HomeRecord } from "./homeRecord.js";
+
+export interface HomeRecordValidationError {
+  instancePath: string;
+  schemaPath: string;
+  keyword: string;
+  params: Record<string, unknown>;
+  message?: string;
+}
 
 export interface HomeRecordValidator {
   (data: unknown): data is HomeRecord;
-  errors: ErrorObject[] | null;
+  errors: HomeRecordValidationError[] | null;
 }
 
 declare const validateHomeRecord: HomeRecordValidator;
@@ -175,6 +251,7 @@ exports.validateHomeRecord = validateHomeRecord;
     `export type * from "./homeRecord.js";
 export { default as validateHomeRecord } from "./validateHomeRecord.js";
 export type {
+  HomeRecordValidationError,
   HomeRecordValidator,
 } from "./validateHomeRecord.js";
 `,

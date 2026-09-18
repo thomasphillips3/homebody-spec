@@ -55,10 +55,22 @@ test("rejects a malformed semantic version", () => {
   expectInvalid(record);
 });
 
+test("rejects an unsupported semantic version", () => {
+  const record = readFixture("minimal-home.json");
+  record.schema_version = "9.9.9";
+  expectInvalid(record);
+});
+
 test("rejects an event without a non-null target UUID", () => {
   const record = readFixture("maximal-home.json");
   record.events[0].system_id = null;
   record.events[0].component_id = null;
+  expectInvalid(record);
+});
+
+test("rejects a non-canonical attachment storage path", () => {
+  const record = readFixture("maximal-home.json");
+  record.attachments[0].storage_path = "../../other-user/secret.jpg";
   expectInvalid(record);
 });
 

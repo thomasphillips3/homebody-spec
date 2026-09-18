@@ -1,9 +1,16 @@
-import type { ErrorObject } from "ajv";
 import type { HomeRecord } from "./homeRecord.js";
+
+export interface HomeRecordValidationError {
+  instancePath: string;
+  schemaPath: string;
+  keyword: string;
+  params: Record<string, unknown>;
+  message?: string;
+}
 
 export interface HomeRecordValidator {
   (data: unknown): data is HomeRecord;
-  errors: ErrorObject[] | null;
+  errors: HomeRecordValidationError[] | null;
 }
 
 declare const validateHomeRecord: HomeRecordValidator;

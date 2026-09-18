@@ -22,6 +22,7 @@ test("all release metadata and fixtures use spec/VERSION", () => {
     join(repoRoot, "spec", "CHANGELOG.md"),
     "utf-8",
   );
+  const rootSchema = readJSON("spec/schema/home-record.schema.json");
 
   assert.match(version, /^\d+\.\d+\.\d+$/);
   assert.equal(packageManifest.version, version);
@@ -29,6 +30,7 @@ test("all release metadata and fixtures use spec/VERSION", () => {
   assert.equal(packageLock.packages[""].version, version);
   assert.match(gradleManifest, new RegExp(`version = "${version}"`));
   assert.match(changelog, new RegExp(`^## ${version} - `, "m"));
+  assert.ok(rootSchema.properties.schema_version.enum.includes(version));
 
   for (const fixtureName of ["minimal-home.json", "maximal-home.json"]) {
     assert.equal(

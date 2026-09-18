@@ -30,7 +30,11 @@ export interface Attachment {
     linked_component_id?: null | string;
     linked_event_id?:     null | string;
     mime_type:            string;
-    storage_path:         string;
+    /**
+     * Canonical owner-scoped Storage key:
+     * {owner_user_id}/homes/{home_id}/attachments/{attachment_id}.ext.
+     */
+    storage_path: string;
 }
 
 export type AttachmentKind = "photo" | "receipt" | "manual_pdf" | "usdz_mesh";
@@ -83,9 +87,12 @@ export interface PlanGeometry {
 
 export type PlanGeometryType = "point" | "polyline" | "polygon";
 
-export interface Event {
+export type Event =
+    | (EventFields & { system_id: string; component_id?: string | null })
+    | (EventFields & { component_id: string; system_id?: string | null });
+
+export interface EventFields {
     attachment_ids:   string[];
-    component_id?:    string;
     condition_after?: Condition | null;
     cost_cents?:      number | null;
     event_type:       EventType;
@@ -96,7 +103,6 @@ export interface Event {
     performed_by?:    null | string;
     reading_unit?:    null | string;
     reading_value?:   number | null;
-    system_id?:       string;
 }
 
 export type EventType = "inspection" | "service" | "repair" | "replacement" | "reading" | "note";

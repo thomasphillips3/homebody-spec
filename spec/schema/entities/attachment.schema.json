@@ -12,7 +12,11 @@
       "type": "string",
       "enum": ["photo", "receipt", "manual_pdf", "usdz_mesh"]
     },
-    "storage_path": { "type": "string" },
+    "storage_path": {
+      "type": "string",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}/homes/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}/attachments/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}\\.[A-Za-z0-9]+$",
+      "description": "Canonical owner-scoped Storage key: {owner_user_id}/homes/{home_id}/attachments/{attachment_id}.ext."
+    },
     "mime_type": { "type": "string" },
     "file_size_bytes": { "type": "integer" },
     "captured_at": { "type": ["string", "null"], "format": "date-time" },

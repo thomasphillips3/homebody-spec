@@ -72,6 +72,10 @@ data class Attachment (
     @SerialName("mime_type")
     val mimeType: String,
 
+    /**
+     * Canonical owner-scoped Storage key:
+     * {owner_user_id}/homes/{home_id}/attachments/{attachment_id}.ext.
+     */
     @SerialName("storage_path")
     val storagePath: String
 )
