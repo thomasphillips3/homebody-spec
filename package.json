@@ -1,6 +1,6 @@
 {
   "name": "homebody-spec",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "The Home Record spec: open, versioned JSON Schema plus generated Swift/Kotlin/TypeScript models and golden fixtures.",
   "license": "MIT",
   "main": "./dist/index.js",
@@ -12,11 +12,19 @@
       "import": "./dist/index.js",
       "default": "./dist/index.js"
     },
-    "./schema": "./spec/schema/home-record.schema.json"
+    "./schema": "./spec/schema/home-record.schema.json",
+    "./render": {
+      "types": "./dist/render/index.d.ts",
+      "import": "./dist/render/index.js",
+      "require": "./dist/render/index.js",
+      "default": "./dist/render/index.js"
+    }
   },
   "files": [
     "dist/",
     "spec/schema/",
+    "spec/render/style-tokens.json",
+    "spec/fixtures/render/",
     "spec/VERSION",
     "README.md",
     "LICENSE"
@@ -34,7 +42,8 @@
     "test:version": "node --test tests/version-consistency.test.mjs",
     "test:types": "tsc --noEmit --strict --module Node16 --moduleResolution Node16 --target ES2022 tests/typescript-consumer.ts",
     "test:consumer": "node tests/package-consumer.mjs",
-    "test": "npm run build && npm run test:resolver && npm run test:validator && npm run test:fixtures && npm run test:version && npm run test:types && npm run test:consumer",
+    "test:render": "vitest run",
+    "test": "npm run build && npm run test:resolver && npm run test:validator && npm run test:fixtures && npm run test:version && npm run test:types && npm run test:consumer && npm run test:render",
     "prepare": "npm run build",
     "prepack": "npm run build"
   },
@@ -47,6 +56,7 @@
     "json-canonicalize": "3.0.1",
     "quicktype": "26.0.0",
     "tsx": "4.23.13",
-    "typescript": "^5.9.0"
+    "typescript": "^5.9.0",
+    "vitest": "^3.2.4"
   }
 }

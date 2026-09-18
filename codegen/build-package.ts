@@ -37,4 +37,31 @@ for (const fileName of [
   copyFileSync(join(generatedRoot, fileName), join(distRoot, fileName));
 }
 
+const renderSourceRoot = join(repoRoot, "spec", "render");
+const renderDistRoot = join(distRoot, "render");
+mkdirSync(renderDistRoot, { recursive: true });
+
+execFileSync(
+  tscBin,
+  [
+    join(renderSourceRoot, "index.ts"),
+    "--outDir",
+    renderDistRoot,
+    "--declaration",
+    "--module",
+    "Node16",
+    "--moduleResolution",
+    "Node16",
+    "--target",
+    "ES2022",
+    "--skipLibCheck",
+  ],
+  { stdio: "inherit" },
+);
+
+copyFileSync(
+  join(renderSourceRoot, "style-tokens.json"),
+  join(renderDistRoot, "style-tokens.json"),
+);
+
 console.log(`Distributable npm package written to ${distRoot}`);

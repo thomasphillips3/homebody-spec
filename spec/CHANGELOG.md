@@ -2,6 +2,15 @@
 
 All notable changes to the Home Record spec are documented in this file.
 
+## 0.2.0 - 2026-09-18
+
+- Added the shared plan render model (`spec/render/`) with TypeScript reference
+  implementation, style tokens, and golden draw-command fixtures for cross-platform
+  parity (PLAN-09).
+- Documented the render contract in `spec/docs/render-model.md`.
+- No required Home Record entity fields changed; `schema_version` `0.2.0` marks
+  documents produced after this release.
+
 ## 0.1.1 - 2026-09-17
 
 - Generated a public Swift package API that external Release consumers can

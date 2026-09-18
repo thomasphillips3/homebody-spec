@@ -3,7 +3,7 @@ import HomebodySpec
 
 let json = """
 {
-  "schema_version": "0.1.1",
+  "schema_version": "0.2.0",
   "home": {
     "id": "10000000-0000-4000-8000-000000000001",
     "owner_user_id": "10000000-0000-4000-8000-000000000002",
@@ -24,7 +24,7 @@ let json = """
 """
 
 let record: HomeRecord = try HomeRecord(data: Data(json.utf8))
-precondition(record.schemaVersion == "0.1.1")
+precondition(record.schemaVersion == "0.2.0")
 let customField = JSONAny(Int64(42))
 precondition(customField.value as? Int64 == 42)
 print("Decoded HomeRecord \(record.home.name)")

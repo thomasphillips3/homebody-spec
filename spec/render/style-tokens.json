@@ -1,0 +1,38 @@
+{
+  "version": "1",
+  "description": "Meter-based stroke widths for plan rendering. Clients map tokens to pixels at draw time using viewport scale (meters per point).",
+  "strokes": {
+    "wall.stroke": {
+      "width_m": 0.12
+    },
+    "opening.stroke": {
+      "width_m": 0.08
+    },
+    "door.gap": {
+      "width_m": 0.1
+    },
+    "door.swing": {
+      "width_m": 0.06
+    },
+    "window.stroke": {
+      "width_m": 0.1
+    }
+  },
+  "fills": {
+    "room.fill": {
+      "opacity": 0.12
+    },
+    "room.fill.selected": {
+      "opacity": 0.28
+    }
+  },
+  "layers": {
+    "room.fill": 0,
+    "room.fill.selected": 0,
+    "wall.stroke": 10,
+    "opening.stroke": 20,
+    "door.gap": 30,
+    "door.swing": 31,
+    "window.stroke": 32
+  }
+}

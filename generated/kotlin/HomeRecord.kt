@@ -34,7 +34,7 @@ data class HomeRecord (
     val rooms: List<Room>,
 
     /**
-     * Semver of the Home Record spec this document conforms to, e.g. 0.1.1. Downstream import
+     * Semver of the Home Record spec this document conforms to, e.g. 0.2.0. Downstream import
      * validation rejects unknown versions rather than duck-typing.
      */
     @SerialName("schema_version")
