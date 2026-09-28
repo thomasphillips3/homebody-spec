@@ -2,6 +2,19 @@
 
 All notable changes to the Home Record spec are documented in this file.
 
+## 0.3.0 - 2026-09-28
+
+- Added five nullable import fields to `Level` (`import_attachment_id`,
+  `import_origin_m`, `import_scale_m_per_px`, `import_pixel_width`,
+  `import_pixel_height`) so a level can carry an imported floor-plan
+  background image/PDF, its plan-space placement, and its pixel dimensions.
+  None of these fields are required; existing hand-drawn Level records
+  round-trip unchanged (PLAN-03).
+- Added `floor_plan_source` to `Attachment.kind`, labeling the imported
+  file distinctly from `photo`/`receipt`/`manual_pdf`/`usdz_mesh`.
+- Updated `maximal-home.json` with a `Level` exercising the new import
+  fields and a `floor_plan_source` `Attachment`.
+
 ## 0.2.0 - 2026-09-18
 
 - Added the shared plan render model (`spec/render/`) with TypeScript reference

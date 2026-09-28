@@ -82,6 +82,7 @@ data class Attachment (
 
 @Serializable
 enum class AttachmentKind(val value: String) {
+    @SerialName("floor_plan_source") FloorPlanSource("floor_plan_source"),
     @SerialName("manual_pdf") ManualPDF("manual_pdf"),
     @SerialName("photo") Photo("photo"),
     @SerialName("receipt") Receipt("receipt"),
@@ -283,6 +284,22 @@ data class Level (
     val homeID: String,
 
     val id: String,
+
+    @SerialName("import_attachment_id")
+    val importAttachmentID: String? = null,
+
+    @SerialName("import_origin_m")
+    val importOriginM: List<Double>? = null,
+
+    @SerialName("import_pixel_height")
+    val importPixelHeight: Long? = null,
+
+    @SerialName("import_pixel_width")
+    val importPixelWidth: Long? = null,
+
+    @SerialName("import_scale_m_per_px")
+    val importScaleMPerPx: Double? = null,
+
     val name: String,
 
     @SerialName("scale_confidence")

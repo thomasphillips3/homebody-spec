@@ -199,6 +199,7 @@ public extension Attachment {
 }
 
 public enum AttachmentKind: String, Codable {
+    case floorPlanSource = "floor_plan_source"
     case manualPDF = "manual_pdf"
     case photo = "photo"
     case receipt = "receipt"
@@ -661,6 +662,11 @@ public struct Level: Codable {
     public let elevationOffsetM: Double
     public let homeID: String
     public let id: String
+    public let importAttachmentID: String?
+    public let importOriginM: [Double]?
+    public let importPixelHeight: Int?
+    public let importPixelWidth: Int?
+    public let importScaleMPerPx: Double?
     public let name: String
     public let scaleConfidence: ScaleConfidence
     public let sortOrder: Int
@@ -669,15 +675,25 @@ public struct Level: Codable {
         case elevationOffsetM = "elevation_offset_m"
         case homeID = "home_id"
         case id = "id"
+        case importAttachmentID = "import_attachment_id"
+        case importOriginM = "import_origin_m"
+        case importPixelHeight = "import_pixel_height"
+        case importPixelWidth = "import_pixel_width"
+        case importScaleMPerPx = "import_scale_m_per_px"
         case name = "name"
         case scaleConfidence = "scale_confidence"
         case sortOrder = "sort_order"
     }
 
-    public init(elevationOffsetM: Double, homeID: String, id: String, name: String, scaleConfidence: ScaleConfidence, sortOrder: Int) {
+    public init(elevationOffsetM: Double, homeID: String, id: String, importAttachmentID: String?, importOriginM: [Double]?, importPixelHeight: Int?, importPixelWidth: Int?, importScaleMPerPx: Double?, name: String, scaleConfidence: ScaleConfidence, sortOrder: Int) {
         self.elevationOffsetM = elevationOffsetM
         self.homeID = homeID
         self.id = id
+        self.importAttachmentID = importAttachmentID
+        self.importOriginM = importOriginM
+        self.importPixelHeight = importPixelHeight
+        self.importPixelWidth = importPixelWidth
+        self.importScaleMPerPx = importScaleMPerPx
         self.name = name
         self.scaleConfidence = scaleConfidence
         self.sortOrder = sortOrder
@@ -706,6 +722,11 @@ public extension Level {
         elevationOffsetM: Double? = nil,
         homeID: String? = nil,
         id: String? = nil,
+        importAttachmentID: String?? = nil,
+        importOriginM: [Double]?? = nil,
+        importPixelHeight: Int?? = nil,
+        importPixelWidth: Int?? = nil,
+        importScaleMPerPx: Double?? = nil,
         name: String? = nil,
         scaleConfidence: ScaleConfidence? = nil,
         sortOrder: Int? = nil
@@ -714,6 +735,11 @@ public extension Level {
             elevationOffsetM: elevationOffsetM ?? self.elevationOffsetM,
             homeID: homeID ?? self.homeID,
             id: id ?? self.id,
+            importAttachmentID: importAttachmentID ?? self.importAttachmentID,
+            importOriginM: importOriginM ?? self.importOriginM,
+            importPixelHeight: importPixelHeight ?? self.importPixelHeight,
+            importPixelWidth: importPixelWidth ?? self.importPixelWidth,
+            importScaleMPerPx: importScaleMPerPx ?? self.importScaleMPerPx,
             name: name ?? self.name,
             scaleConfidence: scaleConfidence ?? self.scaleConfidence,
             sortOrder: sortOrder ?? self.sortOrder

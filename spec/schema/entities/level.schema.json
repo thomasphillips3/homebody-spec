@@ -14,6 +14,16 @@
     "scale_confidence": {
       "type": "string",
       "enum": ["measured", "estimated"]
-    }
+    },
+    "import_attachment_id": { "type": ["string", "null"], "format": "uuid" },
+    "import_origin_m": {
+      "type": ["array", "null"],
+      "items": { "type": "number" },
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "import_scale_m_per_px": { "type": ["number", "null"] },
+    "import_pixel_width": { "type": ["integer", "null"] },
+    "import_pixel_height": { "type": ["integer", "null"] }
   }
 }

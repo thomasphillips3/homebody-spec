@@ -37,7 +37,7 @@ export interface Attachment {
     storage_path: string;
 }
 
-export type AttachmentKind = "photo" | "receipt" | "manual_pdf" | "usdz_mesh";
+export type AttachmentKind = "photo" | "receipt" | "manual_pdf" | "usdz_mesh" | "floor_plan_source";
 
 export interface Component {
     component_type: ComponentType;
@@ -122,12 +122,17 @@ export interface Home {
 }
 
 export interface Level {
-    elevation_offset_m: number;
-    home_id:            string;
-    id:                 string;
-    name:               string;
-    scale_confidence:   ScaleConfidence;
-    sort_order:         number;
+    elevation_offset_m:     number;
+    home_id:                string;
+    id:                     string;
+    import_attachment_id?:  null | string;
+    import_origin_m?:       [number, number, ...number[]] | null;
+    import_pixel_height?:   number | null;
+    import_pixel_width?:    number | null;
+    import_scale_m_per_px?: number | null;
+    name:                   string;
+    scale_confidence:       ScaleConfidence;
+    sort_order:             number;
 }
 
 export type ScaleConfidence = "measured" | "estimated";

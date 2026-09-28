@@ -1,5 +1,5 @@
 {
-  "schema_version": "0.2.0",
+  "schema_version": "0.3.0",
   "home": {
     "id": "00000000-0000-4000-8000-000000000001",
     "owner_user_id": "00000000-0000-4000-8000-000000000002",
@@ -20,7 +20,12 @@
       "name": "Main Floor",
       "sort_order": 0,
       "elevation_offset_m": 0.0,
-      "scale_confidence": "measured"
+      "scale_confidence": "measured",
+      "import_attachment_id": "00000000-0000-4000-8000-000000000074",
+      "import_origin_m": [0.5, 0.25],
+      "import_scale_m_per_px": 0.01,
+      "import_pixel_width": 2048,
+      "import_pixel_height": 1536
     },
     {
       "id": "00000000-0000-4000-8000-000000000011",
@@ -488,6 +493,17 @@
       "mime_type": "model/vnd.usdz+zip",
       "file_size_bytes": 10485760,
       "captured_at": "2026-01-05T14:00:00Z",
+      "linked_event_id": null,
+      "linked_component_id": null
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000074",
+      "home_id": "00000000-0000-4000-8000-000000000001",
+      "kind": "floor_plan_source",
+      "storage_path": "00000000-0000-4000-8000-000000000002/homes/00000000-0000-4000-8000-000000000001/attachments/00000000-0000-4000-8000-000000000074.pdf",
+      "mime_type": "application/pdf",
+      "file_size_bytes": 3145728,
+      "captured_at": null,
       "linked_event_id": null,
       "linked_component_id": null
     }
