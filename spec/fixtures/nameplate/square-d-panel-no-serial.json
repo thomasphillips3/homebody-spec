@@ -1,0 +1,13 @@
+{
+  "name": "square-d-panel-no-serial",
+  "lines": [
+    "SQUARE D",
+    "CATALOG NO. QO130M200PC",
+    "200 AMPS 120/240V"
+  ],
+  "expected": {
+    "make": "Square D",
+    "model": "QO130M200PC",
+    "serial": null
+  }
+}

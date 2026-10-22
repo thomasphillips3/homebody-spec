@@ -1,0 +1,715 @@
+{
+  "units": "meters, per-level plan space, Y-down",
+  "edge_tolerance_m": 1e-9,
+  "rooms": [
+    {
+      "id": "a0000000-0000-4000-8000-000000000001",
+      "ring": [
+        [
+          0,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000002",
+      "ring": [
+        [
+          4,
+          0
+        ],
+        [
+          8,
+          0
+        ],
+        [
+          8,
+          3
+        ],
+        [
+          4,
+          3
+        ]
+      ]
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000003",
+      "ring": [
+        [
+          10,
+          0
+        ],
+        [
+          14,
+          0
+        ],
+        [
+          14,
+          2
+        ],
+        [
+          12,
+          2
+        ],
+        [
+          12,
+          4
+        ],
+        [
+          10,
+          4
+        ]
+      ]
+    }
+  ],
+  "room_ids_cases": [
+    {
+      "name": "point inside A",
+      "geometry": {
+        "type": "point",
+        "coordinates": [
+          [
+            2,
+            1.5
+          ]
+        ]
+      },
+      "expected_room_ids": [
+        "a0000000-0000-4000-8000-000000000001"
+      ]
+    },
+    {
+      "name": "point on the shared edge x=4 returns both rooms",
+      "geometry": {
+        "type": "point",
+        "coordinates": [
+          [
+            4,
+            1.5
+          ]
+        ]
+      },
+      "expected_room_ids": [
+        "a0000000-0000-4000-8000-000000000001",
+        "a0000000-0000-4000-8000-000000000002"
+      ]
+    },
+    {
+      "name": "point outside every room",
+      "geometry": {
+        "type": "point",
+        "coordinates": [
+          [
+            20,
+            20
+          ]
+        ]
+      },
+      "expected_room_ids": []
+    },
+    {
+      "name": "run crossing A and B",
+      "geometry": {
+        "type": "polyline",
+        "coordinates": [
+          [
+            1,
+            1
+          ],
+          [
+            7,
+            2
+          ]
+        ]
+      },
+      "expected_room_ids": [
+        "a0000000-0000-4000-8000-000000000001",
+        "a0000000-0000-4000-8000-000000000002"
+      ]
+    },
+    {
+      "name": "run fully inside A",
+      "geometry": {
+        "type": "polyline",
+        "coordinates": [
+          [
+            1,
+            1
+          ],
+          [
+            3,
+            2
+          ]
+        ]
+      },
+      "expected_room_ids": [
+        "a0000000-0000-4000-8000-000000000001"
+      ]
+    },
+    {
+      "name": "run passes through two rooms with no vertex inside either",
+      "geometry": {
+        "type": "polyline",
+        "coordinates": [
+          [
+            -2,
+            1.5
+          ],
+          [
+            9,
+            1.5
+          ]
+        ]
+      },
+      "expected_room_ids": [
+        "a0000000-0000-4000-8000-000000000001",
+        "a0000000-0000-4000-8000-000000000002"
+      ]
+    },
+    {
+      "name": "run with one end outside and one inside",
+      "geometry": {
+        "type": "polyline",
+        "coordinates": [
+          [
+            -1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ]
+      },
+      "expected_room_ids": [
+        "a0000000-0000-4000-8000-000000000001"
+      ]
+    },
+    {
+      "name": "point inside B, whose ring has no repeated last vertex",
+      "geometry": {
+        "type": "point",
+        "coordinates": [
+          [
+            6,
+            1
+          ]
+        ]
+      },
+      "expected_room_ids": [
+        "a0000000-0000-4000-8000-000000000002"
+      ]
+    },
+    {
+      "name": "point on a shared vertex",
+      "geometry": {
+        "type": "point",
+        "coordinates": [
+          [
+            4,
+            3
+          ]
+        ]
+      },
+      "expected_room_ids": [
+        "a0000000-0000-4000-8000-000000000001",
+        "a0000000-0000-4000-8000-000000000002"
+      ]
+    },
+    {
+      "name": "point on a corner of A",
+      "geometry": {
+        "type": "point",
+        "coordinates": [
+          [
+            0,
+            0
+          ]
+        ]
+      },
+      "expected_room_ids": [
+        "a0000000-0000-4000-8000-000000000001"
+      ]
+    },
+    {
+      "name": "point inside the L-shaped room",
+      "geometry": {
+        "type": "point",
+        "coordinates": [
+          [
+            11,
+            3
+          ]
+        ]
+      },
+      "expected_room_ids": [
+        "a0000000-0000-4000-8000-000000000003"
+      ]
+    },
+    {
+      "name": "point in the notch of the L-shaped room",
+      "geometry": {
+        "type": "point",
+        "coordinates": [
+          [
+            13,
+            3
+          ]
+        ]
+      },
+      "expected_room_ids": []
+    },
+    {
+      "name": "run touching B at a single boundary vertex",
+      "geometry": {
+        "type": "polyline",
+        "coordinates": [
+          [
+            8,
+            1
+          ],
+          [
+            9,
+            1
+          ]
+        ]
+      },
+      "expected_room_ids": [
+        "a0000000-0000-4000-8000-000000000002"
+      ]
+    },
+    {
+      "name": "run crossing only the notch of the L-shaped room",
+      "geometry": {
+        "type": "polyline",
+        "coordinates": [
+          [
+            12.5,
+            2.5
+          ],
+          [
+            13.5,
+            3.5
+          ]
+        ]
+      },
+      "expected_room_ids": []
+    },
+    {
+      "name": "run starting inside the L-shaped room and leaving it",
+      "geometry": {
+        "type": "polyline",
+        "coordinates": [
+          [
+            11,
+            1
+          ],
+          [
+            13,
+            3
+          ]
+        ]
+      },
+      "expected_room_ids": [
+        "a0000000-0000-4000-8000-000000000003"
+      ]
+    }
+  ],
+  "hit_test_cases": [
+    {
+      "name": "point inside the 22 px radius",
+      "meters_per_pixel": 0.01,
+      "visible_categories": [
+        "plumbing"
+      ],
+      "components": [
+        {
+          "id": "c0000000-0000-4000-8000-000000000001",
+          "category": "plumbing",
+          "geometry": {
+            "type": "point",
+            "coordinates": [
+              [
+                5,
+                5
+              ]
+            ]
+          }
+        }
+      ],
+      "tap": [
+        5.2,
+        5
+      ],
+      "expected_id": "c0000000-0000-4000-8000-000000000001"
+    },
+    {
+      "name": "point outside the 22 px radius",
+      "meters_per_pixel": 0.01,
+      "visible_categories": [
+        "plumbing"
+      ],
+      "components": [
+        {
+          "id": "c0000000-0000-4000-8000-000000000001",
+          "category": "plumbing",
+          "geometry": {
+            "type": "point",
+            "coordinates": [
+              [
+                5,
+                5
+              ]
+            ]
+          }
+        }
+      ],
+      "tap": [
+        5.3,
+        5
+      ],
+      "expected_id": null
+    },
+    {
+      "name": "run inside the 12 px band",
+      "meters_per_pixel": 0.01,
+      "visible_categories": [
+        "plumbing"
+      ],
+      "components": [
+        {
+          "id": "c0000000-0000-4000-8000-000000000002",
+          "category": "plumbing",
+          "geometry": {
+            "type": "polyline",
+            "coordinates": [
+              [
+                0,
+                0
+              ],
+              [
+                10,
+                0
+              ]
+            ]
+          }
+        }
+      ],
+      "tap": [
+        3,
+        0.1
+      ],
+      "expected_id": "c0000000-0000-4000-8000-000000000002"
+    },
+    {
+      "name": "run outside the 12 px band",
+      "meters_per_pixel": 0.01,
+      "visible_categories": [
+        "plumbing"
+      ],
+      "components": [
+        {
+          "id": "c0000000-0000-4000-8000-000000000002",
+          "category": "plumbing",
+          "geometry": {
+            "type": "polyline",
+            "coordinates": [
+              [
+                0,
+                0
+              ],
+              [
+                10,
+                0
+              ]
+            ]
+          }
+        }
+      ],
+      "tap": [
+        3,
+        0.2
+      ],
+      "expected_id": null
+    },
+    {
+      "name": "marker beats a closer run line",
+      "meters_per_pixel": 0.01,
+      "visible_categories": [
+        "plumbing"
+      ],
+      "components": [
+        {
+          "id": "c0000000-0000-4000-8000-000000000002",
+          "category": "plumbing",
+          "geometry": {
+            "type": "polyline",
+            "coordinates": [
+              [
+                0,
+                0
+              ],
+              [
+                10,
+                0
+              ]
+            ]
+          }
+        },
+        {
+          "id": "c0000000-0000-4000-8000-000000000003",
+          "category": "plumbing",
+          "geometry": {
+            "type": "point",
+            "coordinates": [
+              [
+                3,
+                0.2
+              ]
+            ]
+          }
+        }
+      ],
+      "tap": [
+        3,
+        0.05
+      ],
+      "expected_id": "c0000000-0000-4000-8000-000000000003"
+    },
+    {
+      "name": "run midpoint marker is a 22 px target",
+      "meters_per_pixel": 0.01,
+      "visible_categories": [
+        "plumbing"
+      ],
+      "components": [
+        {
+          "id": "c0000000-0000-4000-8000-000000000002",
+          "category": "plumbing",
+          "geometry": {
+            "type": "polyline",
+            "coordinates": [
+              [
+                0,
+                0
+              ],
+              [
+                10,
+                0
+              ]
+            ]
+          }
+        }
+      ],
+      "tap": [
+        5,
+        0.2
+      ],
+      "expected_id": "c0000000-0000-4000-8000-000000000002"
+    },
+    {
+      "name": "marker of a run sits at the midpoint of its longest segment",
+      "meters_per_pixel": 0.01,
+      "visible_categories": [
+        "plumbing"
+      ],
+      "components": [
+        {
+          "id": "c0000000-0000-4000-8000-000000000002",
+          "category": "plumbing",
+          "geometry": {
+            "type": "polyline",
+            "coordinates": [
+              [
+                0,
+                0
+              ],
+              [
+                1,
+                0
+              ],
+              [
+                1,
+                6
+              ]
+            ]
+          }
+        }
+      ],
+      "tap": [
+        1.2,
+        3
+      ],
+      "expected_id": "c0000000-0000-4000-8000-000000000002"
+    },
+    {
+      "name": "hidden category is not hit",
+      "meters_per_pixel": 0.01,
+      "visible_categories": [
+        "electrical"
+      ],
+      "components": [
+        {
+          "id": "c0000000-0000-4000-8000-000000000001",
+          "category": "plumbing",
+          "geometry": {
+            "type": "point",
+            "coordinates": [
+              [
+                5,
+                5
+              ]
+            ]
+          }
+        }
+      ],
+      "tap": [
+        5,
+        5
+      ],
+      "expected_id": null
+    },
+    {
+      "name": "tie in distance is broken by lexicographic id",
+      "meters_per_pixel": 0.01,
+      "visible_categories": [
+        "plumbing"
+      ],
+      "components": [
+        {
+          "id": "c0000000-0000-4000-8000-000000000005",
+          "category": "plumbing",
+          "geometry": {
+            "type": "point",
+            "coordinates": [
+              [
+                1.875,
+                1
+              ]
+            ]
+          }
+        },
+        {
+          "id": "c0000000-0000-4000-8000-000000000004",
+          "category": "plumbing",
+          "geometry": {
+            "type": "point",
+            "coordinates": [
+              [
+                2.125,
+                1
+              ]
+            ]
+          }
+        }
+      ],
+      "tap": [
+        2,
+        1
+      ],
+      "expected_id": "c0000000-0000-4000-8000-000000000004"
+    },
+    {
+      "name": "smaller distance wins over a smaller id",
+      "meters_per_pixel": 0.01,
+      "visible_categories": [
+        "plumbing"
+      ],
+      "components": [
+        {
+          "id": "c0000000-0000-4000-8000-000000000004",
+          "category": "plumbing",
+          "geometry": {
+            "type": "point",
+            "coordinates": [
+              [
+                1.875,
+                1
+              ]
+            ]
+          }
+        },
+        {
+          "id": "c0000000-0000-4000-8000-000000000009",
+          "category": "plumbing",
+          "geometry": {
+            "type": "point",
+            "coordinates": [
+              [
+                2.0625,
+                1
+              ]
+            ]
+          }
+        }
+      ],
+      "tap": [
+        2,
+        1
+      ],
+      "expected_id": "c0000000-0000-4000-8000-000000000009"
+    },
+    {
+      "name": "component with null geometry is ignored",
+      "meters_per_pixel": 0.01,
+      "visible_categories": [
+        "plumbing"
+      ],
+      "components": [
+        {
+          "id": "c0000000-0000-4000-8000-000000000006",
+          "category": "plumbing",
+          "geometry": null
+        }
+      ],
+      "tap": [
+        0,
+        0
+      ],
+      "expected_id": null
+    },
+    {
+      "name": "tolerances scale with meters_per_pixel",
+      "meters_per_pixel": 0.02,
+      "visible_categories": [
+        "plumbing"
+      ],
+      "components": [
+        {
+          "id": "c0000000-0000-4000-8000-000000000001",
+          "category": "plumbing",
+          "geometry": {
+            "type": "point",
+            "coordinates": [
+              [
+                5,
+                5
+              ]
+            ]
+          }
+        }
+      ],
+      "tap": [
+        5.4,
+        5
+      ],
+      "expected_id": "c0000000-0000-4000-8000-000000000001"
+    }
+  ]
+}

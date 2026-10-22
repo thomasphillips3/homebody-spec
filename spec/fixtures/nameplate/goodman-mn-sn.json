@@ -1,0 +1,13 @@
+{
+  "name": "goodman-mn-sn",
+  "lines": [
+    "GOODMAN",
+    "M/N GMVC960803BN",
+    "S/N 1912345678"
+  ],
+  "expected": {
+    "make": "Goodman",
+    "model": "GMVC960803BN",
+    "serial": "1912345678"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "noisy-zero-for-o",
+  "lines": [
+    "RHEEM",
+    "MODEL N0. XE40M12EC45U1",
+    "SERIAL N0 RHLN0712345678"
+  ],
+  "expected": {
+    "make": "Rheem",
+    "model": "XE40M12EC45U1",
+    "serial": "RHLN0712345678"
+  }
+}

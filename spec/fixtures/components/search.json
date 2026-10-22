@@ -1,0 +1,97 @@
+{
+  "cases": [
+    {
+      "name": "empty query returns the layer types in document order with other last",
+      "query": "",
+      "category": "hvac",
+      "expected_ids": [
+        "hvac_furnace",
+        "hvac_ac_unit",
+        "hvac_heat_pump",
+        "hvac_mini_split",
+        "hvac_boiler",
+        "hvac_air_handler",
+        "hvac_ductwork",
+        "thermostat",
+        "hvac_filter",
+        "hvac_ventilation_fan",
+        "hvac_fireplace",
+        "other"
+      ]
+    },
+    {
+      "name": "furnace in hvac: label match first, alias match second",
+      "query": "furnace",
+      "category": "hvac",
+      "expected_ids": [
+        "hvac_furnace",
+        "hvac_filter"
+      ]
+    },
+    {
+      "name": "breaker in electrical: label word outranks an alias match",
+      "query": "breaker",
+      "category": "electrical",
+      "expected_ids": [
+        "gfci_receptacle",
+        "electrical_panel"
+      ]
+    },
+    {
+      "name": "water across all layers",
+      "query": "water",
+      "category": null,
+      "expected_ids": [
+        "main_water_shutoff",
+        "water_supply_line",
+        "water_treatment",
+        "water_heater",
+        "leak_sensor",
+        "toilet"
+      ]
+    },
+    {
+      "name": "no result",
+      "query": "zzzz",
+      "category": null,
+      "expected_ids": []
+    },
+    {
+      "name": "token prefix matching across label and alias words",
+      "query": "hot wat",
+      "category": null,
+      "expected_ids": [
+        "water_heater"
+      ]
+    },
+    {
+      "name": "query is trimmed and case-insensitive",
+      "query": "  FURNACE ",
+      "category": "hvac",
+      "expected_ids": [
+        "hvac_furnace",
+        "hvac_filter"
+      ]
+    },
+    {
+      "name": "other is always last when it matches",
+      "query": "o",
+      "category": "plumbing",
+      "expected_ids": [
+        "bathtub_shower",
+        "main_water_shutoff",
+        "gas_shutoff",
+        "water_treatment",
+        "other"
+      ]
+    },
+    {
+      "name": "other matches by alias",
+      "query": "misc",
+      "category": "exterior_and_site",
+      "expected_ids": [
+        "other"
+      ]
+    }
+  ]
+}

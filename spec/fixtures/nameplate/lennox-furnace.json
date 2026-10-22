@@ -1,0 +1,14 @@
+{
+  "name": "lennox-furnace",
+  "lines": [
+    "LENNOX",
+    "MODEL NO. SLP98UH090V48C",
+    "SERIAL NO. 5614C12345",
+    "HEATING INPUT 90000 BTUH"
+  ],
+  "expected": {
+    "make": "Lennox",
+    "model": "SLP98UH090V48C",
+    "serial": "5614C12345"
+  }
+}

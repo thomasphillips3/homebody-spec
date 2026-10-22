@@ -1,0 +1,42 @@
+{
+  "namespace": "5f3c9a2e-7b1d-4e68-9c04-2a8d6e1b7f35",
+  "name_format": "{home_id lowercase}:{category}",
+  "home_id": "10000000-0000-4000-8000-000000000001",
+  "systems": [
+    {
+      "category": "plumbing",
+      "name": "Plumbing",
+      "id": "b3cd52dd-b80e-516d-bb2b-9c64610d794d"
+    },
+    {
+      "category": "electrical",
+      "name": "Electrical",
+      "id": "3482be3f-aeb0-5a83-9290-bec28a4678d0"
+    },
+    {
+      "category": "hvac",
+      "name": "HVAC",
+      "id": "bce4323d-9653-5773-8d9c-7e2df290dc36"
+    },
+    {
+      "category": "roof_structure",
+      "name": "Roof and structure",
+      "id": "20595ab9-d5cd-57de-a840-895fe4e834da"
+    },
+    {
+      "category": "appliances_and_water_heater",
+      "name": "Appliances and water heater",
+      "id": "0405c45c-3f6d-5ef8-a353-00f964f83f97"
+    },
+    {
+      "category": "exterior_and_site",
+      "name": "Exterior and site",
+      "id": "743f68ab-f7c3-5aa3-b577-8286c09400c6"
+    },
+    {
+      "category": "low_voltage_and_smart_home",
+      "name": "Low-voltage and smart home",
+      "id": "100a4132-7877-5a61-8ba2-c563212e7435"
+    }
+  ]
+}

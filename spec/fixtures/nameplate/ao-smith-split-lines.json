@@ -1,0 +1,15 @@
+{
+  "name": "ao-smith-split-lines",
+  "lines": [
+    "A. O. SMITH",
+    "MODEL",
+    "ENT-40",
+    "SERIAL NUMBER",
+    "M17A012345"
+  ],
+  "expected": {
+    "make": "A. O. Smith",
+    "model": "ENT-40",
+    "serial": "M17A012345"
+  }
+}

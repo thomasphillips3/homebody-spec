@@ -1,0 +1,13 @@
+{
+  "name": "ecobee-thermostat",
+  "lines": [
+    "ecobee",
+    "Model: EB-STATE5-01",
+    "S/N: 411234567890"
+  ],
+  "expected": {
+    "make": "Ecobee",
+    "model": "EB-STATE5-01",
+    "serial": "411234567890"
+  }
+}

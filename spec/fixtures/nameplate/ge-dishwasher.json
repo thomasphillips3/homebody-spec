@@ -1,0 +1,13 @@
+{
+  "name": "ge-dishwasher",
+  "lines": [
+    "GE",
+    "MODEL GDT545PSJ0SS",
+    "SERIAL NO. FR123456H"
+  ],
+  "expected": {
+    "make": "GE",
+    "model": "GDT545PSJ0SS",
+    "serial": "FR123456H"
+  }
+}

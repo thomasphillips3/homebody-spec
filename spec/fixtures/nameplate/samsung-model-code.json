@@ -1,0 +1,13 @@
+{
+  "name": "samsung-model-code",
+  "lines": [
+    "SAMSUNG",
+    "Model Code : RF28R7351SR/AA",
+    "Serial No. : 0B1K12345678X"
+  ],
+  "expected": {
+    "make": "Samsung",
+    "model": "RF28R7351SR/AA",
+    "serial": "0B1K12345678X"
+  }
+}

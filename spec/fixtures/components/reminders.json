@@ -1,0 +1,136 @@
+{
+  "warranty_end_cases": [
+    {
+      "name": "Jan 31 plus 1 month clamps to Feb 28 in a common year",
+      "warranty_start": "2025-01-31",
+      "warranty_length_months": 1,
+      "expected": "2025-02-28"
+    },
+    {
+      "name": "Jan 31 plus 1 month clamps to Feb 29 in a leap year",
+      "warranty_start": "2024-01-31",
+      "warranty_length_months": 1,
+      "expected": "2024-02-29"
+    },
+    {
+      "name": "twelve months keeps the day",
+      "warranty_start": "2024-01-15",
+      "warranty_length_months": 12,
+      "expected": "2025-01-15"
+    },
+    {
+      "name": "seventy-two months",
+      "warranty_start": "2020-05-01",
+      "warranty_length_months": 72,
+      "expected": "2026-05-01"
+    },
+    {
+      "name": "crossing a year end",
+      "warranty_start": "2025-11-30",
+      "warranty_length_months": 3,
+      "expected": "2026-02-28"
+    },
+    {
+      "name": "Mar 31 plus 11 months",
+      "warranty_start": "2024-03-31",
+      "warranty_length_months": 11,
+      "expected": "2025-02-28"
+    },
+    {
+      "name": "zero months returns the start date",
+      "warranty_start": "2024-06-10",
+      "warranty_length_months": 0,
+      "expected": "2024-06-10"
+    },
+    {
+      "name": "null start",
+      "warranty_start": null,
+      "warranty_length_months": 12,
+      "expected": null
+    },
+    {
+      "name": "null length",
+      "warranty_start": "2024-06-10",
+      "warranty_length_months": null,
+      "expected": null
+    },
+    {
+      "name": "both null",
+      "warranty_start": null,
+      "warranty_length_months": null,
+      "expected": null
+    }
+  ],
+  "next_service_due_cases": [
+    {
+      "name": "uses last_serviced_at over install_date",
+      "install_date": "2020-01-01",
+      "last_serviced_at": "2025-06-01",
+      "service_interval_days": 180,
+      "expected": "2025-11-28"
+    },
+    {
+      "name": "falls back to install_date",
+      "install_date": "2020-05-01",
+      "last_serviced_at": null,
+      "service_interval_days": 365,
+      "expected": "2021-05-01"
+    },
+    {
+      "name": "one year from last service",
+      "install_date": null,
+      "last_serviced_at": "2025-11-01",
+      "service_interval_days": 365,
+      "expected": "2026-11-01"
+    },
+    {
+      "name": "interval across a leap day",
+      "install_date": null,
+      "last_serviced_at": "2024-01-01",
+      "service_interval_days": 366,
+      "expected": "2025-01-01"
+    },
+    {
+      "name": "crossing a year end",
+      "install_date": null,
+      "last_serviced_at": "2025-12-20",
+      "service_interval_days": 30,
+      "expected": "2026-01-19"
+    },
+    {
+      "name": "null interval",
+      "install_date": "2020-05-01",
+      "last_serviced_at": null,
+      "service_interval_days": null,
+      "expected": null
+    },
+    {
+      "name": "interval of zero is treated as null",
+      "install_date": "2020-05-01",
+      "last_serviced_at": null,
+      "service_interval_days": 0,
+      "expected": null
+    },
+    {
+      "name": "negative interval is treated as null",
+      "install_date": "2020-05-01",
+      "last_serviced_at": null,
+      "service_interval_days": -5,
+      "expected": null
+    },
+    {
+      "name": "non-integer interval is treated as null",
+      "install_date": "2020-05-01",
+      "last_serviced_at": null,
+      "service_interval_days": 7.5,
+      "expected": null
+    },
+    {
+      "name": "both dates null",
+      "install_date": null,
+      "last_serviced_at": null,
+      "service_interval_days": 365,
+      "expected": null
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "carrier-condenser-inline",
+  "lines": [
+    "CARRIER",
+    "MODEL: 24ACC636A003  SERIAL: 3919E12345"
+  ],
+  "expected": {
+    "make": "Carrier",
+    "model": "24ACC636A003",
+    "serial": "3919E12345"
+  }
+}

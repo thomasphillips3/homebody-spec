@@ -1,0 +1,9 @@
+{
+  "name": "empty",
+  "lines": [],
+  "expected": {
+    "make": null,
+    "model": null,
+    "serial": null
+  }
+}

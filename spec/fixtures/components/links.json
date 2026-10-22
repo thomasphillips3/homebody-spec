@@ -1,0 +1,275 @@
+{
+  "level_ids": [
+    "e0000000-0000-4000-8000-000000000001",
+    "e0000000-0000-4000-8000-000000000002",
+    "e0000000-0000-4000-8000-000000000003"
+  ],
+  "components": [
+    {
+      "id": "d0000000-0000-4000-8000-000000000001",
+      "level_id": "e0000000-0000-4000-8000-000000000001",
+      "category": "plumbing",
+      "linked_component_id": "d0000000-0000-4000-8000-000000000002",
+      "deleted": false,
+      "name": "Riser lower"
+    },
+    {
+      "id": "d0000000-0000-4000-8000-000000000002",
+      "level_id": "e0000000-0000-4000-8000-000000000002",
+      "category": "plumbing",
+      "linked_component_id": null,
+      "deleted": false,
+      "name": "Riser middle"
+    },
+    {
+      "id": "d0000000-0000-4000-8000-000000000003",
+      "level_id": "e0000000-0000-4000-8000-000000000003",
+      "category": "plumbing",
+      "linked_component_id": "d0000000-0000-4000-8000-000000000002",
+      "deleted": false,
+      "name": "Riser upper"
+    },
+    {
+      "id": "d0000000-0000-4000-8000-000000000004",
+      "level_id": "e0000000-0000-4000-8000-000000000001",
+      "category": "plumbing",
+      "linked_component_id": null,
+      "deleted": false,
+      "name": "Hose bib"
+    },
+    {
+      "id": "d0000000-0000-4000-8000-000000000005",
+      "level_id": "e0000000-0000-4000-8000-000000000002",
+      "category": "plumbing",
+      "linked_component_id": null,
+      "deleted": true,
+      "name": "Removed valve"
+    },
+    {
+      "id": "d0000000-0000-4000-8000-000000000006",
+      "level_id": "e0000000-0000-4000-8000-000000000003",
+      "category": "plumbing",
+      "linked_component_id": "d0000000-0000-4000-8000-000000000005",
+      "deleted": false,
+      "name": "Shutoff linked to a removed valve"
+    },
+    {
+      "id": "d0000000-0000-4000-8000-000000000007",
+      "level_id": "e0000000-0000-4000-8000-000000000001",
+      "category": "electrical",
+      "linked_component_id": null,
+      "deleted": false,
+      "name": "Panel L1"
+    },
+    {
+      "id": "d0000000-0000-4000-8000-000000000008",
+      "level_id": "e0000000-0000-4000-8000-000000000002",
+      "category": "electrical",
+      "linked_component_id": null,
+      "deleted": false,
+      "name": "Panel L2"
+    },
+    {
+      "id": "d0000000-0000-4000-8000-000000000009",
+      "level_id": "e0000000-0000-4000-8000-000000000001",
+      "category": "hvac",
+      "linked_component_id": null,
+      "deleted": false,
+      "name": "Furnace"
+    }
+  ],
+  "group_cases": [
+    {
+      "component_id": "d0000000-0000-4000-8000-000000000001",
+      "expected_ids": [
+        "d0000000-0000-4000-8000-000000000001",
+        "d0000000-0000-4000-8000-000000000002",
+        "d0000000-0000-4000-8000-000000000003"
+      ]
+    },
+    {
+      "component_id": "d0000000-0000-4000-8000-000000000002",
+      "expected_ids": [
+        "d0000000-0000-4000-8000-000000000001",
+        "d0000000-0000-4000-8000-000000000002",
+        "d0000000-0000-4000-8000-000000000003"
+      ]
+    },
+    {
+      "component_id": "d0000000-0000-4000-8000-000000000003",
+      "expected_ids": [
+        "d0000000-0000-4000-8000-000000000001",
+        "d0000000-0000-4000-8000-000000000002",
+        "d0000000-0000-4000-8000-000000000003"
+      ]
+    },
+    {
+      "component_id": "d0000000-0000-4000-8000-000000000004",
+      "expected_ids": [
+        "d0000000-0000-4000-8000-000000000004"
+      ]
+    },
+    {
+      "component_id": "d0000000-0000-4000-8000-000000000006",
+      "expected_ids": [
+        "d0000000-0000-4000-8000-000000000006"
+      ]
+    },
+    {
+      "component_id": "d0000000-0000-4000-8000-000000000007",
+      "expected_ids": [
+        "d0000000-0000-4000-8000-000000000007"
+      ]
+    }
+  ],
+  "candidate_cases": [
+    {
+      "name": "unlinked source sees every same-layer component on other levels",
+      "source_id": "d0000000-0000-4000-8000-000000000004",
+      "expected": {
+        "disabled_reason": null,
+        "candidates": [
+          {
+            "id": "d0000000-0000-4000-8000-000000000002",
+            "in_other_group": true
+          },
+          {
+            "id": "d0000000-0000-4000-8000-000000000003",
+            "in_other_group": true
+          },
+          {
+            "id": "d0000000-0000-4000-8000-000000000006",
+            "in_other_group": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "group members are listed but flagged as already in the group",
+      "source_id": "d0000000-0000-4000-8000-000000000001",
+      "expected": {
+        "disabled_reason": null,
+        "candidates": [
+          {
+            "id": "d0000000-0000-4000-8000-000000000002",
+            "in_other_group": false
+          },
+          {
+            "id": "d0000000-0000-4000-8000-000000000003",
+            "in_other_group": false
+          },
+          {
+            "id": "d0000000-0000-4000-8000-000000000006",
+            "in_other_group": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "other layers are excluded",
+      "source_id": "d0000000-0000-4000-8000-000000000007",
+      "expected": {
+        "disabled_reason": null,
+        "candidates": [
+          {
+            "id": "d0000000-0000-4000-8000-000000000008",
+            "in_other_group": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "no same-layer component on another level",
+      "source_id": "d0000000-0000-4000-8000-000000000009",
+      "expected": {
+        "disabled_reason": "no_candidates",
+        "candidates": []
+      }
+    },
+    {
+      "name": "a home with one level cannot link across levels",
+      "level_ids": [
+        "e0000000-0000-4000-8000-000000000001"
+      ],
+      "components": [
+        {
+          "id": "d0000000-0000-4000-8000-000000000001",
+          "level_id": "e0000000-0000-4000-8000-000000000001",
+          "category": "plumbing",
+          "linked_component_id": null,
+          "deleted": false,
+          "name": "Hose bib"
+        },
+        {
+          "id": "d0000000-0000-4000-8000-000000000002",
+          "level_id": "e0000000-0000-4000-8000-000000000001",
+          "category": "plumbing",
+          "linked_component_id": null,
+          "deleted": false,
+          "name": "Meter"
+        }
+      ],
+      "source_id": "d0000000-0000-4000-8000-000000000001",
+      "expected": {
+        "disabled_reason": "single_level",
+        "candidates": []
+      }
+    }
+  ],
+  "link_cases": [
+    {
+      "name": "attach an unlinked source to a target",
+      "source_id": "d0000000-0000-4000-8000-000000000004",
+      "target_id": "d0000000-0000-4000-8000-000000000002",
+      "expected": {
+        "set_pointer_on": "d0000000-0000-4000-8000-000000000004",
+        "to": "d0000000-0000-4000-8000-000000000002"
+      }
+    },
+    {
+      "name": "attach the root of the source group, not the source itself",
+      "source_id": "d0000000-0000-4000-8000-000000000001",
+      "target_id": "d0000000-0000-4000-8000-000000000006",
+      "expected": {
+        "set_pointer_on": "d0000000-0000-4000-8000-000000000002",
+        "to": "d0000000-0000-4000-8000-000000000006"
+      }
+    },
+    {
+      "name": "same group returns null",
+      "source_id": "d0000000-0000-4000-8000-000000000001",
+      "target_id": "d0000000-0000-4000-8000-000000000003",
+      "expected": null
+    },
+    {
+      "name": "linking a component to itself returns null",
+      "source_id": "d0000000-0000-4000-8000-000000000004",
+      "target_id": "d0000000-0000-4000-8000-000000000004",
+      "expected": null
+    }
+  ],
+  "unlink_cases": [
+    {
+      "name": "pointer is on the first side",
+      "a_id": "d0000000-0000-4000-8000-000000000001",
+      "b_id": "d0000000-0000-4000-8000-000000000002",
+      "expected": {
+        "clear_pointer_on": "d0000000-0000-4000-8000-000000000001"
+      }
+    },
+    {
+      "name": "pointer is on the second side",
+      "a_id": "d0000000-0000-4000-8000-000000000002",
+      "b_id": "d0000000-0000-4000-8000-000000000003",
+      "expected": {
+        "clear_pointer_on": "d0000000-0000-4000-8000-000000000003"
+      }
+    },
+    {
+      "name": "components that are not directly linked",
+      "a_id": "d0000000-0000-4000-8000-000000000001",
+      "b_id": "d0000000-0000-4000-8000-000000000003",
+      "expected": null
+    }
+  ]
+}

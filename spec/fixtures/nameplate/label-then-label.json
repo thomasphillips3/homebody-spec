@@ -1,0 +1,13 @@
+{
+  "name": "label-then-label",
+  "lines": [
+    "LENNOX",
+    "MODEL NO.",
+    "SERIAL NO. 5614C12345"
+  ],
+  "expected": {
+    "make": "Lennox",
+    "model": null,
+    "serial": "5614C12345"
+  }
+}

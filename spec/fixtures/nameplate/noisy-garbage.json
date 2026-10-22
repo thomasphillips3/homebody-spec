@@ -1,0 +1,13 @@
+{
+  "name": "noisy-garbage",
+  "lines": [
+    "lorem ipsum",
+    "FILTER 16x25x1",
+    "MADE IN USA"
+  ],
+  "expected": {
+    "make": null,
+    "model": null,
+    "serial": null
+  }
+}

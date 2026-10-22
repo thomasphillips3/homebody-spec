@@ -1,0 +1,13 @@
+{
+  "name": "whirlpool-bilingual",
+  "lines": [
+    "WHIRLPOOL",
+    "MODEL/MODÈLE WRF535SWHZ00",
+    "SERIAL/SÉRIE XJ4512345"
+  ],
+  "expected": {
+    "make": "Whirlpool",
+    "model": "WRF535SWHZ00",
+    "serial": "XJ4512345"
+  }
+}

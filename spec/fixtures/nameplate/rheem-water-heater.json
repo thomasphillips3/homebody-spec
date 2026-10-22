@@ -1,0 +1,14 @@
+{
+  "name": "rheem-water-heater",
+  "lines": [
+    "RHEEM",
+    "MODEL NO. XE50T10HD50U0",
+    "SERIAL NO. RHLN0412345678",
+    "CAPACITY 50 GAL"
+  ],
+  "expected": {
+    "make": "Rheem",
+    "model": "XE50T10HD50U0",
+    "serial": "RHLN0412345678"
+  }
+}

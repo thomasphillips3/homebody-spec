@@ -1,0 +1,15 @@
+{
+  "name": "bradford-white-next-line",
+  "lines": [
+    "BRADFORD WHITE",
+    "MODEL NUMBER",
+    "RG2PV50H6N",
+    "SERIAL NUMBER",
+    "ZB1234567"
+  ],
+  "expected": {
+    "make": "Bradford White",
+    "model": "RG2PV50H6N",
+    "serial": "ZB1234567"
+  }
+}

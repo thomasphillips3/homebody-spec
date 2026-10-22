@@ -1,0 +1,13 @@
+{
+  "name": "trane-ser-no",
+  "lines": [
+    "TRANE",
+    "MODEL 4TWR4036G1000A",
+    "SER NO. 2213ABC123"
+  ],
+  "expected": {
+    "make": "Trane",
+    "model": "4TWR4036G1000A",
+    "serial": "2213ABC123"
+  }
+}

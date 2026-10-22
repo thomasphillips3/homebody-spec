@@ -1,0 +1,11 @@
+{
+  "name": "brand-only",
+  "lines": [
+    "NAVIEN"
+  ],
+  "expected": {
+    "make": "Navien",
+    "model": null,
+    "serial": null
+  }
+}

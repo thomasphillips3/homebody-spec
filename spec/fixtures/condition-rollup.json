@@ -1,0 +1,785 @@
+{
+  "severity": {
+    "good": 0,
+    "fair": 1,
+    "needs_attention": 2,
+    "needs_replacement": 3,
+    "unknown": null
+  },
+  "cases": [
+    {
+      "name": "empty home",
+      "components": [],
+      "expected": {
+        "layers": {
+          "plumbing": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 0
+          },
+          "electrical": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 0
+          },
+          "hvac": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 0
+          },
+          "roof_structure": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 0
+          },
+          "appliances_and_water_heater": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 0
+          },
+          "exterior_and_site": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 0
+          },
+          "low_voltage_and_smart_home": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 0
+          }
+        },
+        "house": null
+      }
+    },
+    {
+      "name": "all unknown",
+      "components": [
+        {
+          "category": "plumbing",
+          "condition": "unknown",
+          "deleted": false
+        },
+        {
+          "category": "plumbing",
+          "condition": "unknown",
+          "deleted": false
+        },
+        {
+          "category": "hvac",
+          "condition": "unknown",
+          "deleted": false
+        }
+      ],
+      "expected": {
+        "layers": {
+          "plumbing": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 2
+          },
+          "electrical": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 0
+          },
+          "hvac": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 1
+          },
+          "roof_structure": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 0
+          },
+          "appliances_and_water_heater": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 0
+          },
+          "exterior_and_site": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 0
+          },
+          "low_voltage_and_smart_home": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 0
+          }
+        },
+        "house": null
+      }
+    },
+    {
+      "name": "one needs_replacement in one layer only",
+      "components": [
+        {
+          "category": "plumbing",
+          "condition": "good",
+          "deleted": false
+        },
+        {
+          "category": "plumbing",
+          "condition": "needs_replacement",
+          "deleted": false
+        },
+        {
+          "category": "electrical",
+          "condition": "good",
+          "deleted": false
+        }
+      ],
+      "expected": {
+        "layers": {
+          "plumbing": {
+            "condition": "needs_replacement",
+            "counts": {
+              "good": 1,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 1
+            },
+            "total": 2
+          },
+          "electrical": {
+            "condition": "good",
+            "counts": {
+              "good": 1,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 1
+          },
+          "hvac": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 0
+          },
+          "roof_structure": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 0
+          },
+          "appliances_and_water_heater": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 0
+          },
+          "exterior_and_site": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 0
+          },
+          "low_voltage_and_smart_home": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 0
+          }
+        },
+        "house": "needs_replacement"
+      }
+    },
+    {
+      "name": "deleted component is ignored",
+      "components": [
+        {
+          "category": "hvac",
+          "condition": "needs_replacement",
+          "deleted": true
+        },
+        {
+          "category": "hvac",
+          "condition": "fair",
+          "deleted": false
+        },
+        {
+          "category": "plumbing",
+          "condition": "needs_attention",
+          "deleted": true
+        }
+      ],
+      "expected": {
+        "layers": {
+          "plumbing": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 0
+          },
+          "electrical": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 0
+          },
+          "hvac": {
+            "condition": "fair",
+            "counts": {
+              "good": 0,
+              "fair": 1,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 1
+          },
+          "roof_structure": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 0
+          },
+          "appliances_and_water_heater": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 0
+          },
+          "exterior_and_site": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 0
+          },
+          "low_voltage_and_smart_home": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 0
+          }
+        },
+        "house": "fair"
+      }
+    },
+    {
+      "name": "a layer with only unknown",
+      "components": [
+        {
+          "category": "roof_structure",
+          "condition": "unknown",
+          "deleted": false
+        },
+        {
+          "category": "appliances_and_water_heater",
+          "condition": "good",
+          "deleted": false
+        }
+      ],
+      "expected": {
+        "layers": {
+          "plumbing": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 0
+          },
+          "electrical": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 0
+          },
+          "hvac": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 0
+          },
+          "roof_structure": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 1
+          },
+          "appliances_and_water_heater": {
+            "condition": "good",
+            "counts": {
+              "good": 1,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 1
+          },
+          "exterior_and_site": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 0
+          },
+          "low_voltage_and_smart_home": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 0
+          }
+        },
+        "house": "good"
+      }
+    },
+    {
+      "name": "mixed severities in one layer",
+      "components": [
+        {
+          "category": "electrical",
+          "condition": "good",
+          "deleted": false
+        },
+        {
+          "category": "electrical",
+          "condition": "fair",
+          "deleted": false
+        },
+        {
+          "category": "electrical",
+          "condition": "needs_attention",
+          "deleted": false
+        },
+        {
+          "category": "electrical",
+          "condition": "unknown",
+          "deleted": false
+        },
+        {
+          "category": "electrical",
+          "condition": "good",
+          "deleted": false
+        }
+      ],
+      "expected": {
+        "layers": {
+          "plumbing": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 0
+          },
+          "electrical": {
+            "condition": "needs_attention",
+            "counts": {
+              "good": 2,
+              "fair": 1,
+              "needs_attention": 1,
+              "needs_replacement": 0
+            },
+            "total": 5
+          },
+          "hvac": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 0
+          },
+          "roof_structure": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 0
+          },
+          "appliances_and_water_heater": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 0
+          },
+          "exterior_and_site": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 0
+          },
+          "low_voltage_and_smart_home": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 0
+          }
+        },
+        "house": "needs_attention"
+      }
+    },
+    {
+      "name": "every layer populated and house equals the worst layer",
+      "components": [
+        {
+          "category": "plumbing",
+          "condition": "good",
+          "deleted": false
+        },
+        {
+          "category": "electrical",
+          "condition": "fair",
+          "deleted": false
+        },
+        {
+          "category": "hvac",
+          "condition": "needs_attention",
+          "deleted": false
+        },
+        {
+          "category": "roof_structure",
+          "condition": "good",
+          "deleted": false
+        },
+        {
+          "category": "roof_structure",
+          "condition": "unknown",
+          "deleted": false
+        },
+        {
+          "category": "appliances_and_water_heater",
+          "condition": "needs_replacement",
+          "deleted": false
+        },
+        {
+          "category": "exterior_and_site",
+          "condition": "fair",
+          "deleted": false
+        },
+        {
+          "category": "low_voltage_and_smart_home",
+          "condition": "good",
+          "deleted": false
+        }
+      ],
+      "expected": {
+        "layers": {
+          "plumbing": {
+            "condition": "good",
+            "counts": {
+              "good": 1,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 1
+          },
+          "electrical": {
+            "condition": "fair",
+            "counts": {
+              "good": 0,
+              "fair": 1,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 1
+          },
+          "hvac": {
+            "condition": "needs_attention",
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 1,
+              "needs_replacement": 0
+            },
+            "total": 1
+          },
+          "roof_structure": {
+            "condition": "good",
+            "counts": {
+              "good": 1,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 2
+          },
+          "appliances_and_water_heater": {
+            "condition": "needs_replacement",
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 1
+            },
+            "total": 1
+          },
+          "exterior_and_site": {
+            "condition": "fair",
+            "counts": {
+              "good": 0,
+              "fair": 1,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 1
+          },
+          "low_voltage_and_smart_home": {
+            "condition": "good",
+            "counts": {
+              "good": 1,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 1
+          }
+        },
+        "house": "needs_replacement"
+      }
+    },
+    {
+      "name": "a tombstoned unknown does not count toward the total",
+      "components": [
+        {
+          "category": "exterior_and_site",
+          "condition": "unknown",
+          "deleted": true
+        },
+        {
+          "category": "exterior_and_site",
+          "condition": "fair",
+          "deleted": false
+        },
+        {
+          "category": "exterior_and_site",
+          "condition": "unknown",
+          "deleted": false
+        }
+      ],
+      "expected": {
+        "layers": {
+          "plumbing": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 0
+          },
+          "electrical": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 0
+          },
+          "hvac": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 0
+          },
+          "roof_structure": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 0
+          },
+          "appliances_and_water_heater": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 0
+          },
+          "exterior_and_site": {
+            "condition": "fair",
+            "counts": {
+              "good": 0,
+              "fair": 1,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 2
+          },
+          "low_voltage_and_smart_home": {
+            "condition": null,
+            "counts": {
+              "good": 0,
+              "fair": 0,
+              "needs_attention": 0,
+              "needs_replacement": 0
+            },
+            "total": 0
+          }
+        },
+        "house": "fair"
+      }
+    }
+  ]
+}
