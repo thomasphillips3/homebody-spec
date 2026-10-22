@@ -1,0 +1,1641 @@
+{
+  "version": "0.6.0",
+  "description": "Maintenance schedule goldens: interval resolution, baseline, next due, statuses, warranty end clamping and status, and the five Due tab sections with a total sort order. Taxonomy defaults are explicit inputs. Hand-derived from spec/docs/maintenance-schedule.md.",
+  "interval_cases": [
+    {
+      "name": "component-interval-wins-over-home-and-taxonomy",
+      "component_interval": 90,
+      "home_defaults": {
+        "hvac_furnace": 180
+      },
+      "taxonomy_defaults": {
+        "hvac_furnace": 365
+      },
+      "component_type": "hvac_furnace",
+      "expected_days": 90,
+      "expected_source": "component"
+    },
+    {
+      "name": "home-default-wins-over-taxonomy",
+      "component_interval": null,
+      "home_defaults": {
+        "hvac_furnace": 180
+      },
+      "taxonomy_defaults": {
+        "hvac_furnace": 365
+      },
+      "component_type": "hvac_furnace",
+      "expected_days": 180,
+      "expected_source": "home"
+    },
+    {
+      "name": "taxonomy-default-used-when-nothing-else",
+      "component_interval": null,
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365
+      },
+      "component_type": "hvac_furnace",
+      "expected_days": 365,
+      "expected_source": "taxonomy"
+    },
+    {
+      "name": "no-source-means-none",
+      "component_interval": null,
+      "home_defaults": {},
+      "taxonomy_defaults": {},
+      "component_type": "hvac_furnace",
+      "expected_days": null,
+      "expected_source": "none"
+    },
+    {
+      "name": "component-interval-zero-falls-through-to-home",
+      "component_interval": 0,
+      "home_defaults": {
+        "hvac_furnace": 180
+      },
+      "taxonomy_defaults": {
+        "hvac_furnace": 365
+      },
+      "component_type": "hvac_furnace",
+      "expected_days": 180,
+      "expected_source": "home"
+    },
+    {
+      "name": "component-interval-negative-falls-through-to-home",
+      "component_interval": -5,
+      "home_defaults": {
+        "hvac_furnace": 180
+      },
+      "taxonomy_defaults": {
+        "hvac_furnace": 365
+      },
+      "component_type": "hvac_furnace",
+      "expected_days": 180,
+      "expected_source": "home"
+    },
+    {
+      "name": "component-interval-fractional-falls-through-to-home",
+      "component_interval": 7.5,
+      "home_defaults": {
+        "hvac_furnace": 180
+      },
+      "taxonomy_defaults": {
+        "hvac_furnace": 365
+      },
+      "component_type": "hvac_furnace",
+      "expected_days": 180,
+      "expected_source": "home"
+    },
+    {
+      "name": "component-interval-string-falls-through-to-home",
+      "component_interval": "30",
+      "home_defaults": {
+        "hvac_furnace": 180
+      },
+      "taxonomy_defaults": {
+        "hvac_furnace": 365
+      },
+      "component_type": "hvac_furnace",
+      "expected_days": 180,
+      "expected_source": "home"
+    },
+    {
+      "name": "component-interval-of-one-is-valid",
+      "component_interval": 1,
+      "home_defaults": {
+        "hvac_furnace": 180
+      },
+      "taxonomy_defaults": {
+        "hvac_furnace": 365
+      },
+      "component_type": "hvac_furnace",
+      "expected_days": 1,
+      "expected_source": "component"
+    },
+    {
+      "name": "home-default-zero-falls-through-to-taxonomy",
+      "component_interval": null,
+      "home_defaults": {
+        "hvac_furnace": 0
+      },
+      "taxonomy_defaults": {
+        "hvac_furnace": 365
+      },
+      "component_type": "hvac_furnace",
+      "expected_days": 365,
+      "expected_source": "taxonomy"
+    },
+    {
+      "name": "home-default-fractional-falls-through-to-taxonomy",
+      "component_interval": null,
+      "home_defaults": {
+        "hvac_furnace": 30.5
+      },
+      "taxonomy_defaults": {
+        "hvac_furnace": 365
+      },
+      "component_type": "hvac_furnace",
+      "expected_days": 365,
+      "expected_source": "taxonomy"
+    },
+    {
+      "name": "home-default-string-falls-through-to-taxonomy",
+      "component_interval": null,
+      "home_defaults": {
+        "hvac_furnace": "180"
+      },
+      "taxonomy_defaults": {
+        "hvac_furnace": 365
+      },
+      "component_type": "hvac_furnace",
+      "expected_days": 365,
+      "expected_source": "taxonomy"
+    },
+    {
+      "name": "home-default-for-another-type-is-ignored",
+      "component_interval": null,
+      "home_defaults": {
+        "water_heater": 90
+      },
+      "taxonomy_defaults": {
+        "hvac_furnace": 365
+      },
+      "component_type": "hvac_furnace",
+      "expected_days": 365,
+      "expected_source": "taxonomy"
+    },
+    {
+      "name": "null-taxonomy-default-means-none",
+      "component_interval": null,
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": null
+      },
+      "component_type": "hvac_furnace",
+      "expected_days": null,
+      "expected_source": "none"
+    },
+    {
+      "name": "component-interval-falls-through-all-the-way-to-none",
+      "component_interval": 0,
+      "home_defaults": {
+        "hvac_furnace": -1
+      },
+      "taxonomy_defaults": {
+        "hvac_furnace": 0
+      },
+      "component_type": "hvac_furnace",
+      "expected_days": null,
+      "expected_source": "none"
+    }
+  ],
+  "schedule_cases": [
+    {
+      "name": "last-serviced-is-preferred-over-install-date",
+      "today": "2026-10-22",
+      "component": {
+        "id": "f1000000-0000-4000-8000-000000000001",
+        "name": "Furnace",
+        "component_type": "hvac_furnace",
+        "service_interval_days": 365,
+        "last_serviced_at": "2026-01-10",
+        "install_date": "2020-05-05",
+        "warranty_start": null,
+        "warranty_length_months": null,
+        "deleted": false
+      },
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365,
+        "sump_pump": 365
+      },
+      "expected": {
+        "interval_days": 365,
+        "interval_source": "component",
+        "baseline": "2026-01-10",
+        "baseline_source": "last_serviced",
+        "next_due": "2027-01-10",
+        "days_until_due": 80,
+        "service_status": "scheduled",
+        "needs_baseline_reason": null,
+        "warranty_end": null,
+        "warranty_days_until": null,
+        "warranty_status": "none"
+      }
+    },
+    {
+      "name": "install-date-is-used-when-never-serviced",
+      "today": "2026-10-22",
+      "component": {
+        "id": "f1000000-0000-4000-8000-000000000001",
+        "name": "Furnace",
+        "component_type": "hvac_furnace",
+        "service_interval_days": 365,
+        "last_serviced_at": null,
+        "install_date": "2025-12-01",
+        "warranty_start": null,
+        "warranty_length_months": null,
+        "deleted": false
+      },
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365,
+        "sump_pump": 365
+      },
+      "expected": {
+        "interval_days": 365,
+        "interval_source": "component",
+        "baseline": "2025-12-01",
+        "baseline_source": "install",
+        "next_due": "2026-12-01",
+        "days_until_due": 40,
+        "service_status": "scheduled",
+        "needs_baseline_reason": null,
+        "warranty_end": null,
+        "warranty_days_until": null,
+        "warranty_status": "none"
+      }
+    },
+    {
+      "name": "overdue-by-one-day",
+      "today": "2026-10-22",
+      "component": {
+        "id": "f1000000-0000-4000-8000-000000000001",
+        "name": "Furnace",
+        "component_type": "hvac_furnace",
+        "service_interval_days": 30,
+        "last_serviced_at": "2026-09-21",
+        "install_date": null,
+        "warranty_start": null,
+        "warranty_length_months": null,
+        "deleted": false
+      },
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365,
+        "sump_pump": 365
+      },
+      "expected": {
+        "interval_days": 30,
+        "interval_source": "component",
+        "baseline": "2026-09-21",
+        "baseline_source": "last_serviced",
+        "next_due": "2026-10-21",
+        "days_until_due": -1,
+        "service_status": "overdue",
+        "needs_baseline_reason": null,
+        "warranty_end": null,
+        "warranty_days_until": null,
+        "warranty_status": "none"
+      }
+    },
+    {
+      "name": "due-today",
+      "today": "2026-10-22",
+      "component": {
+        "id": "f1000000-0000-4000-8000-000000000001",
+        "name": "Furnace",
+        "component_type": "hvac_furnace",
+        "service_interval_days": 30,
+        "last_serviced_at": "2026-09-22",
+        "install_date": null,
+        "warranty_start": null,
+        "warranty_length_months": null,
+        "deleted": false
+      },
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365,
+        "sump_pump": 365
+      },
+      "expected": {
+        "interval_days": 30,
+        "interval_source": "component",
+        "baseline": "2026-09-22",
+        "baseline_source": "last_serviced",
+        "next_due": "2026-10-22",
+        "days_until_due": 0,
+        "service_status": "due_today",
+        "needs_baseline_reason": null,
+        "warranty_end": null,
+        "warranty_days_until": null,
+        "warranty_status": "none"
+      }
+    },
+    {
+      "name": "due-in-one-day",
+      "today": "2026-10-22",
+      "component": {
+        "id": "f1000000-0000-4000-8000-000000000001",
+        "name": "Furnace",
+        "component_type": "hvac_furnace",
+        "service_interval_days": 30,
+        "last_serviced_at": "2026-09-23",
+        "install_date": null,
+        "warranty_start": null,
+        "warranty_length_months": null,
+        "deleted": false
+      },
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365,
+        "sump_pump": 365
+      },
+      "expected": {
+        "interval_days": 30,
+        "interval_source": "component",
+        "baseline": "2026-09-23",
+        "baseline_source": "last_serviced",
+        "next_due": "2026-10-23",
+        "days_until_due": 1,
+        "service_status": "due_soon",
+        "needs_baseline_reason": null,
+        "warranty_end": null,
+        "warranty_days_until": null,
+        "warranty_status": "none"
+      }
+    },
+    {
+      "name": "due-in-exactly-30-days-is-due-soon",
+      "today": "2026-10-22",
+      "component": {
+        "id": "f1000000-0000-4000-8000-000000000001",
+        "name": "Furnace",
+        "component_type": "hvac_furnace",
+        "service_interval_days": 30,
+        "last_serviced_at": "2026-10-22",
+        "install_date": null,
+        "warranty_start": null,
+        "warranty_length_months": null,
+        "deleted": false
+      },
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365,
+        "sump_pump": 365
+      },
+      "expected": {
+        "interval_days": 30,
+        "interval_source": "component",
+        "baseline": "2026-10-22",
+        "baseline_source": "last_serviced",
+        "next_due": "2026-11-21",
+        "days_until_due": 30,
+        "service_status": "due_soon",
+        "needs_baseline_reason": null,
+        "warranty_end": null,
+        "warranty_days_until": null,
+        "warranty_status": "none"
+      }
+    },
+    {
+      "name": "due-in-31-days-is-scheduled",
+      "today": "2026-10-22",
+      "component": {
+        "id": "f1000000-0000-4000-8000-000000000001",
+        "name": "Furnace",
+        "component_type": "hvac_furnace",
+        "service_interval_days": 30,
+        "last_serviced_at": "2026-10-23",
+        "install_date": null,
+        "warranty_start": null,
+        "warranty_length_months": null,
+        "deleted": false
+      },
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365,
+        "sump_pump": 365
+      },
+      "expected": {
+        "interval_days": 30,
+        "interval_source": "component",
+        "baseline": "2026-10-23",
+        "baseline_source": "last_serviced",
+        "next_due": "2026-11-22",
+        "days_until_due": 31,
+        "service_status": "scheduled",
+        "needs_baseline_reason": null,
+        "warranty_end": null,
+        "warranty_days_until": null,
+        "warranty_status": "none"
+      }
+    },
+    {
+      "name": "install-date-baseline-overdue-by-a-year",
+      "today": "2026-10-22",
+      "component": {
+        "id": "f1000000-0000-4000-8000-000000000001",
+        "name": "Furnace",
+        "component_type": "hvac_furnace",
+        "service_interval_days": 365,
+        "last_serviced_at": null,
+        "install_date": "2024-10-22",
+        "warranty_start": null,
+        "warranty_length_months": null,
+        "deleted": false
+      },
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365,
+        "sump_pump": 365
+      },
+      "expected": {
+        "interval_days": 365,
+        "interval_source": "component",
+        "baseline": "2024-10-22",
+        "baseline_source": "install",
+        "next_due": "2025-10-22",
+        "days_until_due": -365,
+        "service_status": "overdue",
+        "needs_baseline_reason": null,
+        "warranty_end": null,
+        "warranty_days_until": null,
+        "warranty_status": "none"
+      }
+    },
+    {
+      "name": "no-interval-keeps-the-baseline",
+      "today": "2026-10-22",
+      "component": {
+        "id": "f2000000-0000-4000-8000-000000000001",
+        "name": "Toilet",
+        "component_type": "toilet",
+        "service_interval_days": null,
+        "last_serviced_at": "2026-01-01",
+        "install_date": null,
+        "warranty_start": null,
+        "warranty_length_months": null,
+        "deleted": false
+      },
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365
+      },
+      "expected": {
+        "interval_days": null,
+        "interval_source": "none",
+        "baseline": "2026-01-01",
+        "baseline_source": "last_serviced",
+        "next_due": null,
+        "days_until_due": null,
+        "service_status": "needs_baseline",
+        "needs_baseline_reason": "no_interval",
+        "warranty_end": null,
+        "warranty_days_until": null,
+        "warranty_status": "none"
+      }
+    },
+    {
+      "name": "no-baseline-with-an-interval",
+      "today": "2026-10-22",
+      "component": {
+        "id": "f1000000-0000-4000-8000-000000000001",
+        "name": "Furnace",
+        "component_type": "hvac_furnace",
+        "service_interval_days": 365,
+        "last_serviced_at": null,
+        "install_date": null,
+        "warranty_start": null,
+        "warranty_length_months": null,
+        "deleted": false
+      },
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365,
+        "sump_pump": 365
+      },
+      "expected": {
+        "interval_days": 365,
+        "interval_source": "component",
+        "baseline": null,
+        "baseline_source": "none",
+        "next_due": null,
+        "days_until_due": null,
+        "service_status": "needs_baseline",
+        "needs_baseline_reason": "no_baseline",
+        "warranty_end": null,
+        "warranty_days_until": null,
+        "warranty_status": "none"
+      }
+    },
+    {
+      "name": "no-interval-and-no-baseline-reports-no-interval",
+      "today": "2026-10-22",
+      "component": {
+        "id": "f2000000-0000-4000-8000-000000000001",
+        "name": "Toilet",
+        "component_type": "toilet",
+        "service_interval_days": null,
+        "last_serviced_at": null,
+        "install_date": null,
+        "warranty_start": null,
+        "warranty_length_months": null,
+        "deleted": false
+      },
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365
+      },
+      "expected": {
+        "interval_days": null,
+        "interval_source": "none",
+        "baseline": null,
+        "baseline_source": "none",
+        "next_due": null,
+        "days_until_due": null,
+        "service_status": "needs_baseline",
+        "needs_baseline_reason": "no_interval",
+        "warranty_end": null,
+        "warranty_days_until": null,
+        "warranty_status": "none"
+      }
+    },
+    {
+      "name": "leap-day-plus-365-lands-on-feb-28",
+      "today": "2025-02-20",
+      "component": {
+        "id": "f1000000-0000-4000-8000-000000000001",
+        "name": "Furnace",
+        "component_type": "hvac_furnace",
+        "service_interval_days": 365,
+        "last_serviced_at": "2024-02-29",
+        "install_date": null,
+        "warranty_start": null,
+        "warranty_length_months": null,
+        "deleted": false
+      },
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365,
+        "sump_pump": 365
+      },
+      "expected": {
+        "interval_days": 365,
+        "interval_source": "component",
+        "baseline": "2024-02-29",
+        "baseline_source": "last_serviced",
+        "next_due": "2025-02-28",
+        "days_until_due": 8,
+        "service_status": "due_soon",
+        "needs_baseline_reason": null,
+        "warranty_end": null,
+        "warranty_days_until": null,
+        "warranty_status": "none"
+      }
+    },
+    {
+      "name": "leap-year-start-plus-366-lands-on-the-next-new-year",
+      "today": "2024-12-20",
+      "component": {
+        "id": "f1000000-0000-4000-8000-000000000001",
+        "name": "Furnace",
+        "component_type": "hvac_furnace",
+        "service_interval_days": 366,
+        "last_serviced_at": "2024-01-01",
+        "install_date": null,
+        "warranty_start": null,
+        "warranty_length_months": null,
+        "deleted": false
+      },
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365,
+        "sump_pump": 365
+      },
+      "expected": {
+        "interval_days": 366,
+        "interval_source": "component",
+        "baseline": "2024-01-01",
+        "baseline_source": "last_serviced",
+        "next_due": "2025-01-01",
+        "days_until_due": 12,
+        "service_status": "due_soon",
+        "needs_baseline_reason": null,
+        "warranty_end": null,
+        "warranty_days_until": null,
+        "warranty_status": "none"
+      }
+    },
+    {
+      "name": "leap-year-end-of-year-plus-366-lands-on-dec-31",
+      "today": "2024-12-25",
+      "component": {
+        "id": "f1000000-0000-4000-8000-000000000001",
+        "name": "Furnace",
+        "component_type": "hvac_furnace",
+        "service_interval_days": 366,
+        "last_serviced_at": "2023-12-31",
+        "install_date": null,
+        "warranty_start": null,
+        "warranty_length_months": null,
+        "deleted": false
+      },
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365,
+        "sump_pump": 365
+      },
+      "expected": {
+        "interval_days": 366,
+        "interval_source": "component",
+        "baseline": "2023-12-31",
+        "baseline_source": "last_serviced",
+        "next_due": "2024-12-31",
+        "days_until_due": 6,
+        "service_status": "due_soon",
+        "needs_baseline_reason": null,
+        "warranty_end": null,
+        "warranty_days_until": null,
+        "warranty_status": "none"
+      }
+    },
+    {
+      "name": "leap-day-today-is-due-today",
+      "today": "2028-02-29",
+      "component": {
+        "id": "f1000000-0000-4000-8000-000000000001",
+        "name": "Furnace",
+        "component_type": "hvac_furnace",
+        "service_interval_days": 30,
+        "last_serviced_at": "2028-01-30",
+        "install_date": null,
+        "warranty_start": null,
+        "warranty_length_months": null,
+        "deleted": false
+      },
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365,
+        "sump_pump": 365
+      },
+      "expected": {
+        "interval_days": 30,
+        "interval_source": "component",
+        "baseline": "2028-01-30",
+        "baseline_source": "last_serviced",
+        "next_due": "2028-02-29",
+        "days_until_due": 0,
+        "service_status": "due_today",
+        "needs_baseline_reason": null,
+        "warranty_end": null,
+        "warranty_days_until": null,
+        "warranty_status": "none"
+      }
+    },
+    {
+      "name": "dst-spring-forward-eve-is-due-today",
+      "today": "2026-03-08",
+      "component": {
+        "id": "f1000000-0000-4000-8000-000000000001",
+        "name": "Furnace",
+        "component_type": "hvac_furnace",
+        "service_interval_days": 1,
+        "last_serviced_at": "2026-03-07",
+        "install_date": null,
+        "warranty_start": null,
+        "warranty_length_months": null,
+        "deleted": false
+      },
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365,
+        "sump_pump": 365
+      },
+      "expected": {
+        "interval_days": 1,
+        "interval_source": "component",
+        "baseline": "2026-03-07",
+        "baseline_source": "last_serviced",
+        "next_due": "2026-03-08",
+        "days_until_due": 0,
+        "service_status": "due_today",
+        "needs_baseline_reason": null,
+        "warranty_end": null,
+        "warranty_days_until": null,
+        "warranty_status": "none"
+      }
+    },
+    {
+      "name": "dst-spring-forward-next-day-is-overdue-by-one",
+      "today": "2026-03-09",
+      "component": {
+        "id": "f1000000-0000-4000-8000-000000000001",
+        "name": "Furnace",
+        "component_type": "hvac_furnace",
+        "service_interval_days": 1,
+        "last_serviced_at": "2026-03-07",
+        "install_date": null,
+        "warranty_start": null,
+        "warranty_length_months": null,
+        "deleted": false
+      },
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365,
+        "sump_pump": 365
+      },
+      "expected": {
+        "interval_days": 1,
+        "interval_source": "component",
+        "baseline": "2026-03-07",
+        "baseline_source": "last_serviced",
+        "next_due": "2026-03-08",
+        "days_until_due": -1,
+        "service_status": "overdue",
+        "needs_baseline_reason": null,
+        "warranty_end": null,
+        "warranty_days_until": null,
+        "warranty_status": "none"
+      }
+    },
+    {
+      "name": "dst-fall-back-eve-is-due-today",
+      "today": "2026-11-01",
+      "component": {
+        "id": "f1000000-0000-4000-8000-000000000001",
+        "name": "Furnace",
+        "component_type": "hvac_furnace",
+        "service_interval_days": 1,
+        "last_serviced_at": "2026-10-31",
+        "install_date": null,
+        "warranty_start": null,
+        "warranty_length_months": null,
+        "deleted": false
+      },
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365,
+        "sump_pump": 365
+      },
+      "expected": {
+        "interval_days": 1,
+        "interval_source": "component",
+        "baseline": "2026-10-31",
+        "baseline_source": "last_serviced",
+        "next_due": "2026-11-01",
+        "days_until_due": 0,
+        "service_status": "due_today",
+        "needs_baseline_reason": null,
+        "warranty_end": null,
+        "warranty_days_until": null,
+        "warranty_status": "none"
+      }
+    },
+    {
+      "name": "dst-fall-back-next-day-is-overdue-by-one",
+      "today": "2026-11-02",
+      "component": {
+        "id": "f1000000-0000-4000-8000-000000000001",
+        "name": "Furnace",
+        "component_type": "hvac_furnace",
+        "service_interval_days": 1,
+        "last_serviced_at": "2026-10-31",
+        "install_date": null,
+        "warranty_start": null,
+        "warranty_length_months": null,
+        "deleted": false
+      },
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365,
+        "sump_pump": 365
+      },
+      "expected": {
+        "interval_days": 1,
+        "interval_source": "component",
+        "baseline": "2026-10-31",
+        "baseline_source": "last_serviced",
+        "next_due": "2026-11-01",
+        "days_until_due": -1,
+        "service_status": "overdue",
+        "needs_baseline_reason": null,
+        "warranty_end": null,
+        "warranty_days_until": null,
+        "warranty_status": "none"
+      }
+    },
+    {
+      "name": "year-crossing-service-date",
+      "today": "2026-12-20",
+      "component": {
+        "id": "f1000000-0000-4000-8000-000000000001",
+        "name": "Furnace",
+        "component_type": "hvac_furnace",
+        "service_interval_days": 30,
+        "last_serviced_at": "2026-12-15",
+        "install_date": null,
+        "warranty_start": null,
+        "warranty_length_months": null,
+        "deleted": false
+      },
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365,
+        "sump_pump": 365
+      },
+      "expected": {
+        "interval_days": 30,
+        "interval_source": "component",
+        "baseline": "2026-12-15",
+        "baseline_source": "last_serviced",
+        "next_due": "2027-01-14",
+        "days_until_due": 25,
+        "service_status": "due_soon",
+        "needs_baseline_reason": null,
+        "warranty_end": null,
+        "warranty_days_until": null,
+        "warranty_status": "none"
+      }
+    },
+    {
+      "name": "deleted-component-yields-no-row",
+      "today": "2026-10-22",
+      "component": {
+        "id": "f1000000-0000-4000-8000-000000000001",
+        "name": "Furnace",
+        "component_type": "hvac_furnace",
+        "service_interval_days": 30,
+        "last_serviced_at": "2026-09-21",
+        "install_date": null,
+        "warranty_start": null,
+        "warranty_length_months": null,
+        "deleted": true
+      },
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365,
+        "sump_pump": 365
+      },
+      "expected": null
+    },
+    {
+      "name": "interval-from-the-home-default",
+      "today": "2026-10-22",
+      "component": {
+        "id": "f1000000-0000-4000-8000-000000000001",
+        "name": "Furnace",
+        "component_type": "hvac_furnace",
+        "service_interval_days": null,
+        "last_serviced_at": "2026-09-01",
+        "install_date": null,
+        "warranty_start": null,
+        "warranty_length_months": null,
+        "deleted": false
+      },
+      "home_defaults": {
+        "hvac_furnace": 180
+      },
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365,
+        "sump_pump": 365
+      },
+      "expected": {
+        "interval_days": 180,
+        "interval_source": "home",
+        "baseline": "2026-09-01",
+        "baseline_source": "last_serviced",
+        "next_due": "2027-02-28",
+        "days_until_due": 129,
+        "service_status": "scheduled",
+        "needs_baseline_reason": null,
+        "warranty_end": null,
+        "warranty_days_until": null,
+        "warranty_status": "none"
+      }
+    },
+    {
+      "name": "interval-from-the-taxonomy-default",
+      "today": "2026-10-22",
+      "component": {
+        "id": "f1000000-0000-4000-8000-000000000001",
+        "name": "Furnace",
+        "component_type": "hvac_furnace",
+        "service_interval_days": null,
+        "last_serviced_at": "2025-11-01",
+        "install_date": null,
+        "warranty_start": null,
+        "warranty_length_months": null,
+        "deleted": false
+      },
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365,
+        "sump_pump": 365
+      },
+      "expected": {
+        "interval_days": 365,
+        "interval_source": "taxonomy",
+        "baseline": "2025-11-01",
+        "baseline_source": "last_serviced",
+        "next_due": "2026-11-01",
+        "days_until_due": 10,
+        "service_status": "due_soon",
+        "needs_baseline_reason": null,
+        "warranty_end": null,
+        "warranty_days_until": null,
+        "warranty_status": "none"
+      }
+    },
+    {
+      "name": "invalid-component-interval-falls-to-the-home-default",
+      "today": "2026-10-22",
+      "component": {
+        "id": "f1000000-0000-4000-8000-000000000001",
+        "name": "Furnace",
+        "component_type": "hvac_furnace",
+        "service_interval_days": 0,
+        "last_serviced_at": "2026-08-01",
+        "install_date": null,
+        "warranty_start": null,
+        "warranty_length_months": null,
+        "deleted": false
+      },
+      "home_defaults": {
+        "hvac_furnace": 90
+      },
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365,
+        "sump_pump": 365
+      },
+      "expected": {
+        "interval_days": 90,
+        "interval_source": "home",
+        "baseline": "2026-08-01",
+        "baseline_source": "last_serviced",
+        "next_due": "2026-10-30",
+        "days_until_due": 8,
+        "service_status": "due_soon",
+        "needs_baseline_reason": null,
+        "warranty_end": null,
+        "warranty_days_until": null,
+        "warranty_status": "none"
+      }
+    },
+    {
+      "name": "fractional-home-default-falls-to-the-taxonomy-default",
+      "today": "2026-10-22",
+      "component": {
+        "id": "f1000000-0000-4000-8000-000000000001",
+        "name": "Furnace",
+        "component_type": "hvac_furnace",
+        "service_interval_days": null,
+        "last_serviced_at": "2026-01-01",
+        "install_date": null,
+        "warranty_start": null,
+        "warranty_length_months": null,
+        "deleted": false
+      },
+      "home_defaults": {
+        "hvac_furnace": 7.5
+      },
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365,
+        "sump_pump": 365
+      },
+      "expected": {
+        "interval_days": 365,
+        "interval_source": "taxonomy",
+        "baseline": "2026-01-01",
+        "baseline_source": "last_serviced",
+        "next_due": "2027-01-01",
+        "days_until_due": 71,
+        "service_status": "scheduled",
+        "needs_baseline_reason": null,
+        "warranty_end": null,
+        "warranty_days_until": null,
+        "warranty_status": "none"
+      }
+    },
+    {
+      "name": "warranty-ending-soon-alongside-a-scheduled-service",
+      "today": "2026-10-22",
+      "component": {
+        "id": "f1000000-0000-4000-8000-000000000001",
+        "name": "Furnace",
+        "component_type": "hvac_furnace",
+        "service_interval_days": 365,
+        "last_serviced_at": "2026-06-01",
+        "install_date": null,
+        "warranty_start": "2025-11-10",
+        "warranty_length_months": 12,
+        "deleted": false
+      },
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365,
+        "sump_pump": 365
+      },
+      "expected": {
+        "interval_days": 365,
+        "interval_source": "component",
+        "baseline": "2026-06-01",
+        "baseline_source": "last_serviced",
+        "next_due": "2027-06-01",
+        "days_until_due": 222,
+        "service_status": "scheduled",
+        "needs_baseline_reason": null,
+        "warranty_end": "2026-11-10",
+        "warranty_days_until": 19,
+        "warranty_status": "ending_soon"
+      }
+    },
+    {
+      "name": "warranty-ended-yesterday-alongside-a-due-service",
+      "today": "2026-10-22",
+      "component": {
+        "id": "f1000000-0000-4000-8000-000000000001",
+        "name": "Furnace",
+        "component_type": "hvac_furnace",
+        "service_interval_days": 30,
+        "last_serviced_at": "2026-09-22",
+        "install_date": null,
+        "warranty_start": "2024-10-21",
+        "warranty_length_months": 24,
+        "deleted": false
+      },
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365,
+        "sump_pump": 365
+      },
+      "expected": {
+        "interval_days": 30,
+        "interval_source": "component",
+        "baseline": "2026-09-22",
+        "baseline_source": "last_serviced",
+        "next_due": "2026-10-22",
+        "days_until_due": 0,
+        "service_status": "due_today",
+        "needs_baseline_reason": null,
+        "warranty_end": "2026-10-21",
+        "warranty_days_until": -1,
+        "warranty_status": "expired"
+      }
+    },
+    {
+      "name": "warranty-ends-today-on-a-component-without-an-interval",
+      "today": "2026-10-22",
+      "component": {
+        "id": "f2000000-0000-4000-8000-000000000002",
+        "name": "Dishwasher",
+        "component_type": "dishwasher",
+        "service_interval_days": null,
+        "last_serviced_at": null,
+        "install_date": null,
+        "warranty_start": "2024-10-22",
+        "warranty_length_months": 24,
+        "deleted": false
+      },
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365,
+        "sump_pump": 365
+      },
+      "expected": {
+        "interval_days": null,
+        "interval_source": "none",
+        "baseline": null,
+        "baseline_source": "none",
+        "next_due": null,
+        "days_until_due": null,
+        "service_status": "needs_baseline",
+        "needs_baseline_reason": "no_interval",
+        "warranty_end": "2026-10-22",
+        "warranty_days_until": 0,
+        "warranty_status": "ending_soon"
+      }
+    }
+  ],
+  "section_cases": [
+    {
+      "name": "every-section-has-rows-and-a-component-can-sit-in-two",
+      "today": "2026-10-22",
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365,
+        "sump_pump": 365
+      },
+      "components": [
+        {
+          "id": "aa000000-0000-4000-8000-000000000001",
+          "name": "Furnace",
+          "component_type": "hvac_furnace",
+          "service_interval_days": null,
+          "last_serviced_at": "2025-10-12",
+          "install_date": null,
+          "warranty_start": null,
+          "warranty_length_months": null,
+          "deleted": false
+        },
+        {
+          "id": "aa000000-0000-4000-8000-000000000002",
+          "name": "Boiler",
+          "component_type": "hvac_boiler",
+          "service_interval_days": 30,
+          "last_serviced_at": "2026-09-10",
+          "install_date": null,
+          "warranty_start": "2025-11-05",
+          "warranty_length_months": 12,
+          "deleted": false
+        },
+        {
+          "id": "aa000000-0000-4000-8000-000000000003",
+          "name": "Water heater",
+          "component_type": "water_heater",
+          "service_interval_days": null,
+          "last_serviced_at": "2025-10-22",
+          "install_date": null,
+          "warranty_start": null,
+          "warranty_length_months": null,
+          "deleted": false
+        },
+        {
+          "id": "aa000000-0000-4000-8000-000000000004",
+          "name": "Sump pump",
+          "component_type": "sump_pump",
+          "service_interval_days": null,
+          "last_serviced_at": "2025-11-05",
+          "install_date": null,
+          "warranty_start": null,
+          "warranty_length_months": null,
+          "deleted": false
+        },
+        {
+          "id": "aa000000-0000-4000-8000-000000000005",
+          "name": "Dehumidifier",
+          "component_type": "dehumidifier",
+          "service_interval_days": 60,
+          "last_serviced_at": "2026-09-15",
+          "install_date": null,
+          "warranty_start": null,
+          "warranty_length_months": null,
+          "deleted": false
+        },
+        {
+          "id": "aa000000-0000-4000-8000-000000000006",
+          "name": "Roof",
+          "component_type": "roof_covering",
+          "service_interval_days": 365,
+          "last_serviced_at": "2026-10-01",
+          "install_date": null,
+          "warranty_start": "2020-01-01",
+          "warranty_length_months": 36,
+          "deleted": false
+        },
+        {
+          "id": "aa000000-0000-4000-8000-000000000007",
+          "name": "Garage door",
+          "component_type": "garage_door",
+          "service_interval_days": 365,
+          "last_serviced_at": null,
+          "install_date": null,
+          "warranty_start": null,
+          "warranty_length_months": null,
+          "deleted": false
+        },
+        {
+          "id": "aa000000-0000-4000-8000-000000000008",
+          "name": "Attic fan",
+          "component_type": "attic_fan",
+          "service_interval_days": null,
+          "last_serviced_at": null,
+          "install_date": null,
+          "warranty_start": null,
+          "warranty_length_months": null,
+          "deleted": false
+        },
+        {
+          "id": "aa000000-0000-4000-8000-000000000009",
+          "name": "Dishwasher",
+          "component_type": "dishwasher",
+          "service_interval_days": 365,
+          "last_serviced_at": "2026-06-01",
+          "install_date": null,
+          "warranty_start": "2025-11-10",
+          "warranty_length_months": 12,
+          "deleted": false
+        },
+        {
+          "id": "aa000000-0000-4000-8000-000000000010",
+          "name": "Old pump",
+          "component_type": "sump_pump",
+          "service_interval_days": 100,
+          "last_serviced_at": "2025-01-01",
+          "install_date": null,
+          "warranty_start": null,
+          "warranty_length_months": null,
+          "deleted": true
+        }
+      ],
+      "expected_sections": {
+        "overdue": [
+          "aa000000-0000-4000-8000-000000000002",
+          "aa000000-0000-4000-8000-000000000001"
+        ],
+        "due_today": [
+          "aa000000-0000-4000-8000-000000000003"
+        ],
+        "coming_up": [
+          "aa000000-0000-4000-8000-000000000004",
+          "aa000000-0000-4000-8000-000000000005"
+        ],
+        "warranty_ending": [
+          "aa000000-0000-4000-8000-000000000002",
+          "aa000000-0000-4000-8000-000000000009"
+        ],
+        "needs_baseline": [
+          "aa000000-0000-4000-8000-000000000008",
+          "aa000000-0000-4000-8000-000000000007"
+        ]
+      }
+    },
+    {
+      "name": "ties-sort-by-next-due-then-lowercase-name-then-lowercase-id",
+      "today": "2026-10-22",
+      "home_defaults": {},
+      "taxonomy_defaults": {},
+      "components": [
+        {
+          "id": "11000000-0000-4000-8000-000000000001",
+          "name": "Zeta fan",
+          "component_type": "other",
+          "service_interval_days": 14,
+          "last_serviced_at": "2026-10-01",
+          "install_date": null,
+          "warranty_start": null,
+          "warranty_length_months": null,
+          "deleted": false
+        },
+        {
+          "id": "22000000-0000-4000-8000-000000000002",
+          "name": "alpha pump",
+          "component_type": "other",
+          "service_interval_days": 14,
+          "last_serviced_at": "2026-10-01",
+          "install_date": null,
+          "warranty_start": null,
+          "warranty_length_months": null,
+          "deleted": false
+        },
+        {
+          "id": "B0000000-0000-4000-8000-000000000003",
+          "name": "Pump",
+          "component_type": "other",
+          "service_interval_days": 14,
+          "last_serviced_at": "2026-10-01",
+          "install_date": null,
+          "warranty_start": null,
+          "warranty_length_months": null,
+          "deleted": false
+        },
+        {
+          "id": "a0000000-0000-4000-8000-000000000004",
+          "name": "pump",
+          "component_type": "other",
+          "service_interval_days": 14,
+          "last_serviced_at": "2026-10-01",
+          "install_date": null,
+          "warranty_start": null,
+          "warranty_length_months": null,
+          "deleted": false
+        },
+        {
+          "id": "55000000-0000-4000-8000-000000000005",
+          "name": "Zzz",
+          "component_type": "other",
+          "service_interval_days": 14,
+          "last_serviced_at": "2026-09-30",
+          "install_date": null,
+          "warranty_start": null,
+          "warranty_length_months": null,
+          "deleted": false
+        }
+      ],
+      "expected_sections": {
+        "overdue": [
+          "55000000-0000-4000-8000-000000000005",
+          "22000000-0000-4000-8000-000000000002",
+          "a0000000-0000-4000-8000-000000000004",
+          "B0000000-0000-4000-8000-000000000003",
+          "11000000-0000-4000-8000-000000000001"
+        ],
+        "due_today": [],
+        "coming_up": [],
+        "warranty_ending": [],
+        "needs_baseline": []
+      }
+    },
+    {
+      "name": "boundaries-at-30-and-31-days-and-warranty-edges",
+      "today": "2026-10-22",
+      "home_defaults": {},
+      "taxonomy_defaults": {},
+      "components": [
+        {
+          "id": "bb000000-0000-4000-8000-000000000001",
+          "name": "Thirty days",
+          "component_type": "other",
+          "service_interval_days": 30,
+          "last_serviced_at": "2026-10-22",
+          "install_date": null,
+          "warranty_start": null,
+          "warranty_length_months": null,
+          "deleted": false
+        },
+        {
+          "id": "bb000000-0000-4000-8000-000000000002",
+          "name": "Thirty-one days",
+          "component_type": "other",
+          "service_interval_days": 30,
+          "last_serviced_at": "2026-10-23",
+          "install_date": null,
+          "warranty_start": null,
+          "warranty_length_months": null,
+          "deleted": false
+        },
+        {
+          "id": "bb000000-0000-4000-8000-000000000003",
+          "name": "Warranty today",
+          "component_type": "other",
+          "service_interval_days": 365,
+          "last_serviced_at": "2026-10-01",
+          "install_date": null,
+          "warranty_start": "2025-10-22",
+          "warranty_length_months": 12,
+          "deleted": false
+        },
+        {
+          "id": "bb000000-0000-4000-8000-000000000004",
+          "name": "Warranty 30",
+          "component_type": "other",
+          "service_interval_days": 365,
+          "last_serviced_at": "2026-10-01",
+          "install_date": null,
+          "warranty_start": "2025-11-21",
+          "warranty_length_months": 12,
+          "deleted": false
+        },
+        {
+          "id": "bb000000-0000-4000-8000-000000000005",
+          "name": "Warranty 31",
+          "component_type": "other",
+          "service_interval_days": 365,
+          "last_serviced_at": "2026-10-01",
+          "install_date": null,
+          "warranty_start": "2025-11-22",
+          "warranty_length_months": 12,
+          "deleted": false
+        },
+        {
+          "id": "bb000000-0000-4000-8000-000000000006",
+          "name": "Warranty yesterday",
+          "component_type": "other",
+          "service_interval_days": 365,
+          "last_serviced_at": "2026-10-01",
+          "install_date": null,
+          "warranty_start": "2025-10-21",
+          "warranty_length_months": 12,
+          "deleted": false
+        }
+      ],
+      "expected_sections": {
+        "overdue": [],
+        "due_today": [],
+        "coming_up": [
+          "bb000000-0000-4000-8000-000000000001"
+        ],
+        "warranty_ending": [
+          "bb000000-0000-4000-8000-000000000003",
+          "bb000000-0000-4000-8000-000000000004"
+        ],
+        "needs_baseline": []
+      }
+    },
+    {
+      "name": "scheduled-and-deleted-drop-out-and-a-baseline-gap-can-still-have-a-warranty",
+      "today": "2026-10-22",
+      "home_defaults": {},
+      "taxonomy_defaults": {},
+      "components": [
+        {
+          "id": "cc000000-0000-4000-8000-000000000001",
+          "name": "Fridge",
+          "component_type": "refrigerator",
+          "service_interval_days": 365,
+          "last_serviced_at": "2026-10-01",
+          "install_date": null,
+          "warranty_start": null,
+          "warranty_length_months": null,
+          "deleted": false
+        },
+        {
+          "id": "cc000000-0000-4000-8000-000000000002",
+          "name": "Washer",
+          "component_type": "washer",
+          "service_interval_days": null,
+          "last_serviced_at": null,
+          "install_date": null,
+          "warranty_start": null,
+          "warranty_length_months": null,
+          "deleted": false
+        },
+        {
+          "id": "cc000000-0000-4000-8000-000000000003",
+          "name": "Dryer",
+          "component_type": "dryer",
+          "service_interval_days": null,
+          "last_serviced_at": null,
+          "install_date": null,
+          "warranty_start": "2025-11-01",
+          "warranty_length_months": 12,
+          "deleted": false
+        },
+        {
+          "id": "cc000000-0000-4000-8000-000000000004",
+          "name": "Old stove",
+          "component_type": "range",
+          "service_interval_days": 30,
+          "last_serviced_at": "2026-01-01",
+          "install_date": null,
+          "warranty_start": null,
+          "warranty_length_months": null,
+          "deleted": true
+        }
+      ],
+      "expected_sections": {
+        "overdue": [],
+        "due_today": [],
+        "coming_up": [],
+        "warranty_ending": [
+          "cc000000-0000-4000-8000-000000000003"
+        ],
+        "needs_baseline": [
+          "cc000000-0000-4000-8000-000000000003",
+          "cc000000-0000-4000-8000-000000000002"
+        ]
+      }
+    },
+    {
+      "name": "a-home-with-no-components-has-empty-sections",
+      "today": "2026-10-22",
+      "home_defaults": {},
+      "taxonomy_defaults": {},
+      "components": [],
+      "expected_sections": {
+        "overdue": [],
+        "due_today": [],
+        "coming_up": [],
+        "warranty_ending": [],
+        "needs_baseline": []
+      }
+    }
+  ],
+  "warranty_cases": [
+    {
+      "name": "month-end-clamp-jan-31-plus-1-in-a-common-year",
+      "today": "2025-02-01",
+      "warranty_start": "2025-01-31",
+      "warranty_length_months": 1,
+      "expected_end": "2025-02-28",
+      "expected_days_until": 27,
+      "expected_status": "ending_soon"
+    },
+    {
+      "name": "month-end-clamp-jan-31-plus-1-in-a-leap-year",
+      "today": "2024-02-01",
+      "warranty_start": "2024-01-31",
+      "warranty_length_months": 1,
+      "expected_end": "2024-02-29",
+      "expected_days_until": 28,
+      "expected_status": "ending_soon"
+    },
+    {
+      "name": "month-end-clamp-aug-31-plus-6",
+      "today": "2026-01-01",
+      "warranty_start": "2025-08-31",
+      "warranty_length_months": 6,
+      "expected_end": "2026-02-28",
+      "expected_days_until": 58,
+      "expected_status": "active"
+    },
+    {
+      "name": "month-end-clamp-mar-31-plus-1",
+      "today": "2025-04-01",
+      "warranty_start": "2025-03-31",
+      "warranty_length_months": 1,
+      "expected_end": "2025-04-30",
+      "expected_days_until": 29,
+      "expected_status": "ending_soon"
+    },
+    {
+      "name": "month-end-clamp-leap-day-plus-12",
+      "today": "2025-02-28",
+      "warranty_start": "2024-02-29",
+      "warranty_length_months": 12,
+      "expected_end": "2025-02-28",
+      "expected_days_until": 0,
+      "expected_status": "ending_soon"
+    },
+    {
+      "name": "warranty-ends-today",
+      "today": "2026-10-22",
+      "warranty_start": "2024-10-22",
+      "warranty_length_months": 24,
+      "expected_end": "2026-10-22",
+      "expected_days_until": 0,
+      "expected_status": "ending_soon"
+    },
+    {
+      "name": "warranty-ended-yesterday",
+      "today": "2026-10-22",
+      "warranty_start": "2024-10-21",
+      "warranty_length_months": 24,
+      "expected_end": "2026-10-21",
+      "expected_days_until": -1,
+      "expected_status": "expired"
+    },
+    {
+      "name": "warranty-30-days-out",
+      "today": "2026-10-22",
+      "warranty_start": "2025-11-21",
+      "warranty_length_months": 12,
+      "expected_end": "2026-11-21",
+      "expected_days_until": 30,
+      "expected_status": "ending_soon"
+    },
+    {
+      "name": "warranty-31-days-out",
+      "today": "2026-10-22",
+      "warranty_start": "2025-11-22",
+      "warranty_length_months": 12,
+      "expected_end": "2026-11-22",
+      "expected_days_until": 31,
+      "expected_status": "active"
+    },
+    {
+      "name": "warranty-without-a-start-date",
+      "today": "2026-10-22",
+      "warranty_start": null,
+      "warranty_length_months": 12,
+      "expected_end": null,
+      "expected_days_until": null,
+      "expected_status": "none"
+    },
+    {
+      "name": "warranty-without-a-length",
+      "today": "2026-10-22",
+      "warranty_start": "2025-01-01",
+      "warranty_length_months": null,
+      "expected_end": null,
+      "expected_days_until": null,
+      "expected_status": "none"
+    },
+    {
+      "name": "warranty-year-crossing",
+      "today": "2026-02-01",
+      "warranty_start": "2025-11-30",
+      "warranty_length_months": 3,
+      "expected_end": "2026-02-28",
+      "expected_days_until": 27,
+      "expected_status": "ending_soon"
+    },
+    {
+      "name": "warranty-long-since-expired",
+      "today": "2026-10-22",
+      "warranty_start": "2020-05-01",
+      "warranty_length_months": 72,
+      "expected_end": "2026-05-01",
+      "expected_days_until": -174,
+      "expected_status": "expired"
+    }
+  ]
+}

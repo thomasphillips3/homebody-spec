@@ -1,0 +1,1176 @@
+{
+  "version": "0.6.0",
+  "description": "Notification plan goldens: 09:00 local fire times, 7 days before and due-day service notices, weekly overdue repeats capped at 4, warranty notices at 30 and 7 days, UUIDv5 ids over '{component_id}:{kind}:{fire_date}', device-local snooze, per-kind toggles and the 60-item cap. Dates hand-derived from spec/docs/notification-plan.md; ids recomputed with an independent SHA-1 UUIDv5.",
+  "namespace": "5f3c9a2e-7b1d-4e68-9c04-2a8d6e1b7f35",
+  "cases": [
+    {
+      "name": "far-future-service-schedule",
+      "now_local": "2026-10-22T08:00",
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365
+      },
+      "components": [
+        {
+          "id": "f1000000-0000-4000-8000-000000000001",
+          "name": "Furnace",
+          "component_type": "hvac_furnace",
+          "service_interval_days": 365,
+          "last_serviced_at": "2026-09-01",
+          "install_date": null,
+          "warranty_start": null,
+          "warranty_length_months": null,
+          "deleted": false
+        }
+      ],
+      "snoozed_until": {},
+      "enabled_kinds": [
+        "service_due",
+        "service_overdue",
+        "warranty_ending",
+        "recall"
+      ],
+      "max_items": 60,
+      "expected": [
+        {
+          "id": "fec40217-a763-5518-b38e-14583b76c5de",
+          "kind": "service_due",
+          "component_id": "f1000000-0000-4000-8000-000000000001",
+          "fire_at": "2027-08-25T09:00",
+          "title": "Furnace",
+          "body": "Service due in 7 days"
+        },
+        {
+          "id": "c7264612-ae38-5cfc-908d-7b137d53f409",
+          "kind": "service_due",
+          "component_id": "f1000000-0000-4000-8000-000000000001",
+          "fire_at": "2027-09-01T09:00",
+          "title": "Furnace",
+          "body": "Service due today"
+        },
+        {
+          "id": "ca5e8fe3-7b58-5bfc-8a1b-769f87abe235",
+          "kind": "service_overdue",
+          "component_id": "f1000000-0000-4000-8000-000000000001",
+          "fire_at": "2027-09-08T09:00",
+          "title": "Furnace",
+          "body": "Service overdue 7 days"
+        },
+        {
+          "id": "6ba249e3-7f7e-5a0b-874b-7ff79c3a5cfa",
+          "kind": "service_overdue",
+          "component_id": "f1000000-0000-4000-8000-000000000001",
+          "fire_at": "2027-09-15T09:00",
+          "title": "Furnace",
+          "body": "Service overdue 14 days"
+        },
+        {
+          "id": "d299ea4d-1c9f-5beb-ad11-7930d0b00073",
+          "kind": "service_overdue",
+          "component_id": "f1000000-0000-4000-8000-000000000001",
+          "fire_at": "2027-09-22T09:00",
+          "title": "Furnace",
+          "body": "Service overdue 21 days"
+        },
+        {
+          "id": "114e6ee1-9cb0-512d-98bf-1b2d8fcbfc80",
+          "kind": "service_overdue",
+          "component_id": "f1000000-0000-4000-8000-000000000001",
+          "fire_at": "2027-09-29T09:00",
+          "title": "Furnace",
+          "body": "Service overdue 28 days"
+        }
+      ]
+    },
+    {
+      "name": "max-items-3-truncates-after-sorting",
+      "now_local": "2026-10-22T08:00",
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365
+      },
+      "components": [
+        {
+          "id": "f1000000-0000-4000-8000-000000000001",
+          "name": "Furnace",
+          "component_type": "hvac_furnace",
+          "service_interval_days": 365,
+          "last_serviced_at": "2026-09-01",
+          "install_date": null,
+          "warranty_start": null,
+          "warranty_length_months": null,
+          "deleted": false
+        }
+      ],
+      "snoozed_until": {},
+      "enabled_kinds": [
+        "service_due",
+        "service_overdue",
+        "warranty_ending",
+        "recall"
+      ],
+      "max_items": 3,
+      "expected": [
+        {
+          "id": "fec40217-a763-5518-b38e-14583b76c5de",
+          "kind": "service_due",
+          "component_id": "f1000000-0000-4000-8000-000000000001",
+          "fire_at": "2027-08-25T09:00",
+          "title": "Furnace",
+          "body": "Service due in 7 days"
+        },
+        {
+          "id": "c7264612-ae38-5cfc-908d-7b137d53f409",
+          "kind": "service_due",
+          "component_id": "f1000000-0000-4000-8000-000000000001",
+          "fire_at": "2027-09-01T09:00",
+          "title": "Furnace",
+          "body": "Service due today"
+        },
+        {
+          "id": "ca5e8fe3-7b58-5bfc-8a1b-769f87abe235",
+          "kind": "service_overdue",
+          "component_id": "f1000000-0000-4000-8000-000000000001",
+          "fire_at": "2027-09-08T09:00",
+          "title": "Furnace",
+          "body": "Service overdue 7 days"
+        }
+      ]
+    },
+    {
+      "name": "three-days-out-skips-the-7-day-notice",
+      "now_local": "2026-10-22T08:00",
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365
+      },
+      "components": [
+        {
+          "id": "f1000000-0000-4000-8000-000000000001",
+          "name": "Furnace",
+          "component_type": "hvac_furnace",
+          "service_interval_days": 30,
+          "last_serviced_at": "2026-09-25",
+          "install_date": null,
+          "warranty_start": null,
+          "warranty_length_months": null,
+          "deleted": false
+        }
+      ],
+      "snoozed_until": {},
+      "enabled_kinds": [
+        "service_due",
+        "service_overdue",
+        "warranty_ending",
+        "recall"
+      ],
+      "max_items": 60,
+      "expected": [
+        {
+          "id": "776936ea-0bfc-56e8-a716-a558f3507cbd",
+          "kind": "service_due",
+          "component_id": "f1000000-0000-4000-8000-000000000001",
+          "fire_at": "2026-10-25T09:00",
+          "title": "Furnace",
+          "body": "Service due today"
+        },
+        {
+          "id": "284a8518-0ff1-5516-be42-74aa8c2e3af1",
+          "kind": "service_overdue",
+          "component_id": "f1000000-0000-4000-8000-000000000001",
+          "fire_at": "2026-11-01T09:00",
+          "title": "Furnace",
+          "body": "Service overdue 7 days"
+        },
+        {
+          "id": "5d6c5409-ccbf-5f02-9adb-9697934d5955",
+          "kind": "service_overdue",
+          "component_id": "f1000000-0000-4000-8000-000000000001",
+          "fire_at": "2026-11-08T09:00",
+          "title": "Furnace",
+          "body": "Service overdue 14 days"
+        },
+        {
+          "id": "f80d3d78-652d-5dca-8b8b-b359a26ef840",
+          "kind": "service_overdue",
+          "component_id": "f1000000-0000-4000-8000-000000000001",
+          "fire_at": "2026-11-15T09:00",
+          "title": "Furnace",
+          "body": "Service overdue 21 days"
+        },
+        {
+          "id": "260dfe7f-65c3-5a8c-9638-32a48be477fc",
+          "kind": "service_overdue",
+          "component_id": "f1000000-0000-4000-8000-000000000001",
+          "fire_at": "2026-11-22T09:00",
+          "title": "Furnace",
+          "body": "Service overdue 28 days"
+        }
+      ]
+    },
+    {
+      "name": "snoozed-through-the-snooze-date-inclusive",
+      "now_local": "2026-10-22T08:00",
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365
+      },
+      "components": [
+        {
+          "id": "f1000000-0000-4000-8000-000000000001",
+          "name": "Furnace",
+          "component_type": "hvac_furnace",
+          "service_interval_days": 30,
+          "last_serviced_at": "2026-09-25",
+          "install_date": null,
+          "warranty_start": null,
+          "warranty_length_months": null,
+          "deleted": false
+        }
+      ],
+      "snoozed_until": {
+        "f1000000-0000-4000-8000-000000000001": "2026-11-01"
+      },
+      "enabled_kinds": [
+        "service_due",
+        "service_overdue",
+        "warranty_ending",
+        "recall"
+      ],
+      "max_items": 60,
+      "expected": [
+        {
+          "id": "5d6c5409-ccbf-5f02-9adb-9697934d5955",
+          "kind": "service_overdue",
+          "component_id": "f1000000-0000-4000-8000-000000000001",
+          "fire_at": "2026-11-08T09:00",
+          "title": "Furnace",
+          "body": "Service overdue 14 days"
+        },
+        {
+          "id": "f80d3d78-652d-5dca-8b8b-b359a26ef840",
+          "kind": "service_overdue",
+          "component_id": "f1000000-0000-4000-8000-000000000001",
+          "fire_at": "2026-11-15T09:00",
+          "title": "Furnace",
+          "body": "Service overdue 21 days"
+        },
+        {
+          "id": "260dfe7f-65c3-5a8c-9638-32a48be477fc",
+          "kind": "service_overdue",
+          "component_id": "f1000000-0000-4000-8000-000000000001",
+          "fire_at": "2026-11-22T09:00",
+          "title": "Furnace",
+          "body": "Service overdue 28 days"
+        }
+      ]
+    },
+    {
+      "name": "snoozed-the-day-before-a-notice-keeps-it",
+      "now_local": "2026-10-22T08:00",
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365
+      },
+      "components": [
+        {
+          "id": "f1000000-0000-4000-8000-000000000001",
+          "name": "Furnace",
+          "component_type": "hvac_furnace",
+          "service_interval_days": 30,
+          "last_serviced_at": "2026-09-25",
+          "install_date": null,
+          "warranty_start": null,
+          "warranty_length_months": null,
+          "deleted": false
+        }
+      ],
+      "snoozed_until": {
+        "f1000000-0000-4000-8000-000000000001": "2026-10-31"
+      },
+      "enabled_kinds": [
+        "service_due",
+        "service_overdue",
+        "warranty_ending",
+        "recall"
+      ],
+      "max_items": 60,
+      "expected": [
+        {
+          "id": "284a8518-0ff1-5516-be42-74aa8c2e3af1",
+          "kind": "service_overdue",
+          "component_id": "f1000000-0000-4000-8000-000000000001",
+          "fire_at": "2026-11-01T09:00",
+          "title": "Furnace",
+          "body": "Service overdue 7 days"
+        },
+        {
+          "id": "5d6c5409-ccbf-5f02-9adb-9697934d5955",
+          "kind": "service_overdue",
+          "component_id": "f1000000-0000-4000-8000-000000000001",
+          "fire_at": "2026-11-08T09:00",
+          "title": "Furnace",
+          "body": "Service overdue 14 days"
+        },
+        {
+          "id": "f80d3d78-652d-5dca-8b8b-b359a26ef840",
+          "kind": "service_overdue",
+          "component_id": "f1000000-0000-4000-8000-000000000001",
+          "fire_at": "2026-11-15T09:00",
+          "title": "Furnace",
+          "body": "Service overdue 21 days"
+        },
+        {
+          "id": "260dfe7f-65c3-5a8c-9638-32a48be477fc",
+          "kind": "service_overdue",
+          "component_id": "f1000000-0000-4000-8000-000000000001",
+          "fire_at": "2026-11-22T09:00",
+          "title": "Furnace",
+          "body": "Service overdue 28 days"
+        }
+      ]
+    },
+    {
+      "name": "uppercase-component-id-gives-the-lowercase-ids",
+      "now_local": "2026-10-22T08:00",
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365
+      },
+      "components": [
+        {
+          "id": "F1000000-0000-4000-8000-000000000001",
+          "name": "Furnace",
+          "component_type": "hvac_furnace",
+          "service_interval_days": 30,
+          "last_serviced_at": "2026-09-25",
+          "install_date": null,
+          "warranty_start": null,
+          "warranty_length_months": null,
+          "deleted": false
+        }
+      ],
+      "snoozed_until": {},
+      "enabled_kinds": [
+        "service_due",
+        "service_overdue",
+        "warranty_ending",
+        "recall"
+      ],
+      "max_items": 60,
+      "expected": [
+        {
+          "id": "776936ea-0bfc-56e8-a716-a558f3507cbd",
+          "kind": "service_due",
+          "component_id": "F1000000-0000-4000-8000-000000000001",
+          "fire_at": "2026-10-25T09:00",
+          "title": "Furnace",
+          "body": "Service due today"
+        },
+        {
+          "id": "284a8518-0ff1-5516-be42-74aa8c2e3af1",
+          "kind": "service_overdue",
+          "component_id": "F1000000-0000-4000-8000-000000000001",
+          "fire_at": "2026-11-01T09:00",
+          "title": "Furnace",
+          "body": "Service overdue 7 days"
+        },
+        {
+          "id": "5d6c5409-ccbf-5f02-9adb-9697934d5955",
+          "kind": "service_overdue",
+          "component_id": "F1000000-0000-4000-8000-000000000001",
+          "fire_at": "2026-11-08T09:00",
+          "title": "Furnace",
+          "body": "Service overdue 14 days"
+        },
+        {
+          "id": "f80d3d78-652d-5dca-8b8b-b359a26ef840",
+          "kind": "service_overdue",
+          "component_id": "F1000000-0000-4000-8000-000000000001",
+          "fire_at": "2026-11-15T09:00",
+          "title": "Furnace",
+          "body": "Service overdue 21 days"
+        },
+        {
+          "id": "260dfe7f-65c3-5a8c-9638-32a48be477fc",
+          "kind": "service_overdue",
+          "component_id": "F1000000-0000-4000-8000-000000000001",
+          "fire_at": "2026-11-22T09:00",
+          "title": "Furnace",
+          "body": "Service overdue 28 days"
+        }
+      ]
+    },
+    {
+      "name": "deleted-component-produces-nothing",
+      "now_local": "2026-10-22T08:00",
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365
+      },
+      "components": [
+        {
+          "id": "f1000000-0000-4000-8000-000000000001",
+          "name": "Furnace",
+          "component_type": "hvac_furnace",
+          "service_interval_days": 30,
+          "last_serviced_at": "2026-09-25",
+          "install_date": null,
+          "warranty_start": null,
+          "warranty_length_months": null,
+          "deleted": true
+        }
+      ],
+      "snoozed_until": {},
+      "enabled_kinds": [
+        "service_due",
+        "service_overdue",
+        "warranty_ending",
+        "recall"
+      ],
+      "max_items": 60,
+      "expected": []
+    },
+    {
+      "name": "due-today-at-0800-keeps-the-0900-notice",
+      "now_local": "2026-10-22T08:00",
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365
+      },
+      "components": [
+        {
+          "id": "f1000000-0000-4000-8000-000000000001",
+          "name": "Furnace",
+          "component_type": "hvac_furnace",
+          "service_interval_days": 30,
+          "last_serviced_at": "2026-09-22",
+          "install_date": null,
+          "warranty_start": null,
+          "warranty_length_months": null,
+          "deleted": false
+        }
+      ],
+      "snoozed_until": {},
+      "enabled_kinds": [
+        "service_due",
+        "service_overdue",
+        "warranty_ending",
+        "recall"
+      ],
+      "max_items": 60,
+      "expected": [
+        {
+          "id": "2b2ed470-02fc-527f-9838-7c599897924a",
+          "kind": "service_due",
+          "component_id": "f1000000-0000-4000-8000-000000000001",
+          "fire_at": "2026-10-22T09:00",
+          "title": "Furnace",
+          "body": "Service due today"
+        },
+        {
+          "id": "53bf1add-dcfe-5539-8ea5-de00ed97c875",
+          "kind": "service_overdue",
+          "component_id": "f1000000-0000-4000-8000-000000000001",
+          "fire_at": "2026-10-29T09:00",
+          "title": "Furnace",
+          "body": "Service overdue 7 days"
+        },
+        {
+          "id": "2cb0d462-9868-51d8-91b8-54e0c0009336",
+          "kind": "service_overdue",
+          "component_id": "f1000000-0000-4000-8000-000000000001",
+          "fire_at": "2026-11-05T09:00",
+          "title": "Furnace",
+          "body": "Service overdue 14 days"
+        },
+        {
+          "id": "f316fe7b-f74c-5221-bbc4-ac859d346fce",
+          "kind": "service_overdue",
+          "component_id": "f1000000-0000-4000-8000-000000000001",
+          "fire_at": "2026-11-12T09:00",
+          "title": "Furnace",
+          "body": "Service overdue 21 days"
+        },
+        {
+          "id": "fac14dd7-8ffa-51de-8787-6defa3ae7077",
+          "kind": "service_overdue",
+          "component_id": "f1000000-0000-4000-8000-000000000001",
+          "fire_at": "2026-11-19T09:00",
+          "title": "Furnace",
+          "body": "Service overdue 28 days"
+        }
+      ]
+    },
+    {
+      "name": "due-today-at-0900-exactly-is-not-eligible",
+      "now_local": "2026-10-22T09:00",
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365
+      },
+      "components": [
+        {
+          "id": "f1000000-0000-4000-8000-000000000001",
+          "name": "Furnace",
+          "component_type": "hvac_furnace",
+          "service_interval_days": 30,
+          "last_serviced_at": "2026-09-22",
+          "install_date": null,
+          "warranty_start": null,
+          "warranty_length_months": null,
+          "deleted": false
+        }
+      ],
+      "snoozed_until": {},
+      "enabled_kinds": [
+        "service_due",
+        "service_overdue",
+        "warranty_ending",
+        "recall"
+      ],
+      "max_items": 60,
+      "expected": [
+        {
+          "id": "53bf1add-dcfe-5539-8ea5-de00ed97c875",
+          "kind": "service_overdue",
+          "component_id": "f1000000-0000-4000-8000-000000000001",
+          "fire_at": "2026-10-29T09:00",
+          "title": "Furnace",
+          "body": "Service overdue 7 days"
+        },
+        {
+          "id": "2cb0d462-9868-51d8-91b8-54e0c0009336",
+          "kind": "service_overdue",
+          "component_id": "f1000000-0000-4000-8000-000000000001",
+          "fire_at": "2026-11-05T09:00",
+          "title": "Furnace",
+          "body": "Service overdue 14 days"
+        },
+        {
+          "id": "f316fe7b-f74c-5221-bbc4-ac859d346fce",
+          "kind": "service_overdue",
+          "component_id": "f1000000-0000-4000-8000-000000000001",
+          "fire_at": "2026-11-12T09:00",
+          "title": "Furnace",
+          "body": "Service overdue 21 days"
+        },
+        {
+          "id": "fac14dd7-8ffa-51de-8787-6defa3ae7077",
+          "kind": "service_overdue",
+          "component_id": "f1000000-0000-4000-8000-000000000001",
+          "fire_at": "2026-11-19T09:00",
+          "title": "Furnace",
+          "body": "Service overdue 28 days"
+        }
+      ]
+    },
+    {
+      "name": "overdue-with-some-repeats-left",
+      "now_local": "2026-10-22T10:00",
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365
+      },
+      "components": [
+        {
+          "id": "f1000000-0000-4000-8000-000000000001",
+          "name": "Furnace",
+          "component_type": "hvac_furnace",
+          "service_interval_days": 30,
+          "last_serviced_at": "2026-09-10",
+          "install_date": null,
+          "warranty_start": null,
+          "warranty_length_months": null,
+          "deleted": false
+        }
+      ],
+      "snoozed_until": {},
+      "enabled_kinds": [
+        "service_due",
+        "service_overdue",
+        "warranty_ending",
+        "recall"
+      ],
+      "max_items": 60,
+      "expected": [
+        {
+          "id": "00fddffb-0d38-5c3a-9625-4856b613346e",
+          "kind": "service_overdue",
+          "component_id": "f1000000-0000-4000-8000-000000000001",
+          "fire_at": "2026-10-24T09:00",
+          "title": "Furnace",
+          "body": "Service overdue 14 days"
+        },
+        {
+          "id": "9341de8f-780f-58ba-8b13-e9bf8429ead4",
+          "kind": "service_overdue",
+          "component_id": "f1000000-0000-4000-8000-000000000001",
+          "fire_at": "2026-10-31T09:00",
+          "title": "Furnace",
+          "body": "Service overdue 21 days"
+        },
+        {
+          "id": "6424ad69-30dd-5c45-82ef-b54b99b16905",
+          "kind": "service_overdue",
+          "component_id": "f1000000-0000-4000-8000-000000000001",
+          "fire_at": "2026-11-07T09:00",
+          "title": "Furnace",
+          "body": "Service overdue 28 days"
+        }
+      ]
+    },
+    {
+      "name": "overdue-long-ago-has-no-notices",
+      "now_local": "2026-10-22T08:00",
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365
+      },
+      "components": [
+        {
+          "id": "f1000000-0000-4000-8000-000000000001",
+          "name": "Furnace",
+          "component_type": "hvac_furnace",
+          "service_interval_days": 365,
+          "last_serviced_at": "2025-06-01",
+          "install_date": null,
+          "warranty_start": null,
+          "warranty_length_months": null,
+          "deleted": false
+        }
+      ],
+      "snoozed_until": {},
+      "enabled_kinds": [
+        "service_due",
+        "service_overdue",
+        "warranty_ending",
+        "recall"
+      ],
+      "max_items": 60,
+      "expected": []
+    },
+    {
+      "name": "warranty-30-and-7-day-notices-sort-ahead-of-the-service-schedule",
+      "now_local": "2026-10-22T08:00",
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365
+      },
+      "components": [
+        {
+          "id": "d1000000-0000-4000-8000-000000000002",
+          "name": "Dishwasher",
+          "component_type": "dishwasher",
+          "service_interval_days": 365,
+          "last_serviced_at": "2026-06-01",
+          "install_date": null,
+          "warranty_start": "2025-12-22",
+          "warranty_length_months": 12,
+          "deleted": false
+        }
+      ],
+      "snoozed_until": {},
+      "enabled_kinds": [
+        "service_due",
+        "service_overdue",
+        "warranty_ending",
+        "recall"
+      ],
+      "max_items": 60,
+      "expected": [
+        {
+          "id": "2f36efd7-5ece-50f6-95f0-489d513ac14a",
+          "kind": "warranty_ending",
+          "component_id": "d1000000-0000-4000-8000-000000000002",
+          "fire_at": "2026-11-22T09:00",
+          "title": "Dishwasher",
+          "body": "Warranty ends in 30 days"
+        },
+        {
+          "id": "051889de-72e0-5f54-815f-54a713280a28",
+          "kind": "warranty_ending",
+          "component_id": "d1000000-0000-4000-8000-000000000002",
+          "fire_at": "2026-12-15T09:00",
+          "title": "Dishwasher",
+          "body": "Warranty ends in 7 days"
+        },
+        {
+          "id": "ed49535a-e8df-5e67-925e-e9ed525f5d1f",
+          "kind": "service_due",
+          "component_id": "d1000000-0000-4000-8000-000000000002",
+          "fire_at": "2027-05-25T09:00",
+          "title": "Dishwasher",
+          "body": "Service due in 7 days"
+        },
+        {
+          "id": "bb125027-03ae-5599-819f-9716255ee9d1",
+          "kind": "service_due",
+          "component_id": "d1000000-0000-4000-8000-000000000002",
+          "fire_at": "2027-06-01T09:00",
+          "title": "Dishwasher",
+          "body": "Service due today"
+        },
+        {
+          "id": "35f5c8cb-62fa-5db1-9066-589e1e86e395",
+          "kind": "service_overdue",
+          "component_id": "d1000000-0000-4000-8000-000000000002",
+          "fire_at": "2027-06-08T09:00",
+          "title": "Dishwasher",
+          "body": "Service overdue 7 days"
+        },
+        {
+          "id": "49ab7782-4cfd-577d-9ac4-d34ed2f00a01",
+          "kind": "service_overdue",
+          "component_id": "d1000000-0000-4000-8000-000000000002",
+          "fire_at": "2027-06-15T09:00",
+          "title": "Dishwasher",
+          "body": "Service overdue 14 days"
+        },
+        {
+          "id": "57737169-6692-5222-a015-04f072104f26",
+          "kind": "service_overdue",
+          "component_id": "d1000000-0000-4000-8000-000000000002",
+          "fire_at": "2027-06-22T09:00",
+          "title": "Dishwasher",
+          "body": "Service overdue 21 days"
+        },
+        {
+          "id": "4c4a7885-e156-5720-bd0b-63d0adb80df3",
+          "kind": "service_overdue",
+          "component_id": "d1000000-0000-4000-8000-000000000002",
+          "fire_at": "2027-06-29T09:00",
+          "title": "Dishwasher",
+          "body": "Service overdue 28 days"
+        }
+      ]
+    },
+    {
+      "name": "enabled-kinds-exclude-warranty-ending",
+      "now_local": "2026-10-22T08:00",
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365
+      },
+      "components": [
+        {
+          "id": "d1000000-0000-4000-8000-000000000002",
+          "name": "Dishwasher",
+          "component_type": "dishwasher",
+          "service_interval_days": 365,
+          "last_serviced_at": "2026-06-01",
+          "install_date": null,
+          "warranty_start": "2025-12-22",
+          "warranty_length_months": 12,
+          "deleted": false
+        }
+      ],
+      "snoozed_until": {},
+      "enabled_kinds": [
+        "service_due",
+        "service_overdue",
+        "recall"
+      ],
+      "max_items": 60,
+      "expected": [
+        {
+          "id": "ed49535a-e8df-5e67-925e-e9ed525f5d1f",
+          "kind": "service_due",
+          "component_id": "d1000000-0000-4000-8000-000000000002",
+          "fire_at": "2027-05-25T09:00",
+          "title": "Dishwasher",
+          "body": "Service due in 7 days"
+        },
+        {
+          "id": "bb125027-03ae-5599-819f-9716255ee9d1",
+          "kind": "service_due",
+          "component_id": "d1000000-0000-4000-8000-000000000002",
+          "fire_at": "2027-06-01T09:00",
+          "title": "Dishwasher",
+          "body": "Service due today"
+        },
+        {
+          "id": "35f5c8cb-62fa-5db1-9066-589e1e86e395",
+          "kind": "service_overdue",
+          "component_id": "d1000000-0000-4000-8000-000000000002",
+          "fire_at": "2027-06-08T09:00",
+          "title": "Dishwasher",
+          "body": "Service overdue 7 days"
+        },
+        {
+          "id": "49ab7782-4cfd-577d-9ac4-d34ed2f00a01",
+          "kind": "service_overdue",
+          "component_id": "d1000000-0000-4000-8000-000000000002",
+          "fire_at": "2027-06-15T09:00",
+          "title": "Dishwasher",
+          "body": "Service overdue 14 days"
+        },
+        {
+          "id": "57737169-6692-5222-a015-04f072104f26",
+          "kind": "service_overdue",
+          "component_id": "d1000000-0000-4000-8000-000000000002",
+          "fire_at": "2027-06-22T09:00",
+          "title": "Dishwasher",
+          "body": "Service overdue 21 days"
+        },
+        {
+          "id": "4c4a7885-e156-5720-bd0b-63d0adb80df3",
+          "kind": "service_overdue",
+          "component_id": "d1000000-0000-4000-8000-000000000002",
+          "fire_at": "2027-06-29T09:00",
+          "title": "Dishwasher",
+          "body": "Service overdue 28 days"
+        }
+      ]
+    },
+    {
+      "name": "snooze-does-not-silence-warranty-notices",
+      "now_local": "2026-10-22T08:00",
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365
+      },
+      "components": [
+        {
+          "id": "d1000000-0000-4000-8000-000000000002",
+          "name": "Dishwasher",
+          "component_type": "dishwasher",
+          "service_interval_days": 365,
+          "last_serviced_at": "2026-06-01",
+          "install_date": null,
+          "warranty_start": "2025-12-22",
+          "warranty_length_months": 12,
+          "deleted": false
+        }
+      ],
+      "snoozed_until": {
+        "d1000000-0000-4000-8000-000000000002": "2027-12-31"
+      },
+      "enabled_kinds": [
+        "service_due",
+        "service_overdue",
+        "warranty_ending",
+        "recall"
+      ],
+      "max_items": 60,
+      "expected": [
+        {
+          "id": "2f36efd7-5ece-50f6-95f0-489d513ac14a",
+          "kind": "warranty_ending",
+          "component_id": "d1000000-0000-4000-8000-000000000002",
+          "fire_at": "2026-11-22T09:00",
+          "title": "Dishwasher",
+          "body": "Warranty ends in 30 days"
+        },
+        {
+          "id": "051889de-72e0-5f54-815f-54a713280a28",
+          "kind": "warranty_ending",
+          "component_id": "d1000000-0000-4000-8000-000000000002",
+          "fire_at": "2026-12-15T09:00",
+          "title": "Dishwasher",
+          "body": "Warranty ends in 7 days"
+        }
+      ]
+    },
+    {
+      "name": "warranty-only-needs-baseline-component-still-notifies",
+      "now_local": "2026-10-22T08:00",
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365
+      },
+      "components": [
+        {
+          "id": "d1000000-0000-4000-8000-000000000002",
+          "name": "Dishwasher",
+          "component_type": "dishwasher",
+          "service_interval_days": null,
+          "last_serviced_at": null,
+          "install_date": null,
+          "warranty_start": "2025-12-22",
+          "warranty_length_months": 12,
+          "deleted": false
+        }
+      ],
+      "snoozed_until": {},
+      "enabled_kinds": [
+        "service_due",
+        "service_overdue",
+        "warranty_ending",
+        "recall"
+      ],
+      "max_items": 60,
+      "expected": [
+        {
+          "id": "2f36efd7-5ece-50f6-95f0-489d513ac14a",
+          "kind": "warranty_ending",
+          "component_id": "d1000000-0000-4000-8000-000000000002",
+          "fire_at": "2026-11-22T09:00",
+          "title": "Dishwasher",
+          "body": "Warranty ends in 30 days"
+        },
+        {
+          "id": "051889de-72e0-5f54-815f-54a713280a28",
+          "kind": "warranty_ending",
+          "component_id": "d1000000-0000-4000-8000-000000000002",
+          "fire_at": "2026-12-15T09:00",
+          "title": "Dishwasher",
+          "body": "Warranty ends in 7 days"
+        }
+      ]
+    },
+    {
+      "name": "warranty-five-days-out-has-no-eligible-notice",
+      "now_local": "2026-10-22T08:00",
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365
+      },
+      "components": [
+        {
+          "id": "d1000000-0000-4000-8000-000000000002",
+          "name": "Dishwasher",
+          "component_type": "dishwasher",
+          "service_interval_days": null,
+          "last_serviced_at": null,
+          "install_date": null,
+          "warranty_start": "2025-10-27",
+          "warranty_length_months": 12,
+          "deleted": false
+        }
+      ],
+      "snoozed_until": {},
+      "enabled_kinds": [
+        "service_due",
+        "service_overdue",
+        "warranty_ending",
+        "recall"
+      ],
+      "max_items": 60,
+      "expected": []
+    },
+    {
+      "name": "needs-baseline-without-warranty-produces-nothing",
+      "now_local": "2026-10-22T08:00",
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365
+      },
+      "components": [
+        {
+          "id": "f2000000-0000-4000-8000-000000000001",
+          "name": "Toilet",
+          "component_type": "toilet",
+          "service_interval_days": null,
+          "last_serviced_at": "2026-01-01",
+          "install_date": null,
+          "warranty_start": null,
+          "warranty_length_months": null,
+          "deleted": false
+        }
+      ],
+      "snoozed_until": {},
+      "enabled_kinds": [
+        "service_due",
+        "service_overdue",
+        "warranty_ending",
+        "recall"
+      ],
+      "max_items": 60,
+      "expected": []
+    },
+    {
+      "name": "same-fire-at-orders-by-kind-rank-then-id",
+      "now_local": "2026-10-22T08:00",
+      "home_defaults": {},
+      "taxonomy_defaults": {
+        "hvac_furnace": 365,
+        "water_heater": 365
+      },
+      "components": [
+        {
+          "id": "f1000000-0000-4000-8000-0000000000a1",
+          "name": "Furnace",
+          "component_type": "other",
+          "service_interval_days": 30,
+          "last_serviced_at": "2026-10-03",
+          "install_date": null,
+          "warranty_start": null,
+          "warranty_length_months": null,
+          "deleted": false
+        },
+        {
+          "id": "b1000000-0000-4000-8000-0000000000b1",
+          "name": "Boiler",
+          "component_type": "other",
+          "service_interval_days": 30,
+          "last_serviced_at": "2026-10-10",
+          "install_date": null,
+          "warranty_start": null,
+          "warranty_length_months": null,
+          "deleted": false
+        }
+      ],
+      "snoozed_until": {},
+      "enabled_kinds": [
+        "service_due",
+        "service_overdue",
+        "warranty_ending",
+        "recall"
+      ],
+      "max_items": 60,
+      "expected": [
+        {
+          "id": "29275a4b-a9d5-5618-85ad-887f6483b412",
+          "kind": "service_due",
+          "component_id": "f1000000-0000-4000-8000-0000000000a1",
+          "fire_at": "2026-10-26T09:00",
+          "title": "Furnace",
+          "body": "Service due in 7 days"
+        },
+        {
+          "id": "96ec08b5-8636-5f7b-8c74-91301be04299",
+          "kind": "service_due",
+          "component_id": "f1000000-0000-4000-8000-0000000000a1",
+          "fire_at": "2026-11-02T09:00",
+          "title": "Furnace",
+          "body": "Service due today"
+        },
+        {
+          "id": "c5a7a46c-a04b-5037-a3f3-bb71b259c548",
+          "kind": "service_due",
+          "component_id": "b1000000-0000-4000-8000-0000000000b1",
+          "fire_at": "2026-11-02T09:00",
+          "title": "Boiler",
+          "body": "Service due in 7 days"
+        },
+        {
+          "id": "b961f38e-82cb-5ac4-98e1-f9b09cb8118d",
+          "kind": "service_due",
+          "component_id": "b1000000-0000-4000-8000-0000000000b1",
+          "fire_at": "2026-11-09T09:00",
+          "title": "Boiler",
+          "body": "Service due today"
+        },
+        {
+          "id": "ad120950-f9f1-51eb-9cd1-ce8d01b4bde5",
+          "kind": "service_overdue",
+          "component_id": "f1000000-0000-4000-8000-0000000000a1",
+          "fire_at": "2026-11-09T09:00",
+          "title": "Furnace",
+          "body": "Service overdue 7 days"
+        },
+        {
+          "id": "b7bbc77d-965b-5ff0-9e71-091604215ff6",
+          "kind": "service_overdue",
+          "component_id": "b1000000-0000-4000-8000-0000000000b1",
+          "fire_at": "2026-11-16T09:00",
+          "title": "Boiler",
+          "body": "Service overdue 7 days"
+        },
+        {
+          "id": "f556832b-6795-58c0-9211-2f3facbd09ab",
+          "kind": "service_overdue",
+          "component_id": "f1000000-0000-4000-8000-0000000000a1",
+          "fire_at": "2026-11-16T09:00",
+          "title": "Furnace",
+          "body": "Service overdue 14 days"
+        },
+        {
+          "id": "d35fd92c-9df6-56ea-b642-e6bb8035d8f1",
+          "kind": "service_overdue",
+          "component_id": "b1000000-0000-4000-8000-0000000000b1",
+          "fire_at": "2026-11-23T09:00",
+          "title": "Boiler",
+          "body": "Service overdue 14 days"
+        },
+        {
+          "id": "d71f53f1-b473-525d-a35d-b9752792c6b6",
+          "kind": "service_overdue",
+          "component_id": "f1000000-0000-4000-8000-0000000000a1",
+          "fire_at": "2026-11-23T09:00",
+          "title": "Furnace",
+          "body": "Service overdue 21 days"
+        },
+        {
+          "id": "3c3a6213-520d-511b-aab8-d889f862098a",
+          "kind": "service_overdue",
+          "component_id": "f1000000-0000-4000-8000-0000000000a1",
+          "fire_at": "2026-11-30T09:00",
+          "title": "Furnace",
+          "body": "Service overdue 28 days"
+        },
+        {
+          "id": "67a85181-a8d4-598e-b045-87cc160a10a4",
+          "kind": "service_overdue",
+          "component_id": "b1000000-0000-4000-8000-0000000000b1",
+          "fire_at": "2026-11-30T09:00",
+          "title": "Boiler",
+          "body": "Service overdue 21 days"
+        },
+        {
+          "id": "3a7c86d0-c3c6-5eb1-b551-9e1d285940b6",
+          "kind": "service_overdue",
+          "component_id": "b1000000-0000-4000-8000-0000000000b1",
+          "fire_at": "2026-12-07T09:00",
+          "title": "Boiler",
+          "body": "Service overdue 28 days"
+        }
+      ]
+    }
+  ],
+  "id_vectors": [
+    {
+      "name": "furnace-service-due-today",
+      "component_id": "f1000000-0000-4000-8000-000000000001",
+      "kind": "service_due",
+      "fire_date": "2026-10-25",
+      "expected_id": "776936ea-0bfc-56e8-a716-a558f3507cbd"
+    },
+    {
+      "name": "furnace-overdue-7-days",
+      "component_id": "f1000000-0000-4000-8000-000000000001",
+      "kind": "service_overdue",
+      "fire_date": "2026-11-01",
+      "expected_id": "284a8518-0ff1-5516-be42-74aa8c2e3af1"
+    },
+    {
+      "name": "dishwasher-warranty-30-days",
+      "component_id": "d1000000-0000-4000-8000-000000000002",
+      "kind": "warranty_ending",
+      "fire_date": "2026-11-22",
+      "expected_id": "2f36efd7-5ece-50f6-95f0-489d513ac14a"
+    },
+    {
+      "name": "dishwasher-warranty-7-days",
+      "component_id": "d1000000-0000-4000-8000-000000000002",
+      "kind": "warranty_ending",
+      "fire_date": "2026-12-15",
+      "expected_id": "051889de-72e0-5f54-815f-54a713280a28"
+    },
+    {
+      "name": "uppercase-furnace-service-due-today",
+      "component_id": "F1000000-0000-4000-8000-000000000001",
+      "kind": "service_due",
+      "fire_date": "2026-10-25",
+      "expected_id": "776936ea-0bfc-56e8-a716-a558f3507cbd"
+    }
+  ]
+}
