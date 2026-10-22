@@ -1,0 +1,502 @@
+{
+  "version": "0.5.0",
+  "brands": [
+    {
+      "name": "A. O. Smith",
+      "aliases": [
+        "A O SMITH",
+        "AO SMITH",
+        "AOSMITH"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "American Standard",
+      "aliases": [
+        "AMERICAN STANDARD"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Amana",
+      "aliases": [
+        "AMANA"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Arlo",
+      "aliases": [
+        "ARLO"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "August",
+      "aliases": [
+        "AUGUST"
+      ],
+      "short_line_only": true
+    },
+    {
+      "name": "Bosch",
+      "aliases": [
+        "BOSCH"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Bradford White",
+      "aliases": [
+        "BRADFORD WHITE"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Briggs & Stratton",
+      "aliases": [
+        "BRIGGS STRATTON",
+        "BRIGGS AND STRATTON"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Bryant",
+      "aliases": [
+        "BRYANT"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Burnham",
+      "aliases": [
+        "BURNHAM"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Carrier",
+      "aliases": [
+        "CARRIER"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Culligan",
+      "aliases": [
+        "CULLIGAN"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Daikin",
+      "aliases": [
+        "DAIKIN"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Delta",
+      "aliases": [
+        "DELTA"
+      ],
+      "short_line_only": true
+    },
+    {
+      "name": "Eaton",
+      "aliases": [
+        "EATON",
+        "CUTLER HAMMER"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Ecobee",
+      "aliases": [
+        "ECOBEE"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "eero",
+      "aliases": [
+        "EERO"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Electrolux",
+      "aliases": [
+        "ELECTROLUX"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Emerson",
+      "aliases": [
+        "EMERSON"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Enphase",
+      "aliases": [
+        "ENPHASE"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Frigidaire",
+      "aliases": [
+        "FRIGIDAIRE"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Fujitsu",
+      "aliases": [
+        "FUJITSU"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "GE",
+      "aliases": [
+        "GE",
+        "GE APPLIANCES",
+        "GENERAL ELECTRIC"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Generac",
+      "aliases": [
+        "GENERAC"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Goodman",
+      "aliases": [
+        "GOODMAN"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Haier",
+      "aliases": [
+        "HAIER"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Heil",
+      "aliases": [
+        "HEIL"
+      ],
+      "short_line_only": true
+    },
+    {
+      "name": "Honeywell",
+      "aliases": [
+        "HONEYWELL",
+        "RESIDEO"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Kenmore",
+      "aliases": [
+        "KENMORE"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "KitchenAid",
+      "aliases": [
+        "KITCHENAID"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Kohler",
+      "aliases": [
+        "KOHLER"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Kwikset",
+      "aliases": [
+        "KWIKSET"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Lennox",
+      "aliases": [
+        "LENNOX"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "LG",
+      "aliases": [
+        "LG"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Liberty Pumps",
+      "aliases": [
+        "LIBERTY PUMPS",
+        "LIBERTY"
+      ],
+      "short_line_only": true
+    },
+    {
+      "name": "Linksys",
+      "aliases": [
+        "LINKSYS"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Lochinvar",
+      "aliases": [
+        "LOCHINVAR"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Maytag",
+      "aliases": [
+        "MAYTAG"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Miele",
+      "aliases": [
+        "MIELE"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Mitsubishi",
+      "aliases": [
+        "MITSUBISHI"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Moen",
+      "aliases": [
+        "MOEN"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Murray",
+      "aliases": [
+        "MURRAY"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Navien",
+      "aliases": [
+        "NAVIEN"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Nest",
+      "aliases": [
+        "NEST",
+        "GOOGLE NEST"
+      ],
+      "short_line_only": true
+    },
+    {
+      "name": "Netgear",
+      "aliases": [
+        "NETGEAR"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Nordyne",
+      "aliases": [
+        "NORDYNE"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Payne",
+      "aliases": [
+        "PAYNE"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Pfister",
+      "aliases": [
+        "PFISTER"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Rheem",
+      "aliases": [
+        "RHEEM"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Rinnai",
+      "aliases": [
+        "RINNAI"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Ring",
+      "aliases": [
+        "RING"
+      ],
+      "short_line_only": true
+    },
+    {
+      "name": "Ruud",
+      "aliases": [
+        "RUUD"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Samsung",
+      "aliases": [
+        "SAMSUNG"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Schlage",
+      "aliases": [
+        "SCHLAGE"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Sensi",
+      "aliases": [
+        "SENSI"
+      ],
+      "short_line_only": true
+    },
+    {
+      "name": "SolarEdge",
+      "aliases": [
+        "SOLAREDGE"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Square D",
+      "aliases": [
+        "SQUARE D",
+        "SQUARED"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "State",
+      "aliases": [
+        "STATE",
+        "STATE WATER HEATERS"
+      ],
+      "short_line_only": true
+    },
+    {
+      "name": "Siemens",
+      "aliases": [
+        "SIEMENS"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Tesla",
+      "aliases": [
+        "TESLA"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "TP-Link",
+      "aliases": [
+        "TP LINK",
+        "TPLINK"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Trane",
+      "aliases": [
+        "TRANE"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Ubiquiti",
+      "aliases": [
+        "UBIQUITI",
+        "UNIFI"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Wayne",
+      "aliases": [
+        "WAYNE"
+      ],
+      "short_line_only": true
+    },
+    {
+      "name": "Weil-McLain",
+      "aliases": [
+        "WEIL MCLAIN",
+        "WEILMCLAIN"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Whirlpool",
+      "aliases": [
+        "WHIRLPOOL"
+      ],
+      "short_line_only": false
+    },
+    {
+      "name": "Yale",
+      "aliases": [
+        "YALE"
+      ],
+      "short_line_only": true
+    },
+    {
+      "name": "York",
+      "aliases": [
+        "YORK"
+      ],
+      "short_line_only": true
+    },
+    {
+      "name": "Zoeller",
+      "aliases": [
+        "ZOELLER"
+      ],
+      "short_line_only": false
+    }
+  ]
+}

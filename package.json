@@ -1,6 +1,6 @@
 {
   "name": "homebody-spec",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "The Home Record spec: open, versioned JSON Schema plus generated Swift/Kotlin/TypeScript models and golden fixtures.",
   "license": "MIT",
   "main": "./dist/index.js",
@@ -26,7 +26,12 @@
     "spec/render/style-tokens.json",
     "spec/fixtures/render/",
     "spec/fixtures/roomplan/",
-    "spec/docs/roomplan-projection.md",
+    "spec/docs/",
+    "spec/taxonomy/",
+    "spec/fixtures/bootstrap-systems.json",
+    "spec/fixtures/condition-rollup.json",
+    "spec/fixtures/nameplate/",
+    "spec/fixtures/components/",
     "spec/VERSION",
     "README.md",
     "LICENSE"
@@ -45,8 +50,10 @@
     "test:types": "tsc --noEmit --strict --module Node16 --moduleResolution Node16 --target ES2022 tests/typescript-consumer.ts",
     "test:consumer": "node tests/package-consumer.mjs",
     "test:roomplan": "node --test tests/roomplan-fixtures.test.mjs",
+    "test:taxonomy": "node --test tests/taxonomy.test.mjs",
+    "test:components": "node --test tests/components-fixtures.test.mjs",
     "test:render": "vitest run",
-    "test": "npm run build && npm run test:resolver && npm run test:validator && npm run test:fixtures && npm run test:version && npm run test:types && npm run test:consumer && npm run test:roomplan && npm run test:render",
+    "test": "npm run build && npm run test:resolver && npm run test:validator && npm run test:fixtures && npm run test:version && npm run test:types && npm run test:consumer && npm run test:roomplan && npm run test:taxonomy && npm run test:components && npm run test:render",
     "prepare": "npm run build",
     "prepack": "npm run build"
   },

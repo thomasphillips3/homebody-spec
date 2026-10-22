@@ -1,0 +1,2570 @@
+{
+  "version": "0.5.0",
+  "categories": [
+    "plumbing",
+    "electrical",
+    "hvac",
+    "roof_structure",
+    "appliances_and_water_heater",
+    "exterior_and_site",
+    "low_voltage_and_smart_home"
+  ],
+  "types": [
+    {
+      "id": "plumbing_fixture",
+      "category": "plumbing",
+      "label": "Plumbing fixture",
+      "placement": "point",
+      "default_service_interval_days": null,
+      "aliases": [
+        "fixture",
+        "faucet",
+        "tub",
+        "shower"
+      ],
+      "fields": [
+        {
+          "key": "fixture_kind",
+          "label": "Fixture kind",
+          "kind": "enum",
+          "options": [
+            "sink",
+            "toilet",
+            "tub",
+            "shower",
+            "faucet",
+            "bidet",
+            "laundry_tub",
+            "other"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "toilet",
+      "category": "plumbing",
+      "label": "Toilet",
+      "placement": "point",
+      "default_service_interval_days": null,
+      "aliases": [
+        "water closet",
+        "wc"
+      ],
+      "fields": [
+        {
+          "key": "flush_volume_gpf",
+          "label": "Flush volume",
+          "kind": "number",
+          "unit": "gpf"
+        }
+      ]
+    },
+    {
+      "id": "sink",
+      "category": "plumbing",
+      "label": "Sink",
+      "placement": "point",
+      "default_service_interval_days": null,
+      "aliases": [
+        "lavatory",
+        "basin"
+      ],
+      "fields": [
+        {
+          "key": "sink_kind",
+          "label": "Sink kind",
+          "kind": "enum",
+          "options": [
+            "kitchen",
+            "bath",
+            "utility",
+            "bar"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bathtub_shower",
+      "category": "plumbing",
+      "label": "Tub or shower",
+      "placement": "point",
+      "default_service_interval_days": null,
+      "aliases": [
+        "bathtub",
+        "shower",
+        "tub"
+      ],
+      "fields": [
+        {
+          "key": "kind",
+          "label": "Kind",
+          "kind": "enum",
+          "options": [
+            "tub",
+            "shower",
+            "tub_shower"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "main_water_shutoff",
+      "category": "plumbing",
+      "label": "Main water shut-off valve",
+      "placement": "point",
+      "default_service_interval_days": 365,
+      "aliases": [
+        "shutoff valve",
+        "main valve",
+        "stop valve"
+      ],
+      "fields": [
+        {
+          "key": "valve_type",
+          "label": "Valve type",
+          "kind": "enum",
+          "options": [
+            "ball",
+            "gate",
+            "globe",
+            "other"
+          ]
+        },
+        {
+          "key": "size_in",
+          "label": "Size",
+          "kind": "number",
+          "unit": "in"
+        }
+      ]
+    },
+    {
+      "id": "gas_shutoff",
+      "category": "plumbing",
+      "label": "Main fuel shut-off valve",
+      "placement": "point",
+      "default_service_interval_days": null,
+      "aliases": [
+        "gas valve",
+        "fuel shutoff"
+      ],
+      "fields": [
+        {
+          "key": "fuel",
+          "label": "Fuel",
+          "kind": "enum",
+          "options": [
+            "natural_gas",
+            "propane",
+            "oil"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "water_supply_line",
+      "category": "plumbing",
+      "label": "Water supply piping",
+      "placement": "run",
+      "default_service_interval_days": null,
+      "aliases": [
+        "supply line",
+        "water pipe",
+        "pex",
+        "copper"
+      ],
+      "fields": [
+        {
+          "key": "pipe_material",
+          "label": "Pipe material",
+          "kind": "enum",
+          "options": [
+            "copper",
+            "pex",
+            "cpvc",
+            "galvanized",
+            "pvc",
+            "polybutylene",
+            "other"
+          ]
+        },
+        {
+          "key": "diameter_in",
+          "label": "Diameter",
+          "kind": "number",
+          "unit": "in"
+        },
+        {
+          "key": "service",
+          "label": "Service",
+          "kind": "enum",
+          "options": [
+            "hot",
+            "cold",
+            "both"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "drain_waste_vent",
+      "category": "plumbing",
+      "label": "Drain, waste, and vent piping",
+      "placement": "run",
+      "default_service_interval_days": null,
+      "aliases": [
+        "dwv",
+        "drain line",
+        "waste line",
+        "vent stack",
+        "stack"
+      ],
+      "fields": [
+        {
+          "key": "pipe_material",
+          "label": "Pipe material",
+          "kind": "enum",
+          "options": [
+            "abs",
+            "pvc",
+            "cast_iron",
+            "copper",
+            "galvanized",
+            "other"
+          ]
+        },
+        {
+          "key": "diameter_in",
+          "label": "Diameter",
+          "kind": "number",
+          "unit": "in"
+        }
+      ]
+    },
+    {
+      "id": "sewer_lateral",
+      "category": "plumbing",
+      "label": "Sewer lateral",
+      "placement": "run",
+      "default_service_interval_days": 1825,
+      "aliases": [
+        "sewer line",
+        "main drain"
+      ],
+      "fields": [
+        {
+          "key": "pipe_material",
+          "label": "Pipe material",
+          "kind": "enum",
+          "options": [
+            "pvc",
+            "cast_iron",
+            "clay",
+            "orangeburg",
+            "other"
+          ]
+        },
+        {
+          "key": "last_scoped",
+          "label": "Last scoped",
+          "kind": "date"
+        }
+      ]
+    },
+    {
+      "id": "sump_pump",
+      "category": "plumbing",
+      "label": "Sump pump",
+      "placement": "point",
+      "default_service_interval_days": 180,
+      "aliases": [
+        "drainage pump",
+        "ejector pump"
+      ],
+      "fields": [
+        {
+          "key": "pump_type",
+          "label": "Pump type",
+          "kind": "enum",
+          "options": [
+            "submersible",
+            "pedestal"
+          ]
+        },
+        {
+          "key": "horsepower",
+          "label": "Horsepower",
+          "kind": "number",
+          "unit": "hp"
+        },
+        {
+          "key": "battery_backup",
+          "label": "Battery backup",
+          "kind": "bool"
+        }
+      ]
+    },
+    {
+      "id": "water_treatment",
+      "category": "plumbing",
+      "label": "Water softener or filter",
+      "placement": "point",
+      "default_service_interval_days": 365,
+      "aliases": [
+        "softener",
+        "water filter",
+        "reverse osmosis",
+        "ro system"
+      ],
+      "fields": [
+        {
+          "key": "treatment_type",
+          "label": "Treatment type",
+          "kind": "enum",
+          "options": [
+            "softener",
+            "carbon_filter",
+            "sediment_filter",
+            "reverse_osmosis",
+            "uv",
+            "whole_house_filter",
+            "other"
+          ]
+        },
+        {
+          "key": "filter_model",
+          "label": "Filter model",
+          "kind": "text"
+        }
+      ]
+    },
+    {
+      "id": "electrical_panel",
+      "category": "electrical",
+      "label": "Electrical panel",
+      "placement": "point",
+      "default_service_interval_days": 1095,
+      "aliases": [
+        "breaker box",
+        "panelboard",
+        "load center",
+        "fuse box"
+      ],
+      "fields": [
+        {
+          "key": "main_amperage",
+          "label": "Main amperage",
+          "kind": "number",
+          "unit": "A"
+        },
+        {
+          "key": "panel_type",
+          "label": "Panel type",
+          "kind": "enum",
+          "options": [
+            "breaker",
+            "fuse"
+          ]
+        },
+        {
+          "key": "total_spaces",
+          "label": "Total spaces",
+          "kind": "number"
+        }
+      ]
+    },
+    {
+      "id": "subpanel",
+      "category": "electrical",
+      "label": "Subpanel",
+      "placement": "point",
+      "default_service_interval_days": 1095,
+      "aliases": [
+        "sub panel",
+        "garage panel"
+      ],
+      "fields": [
+        {
+          "key": "main_amperage",
+          "label": "Main amperage",
+          "kind": "number",
+          "unit": "A"
+        },
+        {
+          "key": "fed_from",
+          "label": "Fed from",
+          "kind": "text"
+        }
+      ]
+    },
+    {
+      "id": "electric_meter",
+      "category": "electrical",
+      "label": "Electric meter",
+      "placement": "point",
+      "default_service_interval_days": null,
+      "aliases": [
+        "meter base",
+        "utility meter"
+      ],
+      "fields": [
+        {
+          "key": "meter_number",
+          "label": "Meter number",
+          "kind": "text"
+        },
+        {
+          "key": "utility",
+          "label": "Utility",
+          "kind": "text"
+        }
+      ]
+    },
+    {
+      "id": "service_conductors",
+      "category": "electrical",
+      "label": "Service entrance conductors",
+      "placement": "run",
+      "default_service_interval_days": null,
+      "aliases": [
+        "service drop",
+        "service entrance",
+        "service lateral",
+        "mast"
+      ],
+      "fields": [
+        {
+          "key": "service_type",
+          "label": "Service type",
+          "kind": "enum",
+          "options": [
+            "overhead",
+            "underground"
+          ]
+        },
+        {
+          "key": "service_amperage",
+          "label": "Service amperage",
+          "kind": "number",
+          "unit": "A"
+        }
+      ]
+    },
+    {
+      "id": "branch_circuit",
+      "category": "electrical",
+      "label": "Branch circuit",
+      "placement": "run",
+      "default_service_interval_days": null,
+      "aliases": [
+        "circuit",
+        "wiring run",
+        "romex"
+      ],
+      "fields": [
+        {
+          "key": "circuit_label",
+          "label": "Circuit label",
+          "kind": "text"
+        },
+        {
+          "key": "breaker_amperage",
+          "label": "Breaker amperage",
+          "kind": "number",
+          "unit": "A"
+        },
+        {
+          "key": "wire_gauge",
+          "label": "Wire gauge",
+          "kind": "enum",
+          "options": [
+            "14",
+            "12",
+            "10",
+            "8",
+            "6",
+            "other"
+          ]
+        },
+        {
+          "key": "protection",
+          "label": "Protection",
+          "kind": "enum",
+          "options": [
+            "standard",
+            "gfci",
+            "afci",
+            "dual_function"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "outlet",
+      "category": "electrical",
+      "label": "Outlet",
+      "placement": "point",
+      "default_service_interval_days": null,
+      "aliases": [
+        "receptacle",
+        "plug"
+      ],
+      "fields": [
+        {
+          "key": "outlet_type",
+          "label": "Outlet type",
+          "kind": "enum",
+          "options": [
+            "standard",
+            "gfci",
+            "afci",
+            "usb",
+            "240v",
+            "other"
+          ]
+        },
+        {
+          "key": "amperage",
+          "label": "Amperage",
+          "kind": "number",
+          "unit": "A"
+        },
+        {
+          "key": "circuit_label",
+          "label": "Circuit label",
+          "kind": "text"
+        }
+      ]
+    },
+    {
+      "id": "gfci_receptacle",
+      "category": "electrical",
+      "label": "GFCI receptacle or breaker",
+      "placement": "point",
+      "default_service_interval_days": 90,
+      "aliases": [
+        "gfci",
+        "gfi",
+        "ground fault"
+      ],
+      "fields": [
+        {
+          "key": "gfci_form",
+          "label": "Gfci form",
+          "kind": "enum",
+          "options": [
+            "receptacle",
+            "breaker"
+          ]
+        },
+        {
+          "key": "circuit_label",
+          "label": "Circuit label",
+          "kind": "text"
+        }
+      ]
+    },
+    {
+      "id": "light_fixture",
+      "category": "electrical",
+      "label": "Light fixture",
+      "placement": "point",
+      "default_service_interval_days": null,
+      "aliases": [
+        "light",
+        "lamp",
+        "recessed light",
+        "ceiling light"
+      ],
+      "fields": [
+        {
+          "key": "bulb_type",
+          "label": "Bulb type",
+          "kind": "enum",
+          "options": [
+            "led",
+            "incandescent",
+            "cfl",
+            "halogen",
+            "fluorescent"
+          ]
+        },
+        {
+          "key": "wattage",
+          "label": "Wattage",
+          "kind": "number",
+          "unit": "W"
+        }
+      ]
+    },
+    {
+      "id": "smoke_detector",
+      "category": "electrical",
+      "label": "Smoke detector",
+      "placement": "point",
+      "default_service_interval_days": 180,
+      "aliases": [
+        "smoke alarm",
+        "fire alarm"
+      ],
+      "fields": [
+        {
+          "key": "power_source",
+          "label": "Power source",
+          "kind": "enum",
+          "options": [
+            "battery",
+            "hardwired",
+            "hardwired_battery"
+          ]
+        },
+        {
+          "key": "expires_on",
+          "label": "Expires on",
+          "kind": "date"
+        },
+        {
+          "key": "interconnected",
+          "label": "Interconnected",
+          "kind": "bool"
+        }
+      ]
+    },
+    {
+      "id": "co_detector",
+      "category": "electrical",
+      "label": "Carbon monoxide detector",
+      "placement": "point",
+      "default_service_interval_days": 180,
+      "aliases": [
+        "co alarm",
+        "carbon monoxide alarm"
+      ],
+      "fields": [
+        {
+          "key": "power_source",
+          "label": "Power source",
+          "kind": "enum",
+          "options": [
+            "battery",
+            "hardwired",
+            "hardwired_battery"
+          ]
+        },
+        {
+          "key": "expires_on",
+          "label": "Expires on",
+          "kind": "date"
+        }
+      ]
+    },
+    {
+      "id": "generator",
+      "category": "electrical",
+      "label": "Generator",
+      "placement": "point",
+      "default_service_interval_days": 365,
+      "aliases": [
+        "standby generator",
+        "backup generator"
+      ],
+      "fields": [
+        {
+          "key": "fuel",
+          "label": "Fuel",
+          "kind": "enum",
+          "options": [
+            "natural_gas",
+            "propane",
+            "gasoline",
+            "diesel"
+          ]
+        },
+        {
+          "key": "output_kw",
+          "label": "Output",
+          "kind": "number",
+          "unit": "kW"
+        },
+        {
+          "key": "transfer_switch",
+          "label": "Transfer switch",
+          "kind": "bool"
+        }
+      ]
+    },
+    {
+      "id": "solar_pv_system",
+      "category": "electrical",
+      "label": "Solar PV system",
+      "placement": "either",
+      "default_service_interval_days": 365,
+      "aliases": [
+        "solar panels",
+        "photovoltaic",
+        "pv array",
+        "inverter"
+      ],
+      "fields": [
+        {
+          "key": "system_size_kw",
+          "label": "System size",
+          "kind": "number",
+          "unit": "kW"
+        },
+        {
+          "key": "panel_count",
+          "label": "Panel count",
+          "kind": "number"
+        },
+        {
+          "key": "inverter_type",
+          "label": "Inverter type",
+          "kind": "enum",
+          "options": [
+            "string",
+            "micro",
+            "hybrid"
+          ]
+        },
+        {
+          "key": "battery_storage",
+          "label": "Battery storage",
+          "kind": "bool"
+        }
+      ]
+    },
+    {
+      "id": "hvac_furnace",
+      "category": "hvac",
+      "label": "Furnace",
+      "placement": "point",
+      "default_service_interval_days": 365,
+      "aliases": [
+        "gas furnace",
+        "forced air furnace",
+        "heater"
+      ],
+      "fields": [
+        {
+          "key": "fuel",
+          "label": "Fuel",
+          "kind": "enum",
+          "options": [
+            "natural_gas",
+            "propane",
+            "oil",
+            "electric"
+          ]
+        },
+        {
+          "key": "afue",
+          "label": "Efficiency (AFUE)",
+          "kind": "number",
+          "unit": "%"
+        },
+        {
+          "key": "capacity_btuh",
+          "label": "Capacity",
+          "kind": "number",
+          "unit": "BTU/h"
+        },
+        {
+          "key": "stages",
+          "label": "Stages",
+          "kind": "enum",
+          "options": [
+            "single",
+            "two_stage",
+            "modulating"
+          ]
+        },
+        {
+          "key": "filter_size",
+          "label": "Filter size",
+          "kind": "text"
+        }
+      ]
+    },
+    {
+      "id": "hvac_ac_unit",
+      "category": "hvac",
+      "label": "Central air conditioner",
+      "placement": "point",
+      "default_service_interval_days": 365,
+      "aliases": [
+        "ac",
+        "condenser",
+        "air conditioner",
+        "a/c"
+      ],
+      "fields": [
+        {
+          "key": "capacity_tons",
+          "label": "Capacity",
+          "kind": "number",
+          "unit": "tons"
+        },
+        {
+          "key": "seer",
+          "label": "SEER",
+          "kind": "number"
+        },
+        {
+          "key": "refrigerant",
+          "label": "Refrigerant",
+          "kind": "enum",
+          "options": [
+            "r410a",
+            "r22",
+            "r32",
+            "r454b",
+            "other"
+          ]
+        },
+        {
+          "key": "unit_type",
+          "label": "Unit type",
+          "kind": "enum",
+          "options": [
+            "split",
+            "packaged"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hvac_heat_pump",
+      "category": "hvac",
+      "label": "Heat pump",
+      "placement": "point",
+      "default_service_interval_days": 365,
+      "aliases": [
+        "air source heat pump",
+        "ground source heat pump",
+        "geothermal"
+      ],
+      "fields": [
+        {
+          "key": "heat_pump_type",
+          "label": "Heat pump type",
+          "kind": "enum",
+          "options": [
+            "air_to_air",
+            "mini_split",
+            "ground_to_air",
+            "ground_to_water",
+            "water_to_air",
+            "air_to_water"
+          ]
+        },
+        {
+          "key": "capacity_tons",
+          "label": "Capacity",
+          "kind": "number",
+          "unit": "tons"
+        },
+        {
+          "key": "seer",
+          "label": "SEER",
+          "kind": "number"
+        },
+        {
+          "key": "hspf",
+          "label": "HSPF",
+          "kind": "number"
+        },
+        {
+          "key": "refrigerant",
+          "label": "Refrigerant",
+          "kind": "enum",
+          "options": [
+            "r410a",
+            "r22",
+            "r32",
+            "r454b",
+            "other"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hvac_mini_split",
+      "category": "hvac",
+      "label": "Ductless mini-split",
+      "placement": "point",
+      "default_service_interval_days": 365,
+      "aliases": [
+        "mini split",
+        "ductless",
+        "wall mounted unit"
+      ],
+      "fields": [
+        {
+          "key": "indoor_heads",
+          "label": "Indoor heads",
+          "kind": "number"
+        },
+        {
+          "key": "capacity_btuh",
+          "label": "Capacity",
+          "kind": "number",
+          "unit": "BTU/h"
+        },
+        {
+          "key": "seer",
+          "label": "SEER",
+          "kind": "number"
+        },
+        {
+          "key": "refrigerant",
+          "label": "Refrigerant",
+          "kind": "enum",
+          "options": [
+            "r410a",
+            "r22",
+            "r32",
+            "r454b",
+            "other"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hvac_boiler",
+      "category": "hvac",
+      "label": "Boiler",
+      "placement": "point",
+      "default_service_interval_days": 365,
+      "aliases": [
+        "hydronic boiler",
+        "steam boiler",
+        "radiator heat"
+      ],
+      "fields": [
+        {
+          "key": "fuel",
+          "label": "Fuel",
+          "kind": "enum",
+          "options": [
+            "natural_gas",
+            "propane",
+            "oil",
+            "electric"
+          ]
+        },
+        {
+          "key": "boiler_type",
+          "label": "Boiler type",
+          "kind": "enum",
+          "options": [
+            "hot_water",
+            "steam"
+          ]
+        },
+        {
+          "key": "afue",
+          "label": "Efficiency (AFUE)",
+          "kind": "number",
+          "unit": "%"
+        },
+        {
+          "key": "capacity_btuh",
+          "label": "Capacity",
+          "kind": "number",
+          "unit": "BTU/h"
+        }
+      ]
+    },
+    {
+      "id": "hvac_air_handler",
+      "category": "hvac",
+      "label": "Air handler or coil",
+      "placement": "point",
+      "default_service_interval_days": 365,
+      "aliases": [
+        "blower",
+        "evaporator coil",
+        "fan coil"
+      ],
+      "fields": [
+        {
+          "key": "capacity_tons",
+          "label": "Capacity",
+          "kind": "number",
+          "unit": "tons"
+        },
+        {
+          "key": "blower_type",
+          "label": "Blower type",
+          "kind": "enum",
+          "options": [
+            "single_speed",
+            "variable_speed"
+          ]
+        },
+        {
+          "key": "filter_size",
+          "label": "Filter size",
+          "kind": "text"
+        }
+      ]
+    },
+    {
+      "id": "hvac_ductwork",
+      "category": "hvac",
+      "label": "Ductwork",
+      "placement": "run",
+      "default_service_interval_days": null,
+      "aliases": [
+        "ducts",
+        "supply duct",
+        "return duct",
+        "duct chase"
+      ],
+      "fields": [
+        {
+          "key": "duct_material",
+          "label": "Duct material",
+          "kind": "enum",
+          "options": [
+            "sheet_metal",
+            "flex",
+            "fiberglass_board",
+            "other"
+          ]
+        },
+        {
+          "key": "insulated",
+          "label": "Insulated",
+          "kind": "bool"
+        },
+        {
+          "key": "duct_role",
+          "label": "Duct role",
+          "kind": "enum",
+          "options": [
+            "supply",
+            "return",
+            "both"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "thermostat",
+      "category": "hvac",
+      "label": "Thermostat",
+      "placement": "point",
+      "default_service_interval_days": null,
+      "aliases": [
+        "tstat",
+        "smart thermostat",
+        "nest",
+        "ecobee"
+      ],
+      "fields": [
+        {
+          "key": "thermostat_type",
+          "label": "Thermostat type",
+          "kind": "enum",
+          "options": [
+            "manual",
+            "programmable",
+            "smart"
+          ]
+        },
+        {
+          "key": "wifi",
+          "label": "Wifi",
+          "kind": "bool"
+        }
+      ]
+    },
+    {
+      "id": "hvac_filter",
+      "category": "hvac",
+      "label": "HVAC filter",
+      "placement": "point",
+      "default_service_interval_days": 90,
+      "aliases": [
+        "furnace filter",
+        "air filter",
+        "merv"
+      ],
+      "fields": [
+        {
+          "key": "filter_size",
+          "label": "Filter size",
+          "kind": "text"
+        },
+        {
+          "key": "merv_rating",
+          "label": "Merv rating",
+          "kind": "number"
+        }
+      ]
+    },
+    {
+      "id": "hvac_ventilation_fan",
+      "category": "hvac",
+      "label": "Ventilation fan",
+      "placement": "point",
+      "default_service_interval_days": 365,
+      "aliases": [
+        "exhaust fan",
+        "bath fan",
+        "erv",
+        "hrv",
+        "whole house fan"
+      ],
+      "fields": [
+        {
+          "key": "fan_kind",
+          "label": "Fan kind",
+          "kind": "enum",
+          "options": [
+            "bath",
+            "kitchen",
+            "whole_house",
+            "erv_hrv",
+            "attic"
+          ]
+        },
+        {
+          "key": "cfm",
+          "label": "Airflow",
+          "kind": "number",
+          "unit": "CFM"
+        },
+        {
+          "key": "ducted",
+          "label": "Ducted",
+          "kind": "bool"
+        }
+      ]
+    },
+    {
+      "id": "hvac_fireplace",
+      "category": "hvac",
+      "label": "Fireplace or stove",
+      "placement": "point",
+      "default_service_interval_days": 365,
+      "aliases": [
+        "wood stove",
+        "gas fireplace",
+        "pellet stove",
+        "hearth"
+      ],
+      "fields": [
+        {
+          "key": "fireplace_type",
+          "label": "Fireplace type",
+          "kind": "enum",
+          "options": [
+            "wood_masonry",
+            "wood_insulated",
+            "gas_log",
+            "gas_insert",
+            "pellet_stove",
+            "wood_stove",
+            "electric"
+          ]
+        },
+        {
+          "key": "last_sweep",
+          "label": "Last sweep",
+          "kind": "date"
+        }
+      ]
+    },
+    {
+      "id": "roof_covering",
+      "category": "roof_structure",
+      "label": "Roof covering",
+      "placement": "point",
+      "default_service_interval_days": 365,
+      "aliases": [
+        "roof",
+        "shingles",
+        "roofing"
+      ],
+      "fields": [
+        {
+          "key": "material",
+          "label": "Material",
+          "kind": "enum",
+          "options": [
+            "asphalt_shingle",
+            "metal",
+            "tile",
+            "slate",
+            "wood_shake",
+            "flat_membrane",
+            "other"
+          ]
+        },
+        {
+          "key": "layers",
+          "label": "Layers",
+          "kind": "number"
+        },
+        {
+          "key": "approx_area_sqft",
+          "label": "Approx area",
+          "kind": "number",
+          "unit": "sq ft"
+        }
+      ]
+    },
+    {
+      "id": "flashing",
+      "category": "roof_structure",
+      "label": "Flashing",
+      "placement": "run",
+      "default_service_interval_days": null,
+      "aliases": [
+        "step flashing",
+        "valley",
+        "drip edge"
+      ],
+      "fields": [
+        {
+          "key": "flashing_location",
+          "label": "Flashing location",
+          "kind": "enum",
+          "options": [
+            "chimney",
+            "valley",
+            "wall_roof",
+            "vent",
+            "skylight",
+            "other"
+          ]
+        },
+        {
+          "key": "material",
+          "label": "Material",
+          "kind": "enum",
+          "options": [
+            "aluminum",
+            "galvanized",
+            "copper",
+            "lead",
+            "other"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "skylight",
+      "category": "roof_structure",
+      "label": "Skylight",
+      "placement": "point",
+      "default_service_interval_days": null,
+      "aliases": [
+        "roof window",
+        "sun tunnel"
+      ],
+      "fields": [
+        {
+          "key": "skylight_type",
+          "label": "Skylight type",
+          "kind": "enum",
+          "options": [
+            "fixed",
+            "vented",
+            "tubular"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chimney",
+      "category": "roof_structure",
+      "label": "Chimney",
+      "placement": "point",
+      "default_service_interval_days": 365,
+      "aliases": [
+        "flue",
+        "chimney cap",
+        "chimney liner"
+      ],
+      "fields": [
+        {
+          "key": "material",
+          "label": "Material",
+          "kind": "enum",
+          "options": [
+            "brick",
+            "block",
+            "metal_flue",
+            "stone"
+          ]
+        },
+        {
+          "key": "cap",
+          "label": "Cap",
+          "kind": "bool"
+        },
+        {
+          "key": "liner",
+          "label": "Liner",
+          "kind": "enum",
+          "options": [
+            "clay",
+            "stainless",
+            "none",
+            "unknown"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "roof_vent",
+      "category": "roof_structure",
+      "label": "Roof vent",
+      "placement": "point",
+      "default_service_interval_days": null,
+      "aliases": [
+        "ridge vent",
+        "turbine",
+        "attic vent",
+        "plumbing vent"
+      ],
+      "fields": [
+        {
+          "key": "vent_type",
+          "label": "Vent type",
+          "kind": "enum",
+          "options": [
+            "ridge",
+            "box",
+            "turbine",
+            "gable",
+            "power",
+            "plumbing_boot"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gutter",
+      "category": "roof_structure",
+      "label": "Gutter",
+      "placement": "run",
+      "default_service_interval_days": 180,
+      "aliases": [
+        "gutters",
+        "rain gutter",
+        "eavestrough"
+      ],
+      "fields": [
+        {
+          "key": "material",
+          "label": "Material",
+          "kind": "enum",
+          "options": [
+            "aluminum",
+            "vinyl",
+            "steel",
+            "copper",
+            "other"
+          ]
+        },
+        {
+          "key": "size_in",
+          "label": "Size",
+          "kind": "number",
+          "unit": "in"
+        },
+        {
+          "key": "guards",
+          "label": "Guards",
+          "kind": "bool"
+        }
+      ]
+    },
+    {
+      "id": "downspout",
+      "category": "roof_structure",
+      "label": "Downspout",
+      "placement": "either",
+      "default_service_interval_days": 180,
+      "aliases": [
+        "leader",
+        "rain leader",
+        "conductor"
+      ],
+      "fields": [
+        {
+          "key": "material",
+          "label": "Material",
+          "kind": "enum",
+          "options": [
+            "aluminum",
+            "vinyl",
+            "steel",
+            "copper",
+            "other"
+          ]
+        },
+        {
+          "key": "extension",
+          "label": "Extension",
+          "kind": "bool"
+        }
+      ]
+    },
+    {
+      "id": "soffit_fascia",
+      "category": "roof_structure",
+      "label": "Soffit and fascia",
+      "placement": "run",
+      "default_service_interval_days": null,
+      "aliases": [
+        "eaves",
+        "fascia board",
+        "soffit"
+      ],
+      "fields": [
+        {
+          "key": "material",
+          "label": "Material",
+          "kind": "enum",
+          "options": [
+            "wood",
+            "aluminum",
+            "vinyl",
+            "fiber_cement",
+            "other"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "attic_insulation",
+      "category": "roof_structure",
+      "label": "Insulation",
+      "placement": "either",
+      "default_service_interval_days": null,
+      "aliases": [
+        "attic insulation",
+        "wall insulation",
+        "batt",
+        "blown in"
+      ],
+      "fields": [
+        {
+          "key": "insulation_type",
+          "label": "Insulation type",
+          "kind": "enum",
+          "options": [
+            "fiberglass_batt",
+            "blown_fiberglass",
+            "cellulose",
+            "spray_foam",
+            "mineral_wool",
+            "other"
+          ]
+        },
+        {
+          "key": "r_value",
+          "label": "R-value",
+          "kind": "number"
+        },
+        {
+          "key": "depth_in",
+          "label": "Depth",
+          "kind": "number",
+          "unit": "in"
+        }
+      ]
+    },
+    {
+      "id": "foundation",
+      "category": "roof_structure",
+      "label": "Foundation",
+      "placement": "run",
+      "default_service_interval_days": null,
+      "aliases": [
+        "footing",
+        "slab",
+        "crawl space",
+        "basement wall"
+      ],
+      "fields": [
+        {
+          "key": "foundation_type",
+          "label": "Foundation type",
+          "kind": "enum",
+          "options": [
+            "slab",
+            "crawl_space",
+            "basement",
+            "piers",
+            "other"
+          ]
+        },
+        {
+          "key": "wall_material",
+          "label": "Wall material",
+          "kind": "enum",
+          "options": [
+            "poured_concrete",
+            "block",
+            "stone",
+            "brick",
+            "wood",
+            "other"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "structural_member",
+      "category": "roof_structure",
+      "label": "Beam, column, or joist",
+      "placement": "either",
+      "default_service_interval_days": null,
+      "aliases": [
+        "beam",
+        "post",
+        "joist",
+        "rafter",
+        "truss",
+        "header"
+      ],
+      "fields": [
+        {
+          "key": "member_kind",
+          "label": "Member kind",
+          "kind": "enum",
+          "options": [
+            "beam",
+            "column",
+            "joist",
+            "rafter",
+            "truss",
+            "header",
+            "other"
+          ]
+        },
+        {
+          "key": "material",
+          "label": "Material",
+          "kind": "enum",
+          "options": [
+            "wood",
+            "steel",
+            "lvl",
+            "concrete",
+            "other"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "water_heater",
+      "category": "appliances_and_water_heater",
+      "label": "Water heater",
+      "placement": "point",
+      "default_service_interval_days": 365,
+      "aliases": [
+        "hot water heater",
+        "tank",
+        "tankless",
+        "heat pump water heater"
+      ],
+      "fields": [
+        {
+          "key": "heater_type",
+          "label": "Heater type",
+          "kind": "enum",
+          "options": [
+            "storage",
+            "tankless",
+            "heat_pump",
+            "indirect",
+            "solar"
+          ]
+        },
+        {
+          "key": "fuel",
+          "label": "Fuel",
+          "kind": "enum",
+          "options": [
+            "natural_gas",
+            "propane",
+            "electric",
+            "oil"
+          ]
+        },
+        {
+          "key": "capacity_gal",
+          "label": "Capacity",
+          "kind": "number",
+          "unit": "gal"
+        },
+        {
+          "key": "uef",
+          "label": "UEF",
+          "kind": "number"
+        },
+        {
+          "key": "venting",
+          "label": "Venting",
+          "kind": "enum",
+          "options": [
+            "atmospheric",
+            "power_vent",
+            "direct_vent",
+            "none"
+          ]
+        },
+        {
+          "key": "last_flushed",
+          "label": "Last flushed",
+          "kind": "date"
+        }
+      ]
+    },
+    {
+      "id": "refrigerator",
+      "category": "appliances_and_water_heater",
+      "label": "Refrigerator",
+      "placement": "point",
+      "default_service_interval_days": 180,
+      "aliases": [
+        "fridge",
+        "freezer"
+      ],
+      "fields": [
+        {
+          "key": "style",
+          "label": "Style",
+          "kind": "enum",
+          "options": [
+            "top_freezer",
+            "bottom_freezer",
+            "side_by_side",
+            "french_door",
+            "compact",
+            "freezer_only"
+          ]
+        },
+        {
+          "key": "water_filter_model",
+          "label": "Water filter model",
+          "kind": "text"
+        },
+        {
+          "key": "ice_maker",
+          "label": "Ice maker",
+          "kind": "bool"
+        }
+      ]
+    },
+    {
+      "id": "dishwasher",
+      "category": "appliances_and_water_heater",
+      "label": "Dishwasher",
+      "placement": "point",
+      "default_service_interval_days": null,
+      "aliases": [
+        "dish washer"
+      ],
+      "fields": [
+        {
+          "key": "dishwasher_kind",
+          "label": "Dishwasher kind",
+          "kind": "enum",
+          "options": [
+            "built_in",
+            "portable",
+            "drawer"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "range_oven",
+      "category": "appliances_and_water_heater",
+      "label": "Range, oven, or cooktop",
+      "placement": "point",
+      "default_service_interval_days": null,
+      "aliases": [
+        "stove",
+        "oven",
+        "cooktop",
+        "range"
+      ],
+      "fields": [
+        {
+          "key": "cooking_kind",
+          "label": "Cooking kind",
+          "kind": "enum",
+          "options": [
+            "freestanding_range",
+            "slide_in_range",
+            "wall_oven",
+            "cooktop"
+          ]
+        },
+        {
+          "key": "fuel",
+          "label": "Fuel",
+          "kind": "enum",
+          "options": [
+            "gas",
+            "electric",
+            "dual_fuel",
+            "induction"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "microwave",
+      "category": "appliances_and_water_heater",
+      "label": "Microwave",
+      "placement": "point",
+      "default_service_interval_days": null,
+      "aliases": [
+        "microwave oven"
+      ],
+      "fields": [
+        {
+          "key": "mount",
+          "label": "Mount",
+          "kind": "enum",
+          "options": [
+            "over_range",
+            "countertop",
+            "built_in"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "range_hood",
+      "category": "appliances_and_water_heater",
+      "label": "Range hood",
+      "placement": "point",
+      "default_service_interval_days": 180,
+      "aliases": [
+        "vent hood",
+        "kitchen exhaust"
+      ],
+      "fields": [
+        {
+          "key": "ducted",
+          "label": "Ducted",
+          "kind": "bool"
+        },
+        {
+          "key": "cfm",
+          "label": "Airflow",
+          "kind": "number",
+          "unit": "CFM"
+        },
+        {
+          "key": "filter_type",
+          "label": "Filter type",
+          "kind": "text"
+        }
+      ]
+    },
+    {
+      "id": "clothes_washer",
+      "category": "appliances_and_water_heater",
+      "label": "Clothes washer",
+      "placement": "point",
+      "default_service_interval_days": null,
+      "aliases": [
+        "washing machine",
+        "washer"
+      ],
+      "fields": [
+        {
+          "key": "loader",
+          "label": "Loader",
+          "kind": "enum",
+          "options": [
+            "front",
+            "top"
+          ]
+        },
+        {
+          "key": "capacity_cuft",
+          "label": "Capacity",
+          "kind": "number",
+          "unit": "cu ft"
+        }
+      ]
+    },
+    {
+      "id": "clothes_dryer",
+      "category": "appliances_and_water_heater",
+      "label": "Clothes dryer",
+      "placement": "point",
+      "default_service_interval_days": 365,
+      "aliases": [
+        "dryer"
+      ],
+      "fields": [
+        {
+          "key": "fuel",
+          "label": "Fuel",
+          "kind": "enum",
+          "options": [
+            "gas",
+            "electric"
+          ]
+        },
+        {
+          "key": "vented_outdoors",
+          "label": "Vented outdoors",
+          "kind": "bool"
+        }
+      ]
+    },
+    {
+      "id": "garbage_disposal",
+      "category": "appliances_and_water_heater",
+      "label": "Garbage disposal",
+      "placement": "point",
+      "default_service_interval_days": null,
+      "aliases": [
+        "disposer",
+        "insinkerator"
+      ],
+      "fields": [
+        {
+          "key": "horsepower",
+          "label": "Horsepower",
+          "kind": "number",
+          "unit": "hp"
+        }
+      ]
+    },
+    {
+      "id": "appliance_generic",
+      "category": "appliances_and_water_heater",
+      "label": "Appliance",
+      "placement": "point",
+      "default_service_interval_days": null,
+      "aliases": [
+        "appliance"
+      ],
+      "fields": [
+        {
+          "key": "appliance_kind",
+          "label": "Appliance kind",
+          "kind": "text"
+        }
+      ]
+    },
+    {
+      "id": "exterior_wall_covering",
+      "category": "exterior_and_site",
+      "label": "Siding or wall covering",
+      "placement": "either",
+      "default_service_interval_days": null,
+      "aliases": [
+        "siding",
+        "stucco",
+        "brick veneer",
+        "cladding"
+      ],
+      "fields": [
+        {
+          "key": "material",
+          "label": "Material",
+          "kind": "enum",
+          "options": [
+            "vinyl",
+            "fiber_cement",
+            "wood",
+            "brick",
+            "stucco",
+            "stone",
+            "metal",
+            "other"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "window",
+      "category": "exterior_and_site",
+      "label": "Window",
+      "placement": "point",
+      "default_service_interval_days": null,
+      "aliases": [
+        "windows",
+        "glazing"
+      ],
+      "fields": [
+        {
+          "key": "window_type",
+          "label": "Window type",
+          "kind": "enum",
+          "options": [
+            "single_hung",
+            "double_hung",
+            "casement",
+            "slider",
+            "fixed",
+            "awning",
+            "bay",
+            "picture"
+          ]
+        },
+        {
+          "key": "glazing",
+          "label": "Glazing",
+          "kind": "enum",
+          "options": [
+            "single",
+            "double",
+            "triple"
+          ]
+        },
+        {
+          "key": "frame_material",
+          "label": "Frame material",
+          "kind": "enum",
+          "options": [
+            "vinyl",
+            "wood",
+            "aluminum",
+            "fiberglass",
+            "clad"
+          ]
+        },
+        {
+          "key": "u_factor",
+          "label": "U-factor",
+          "kind": "number"
+        }
+      ]
+    },
+    {
+      "id": "exterior_door",
+      "category": "exterior_and_site",
+      "label": "Exterior door",
+      "placement": "point",
+      "default_service_interval_days": null,
+      "aliases": [
+        "entry door",
+        "front door",
+        "patio door",
+        "storm door"
+      ],
+      "fields": [
+        {
+          "key": "door_type",
+          "label": "Door type",
+          "kind": "enum",
+          "options": [
+            "entry",
+            "patio_slider",
+            "french",
+            "storm",
+            "service"
+          ]
+        },
+        {
+          "key": "material",
+          "label": "Material",
+          "kind": "enum",
+          "options": [
+            "steel",
+            "fiberglass",
+            "wood",
+            "glass"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "garage_door",
+      "category": "exterior_and_site",
+      "label": "Garage door",
+      "placement": "point",
+      "default_service_interval_days": null,
+      "aliases": [
+        "overhead door",
+        "roll up door"
+      ],
+      "fields": [
+        {
+          "key": "material",
+          "label": "Material",
+          "kind": "enum",
+          "options": [
+            "steel",
+            "wood",
+            "aluminum",
+            "fiberglass"
+          ]
+        },
+        {
+          "key": "insulated",
+          "label": "Insulated",
+          "kind": "bool"
+        }
+      ]
+    },
+    {
+      "id": "garage_door_opener",
+      "category": "exterior_and_site",
+      "label": "Garage door opener",
+      "placement": "point",
+      "default_service_interval_days": 365,
+      "aliases": [
+        "opener"
+      ],
+      "fields": [
+        {
+          "key": "drive_type",
+          "label": "Drive type",
+          "kind": "enum",
+          "options": [
+            "chain",
+            "belt",
+            "screw",
+            "direct"
+          ]
+        },
+        {
+          "key": "battery_backup",
+          "label": "Battery backup",
+          "kind": "bool"
+        }
+      ]
+    },
+    {
+      "id": "deck_porch_patio",
+      "category": "exterior_and_site",
+      "label": "Deck, porch, or patio",
+      "placement": "either",
+      "default_service_interval_days": 365,
+      "aliases": [
+        "deck",
+        "porch",
+        "patio",
+        "balcony",
+        "carport"
+      ],
+      "fields": [
+        {
+          "key": "structure",
+          "label": "Structure",
+          "kind": "enum",
+          "options": [
+            "deck",
+            "porch",
+            "patio",
+            "balcony",
+            "carport"
+          ]
+        },
+        {
+          "key": "material",
+          "label": "Material",
+          "kind": "enum",
+          "options": [
+            "wood",
+            "composite",
+            "concrete",
+            "pavers",
+            "other"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "driveway_walkway",
+      "category": "exterior_and_site",
+      "label": "Driveway or walkway",
+      "placement": "run",
+      "default_service_interval_days": null,
+      "aliases": [
+        "driveway",
+        "sidewalk",
+        "path",
+        "steps"
+      ],
+      "fields": [
+        {
+          "key": "surface",
+          "label": "Surface",
+          "kind": "enum",
+          "options": [
+            "asphalt",
+            "concrete",
+            "pavers",
+            "gravel",
+            "other"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fence_wall",
+      "category": "exterior_and_site",
+      "label": "Fence or retaining wall",
+      "placement": "run",
+      "default_service_interval_days": null,
+      "aliases": [
+        "fence",
+        "gate",
+        "retaining wall"
+      ],
+      "fields": [
+        {
+          "key": "structure",
+          "label": "Structure",
+          "kind": "enum",
+          "options": [
+            "fence",
+            "retaining_wall"
+          ]
+        },
+        {
+          "key": "material",
+          "label": "Material",
+          "kind": "enum",
+          "options": [
+            "wood",
+            "vinyl",
+            "chain_link",
+            "metal",
+            "block",
+            "stone",
+            "other"
+          ]
+        },
+        {
+          "key": "height_ft",
+          "label": "Height",
+          "kind": "number",
+          "unit": "ft"
+        }
+      ]
+    },
+    {
+      "id": "irrigation_system",
+      "category": "exterior_and_site",
+      "label": "Irrigation system",
+      "placement": "point",
+      "default_service_interval_days": 365,
+      "aliases": [
+        "sprinklers",
+        "sprinkler system",
+        "drip irrigation"
+      ],
+      "fields": [
+        {
+          "key": "zones",
+          "label": "Zones",
+          "kind": "number"
+        },
+        {
+          "key": "controller_model",
+          "label": "Controller model",
+          "kind": "text"
+        },
+        {
+          "key": "backflow_preventer",
+          "label": "Backflow preventer",
+          "kind": "bool"
+        }
+      ]
+    },
+    {
+      "id": "septic_system",
+      "category": "exterior_and_site",
+      "label": "Septic system",
+      "placement": "point",
+      "default_service_interval_days": 1095,
+      "aliases": [
+        "septic tank",
+        "drain field",
+        "leach field"
+      ],
+      "fields": [
+        {
+          "key": "system_kind",
+          "label": "System kind",
+          "kind": "enum",
+          "options": [
+            "conventional",
+            "aerobic",
+            "mound",
+            "other"
+          ]
+        },
+        {
+          "key": "tank_capacity_gal",
+          "label": "Tank capacity",
+          "kind": "number",
+          "unit": "gal"
+        },
+        {
+          "key": "last_pumped",
+          "label": "Last pumped",
+          "kind": "date"
+        }
+      ]
+    },
+    {
+      "id": "well_pump",
+      "category": "exterior_and_site",
+      "label": "Well and pump",
+      "placement": "point",
+      "default_service_interval_days": 365,
+      "aliases": [
+        "well",
+        "pressure tank",
+        "well pump"
+      ],
+      "fields": [
+        {
+          "key": "well_depth_ft",
+          "label": "Well depth",
+          "kind": "number",
+          "unit": "ft"
+        },
+        {
+          "key": "pump_type",
+          "label": "Pump type",
+          "kind": "enum",
+          "options": [
+            "submersible",
+            "jet"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pool_spa",
+      "category": "exterior_and_site",
+      "label": "Pool or spa",
+      "placement": "point",
+      "default_service_interval_days": 90,
+      "aliases": [
+        "swimming pool",
+        "hot tub",
+        "spa"
+      ],
+      "fields": [
+        {
+          "key": "pool_kind",
+          "label": "Pool kind",
+          "kind": "enum",
+          "options": [
+            "pool",
+            "hot_tub",
+            "both"
+          ]
+        },
+        {
+          "key": "sanitizer",
+          "label": "Sanitizer",
+          "kind": "enum",
+          "options": [
+            "chlorine",
+            "salt",
+            "bromine",
+            "other"
+          ]
+        },
+        {
+          "key": "volume_gal",
+          "label": "Volume",
+          "kind": "number",
+          "unit": "gal"
+        }
+      ]
+    },
+    {
+      "id": "camera",
+      "category": "low_voltage_and_smart_home",
+      "label": "Security camera",
+      "placement": "point",
+      "default_service_interval_days": null,
+      "aliases": [
+        "cctv",
+        "ip camera",
+        "surveillance"
+      ],
+      "fields": [
+        {
+          "key": "connection",
+          "label": "Connection",
+          "kind": "enum",
+          "options": [
+            "wifi",
+            "poe",
+            "wired_analog"
+          ]
+        },
+        {
+          "key": "storage",
+          "label": "Storage",
+          "kind": "enum",
+          "options": [
+            "cloud",
+            "nvr",
+            "sd_card"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "video_doorbell",
+      "category": "low_voltage_and_smart_home",
+      "label": "Video doorbell",
+      "placement": "point",
+      "default_service_interval_days": null,
+      "aliases": [
+        "doorbell camera",
+        "ring",
+        "doorbell"
+      ],
+      "fields": [
+        {
+          "key": "power",
+          "label": "Power",
+          "kind": "enum",
+          "options": [
+            "wired",
+            "battery"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "network_router",
+      "category": "low_voltage_and_smart_home",
+      "label": "Router or gateway",
+      "placement": "point",
+      "default_service_interval_days": null,
+      "aliases": [
+        "wifi router",
+        "modem",
+        "gateway"
+      ],
+      "fields": [
+        {
+          "key": "wifi_standard",
+          "label": "Wifi standard",
+          "kind": "enum",
+          "options": [
+            "wifi_5",
+            "wifi_6",
+            "wifi_6e",
+            "wifi_7"
+          ]
+        },
+        {
+          "key": "mesh",
+          "label": "Mesh",
+          "kind": "bool"
+        }
+      ]
+    },
+    {
+      "id": "network_access_point",
+      "category": "low_voltage_and_smart_home",
+      "label": "Access point or mesh node",
+      "placement": "point",
+      "default_service_interval_days": null,
+      "aliases": [
+        "wifi access point",
+        "mesh node",
+        "extender"
+      ],
+      "fields": [
+        {
+          "key": "wifi_standard",
+          "label": "Wifi standard",
+          "kind": "enum",
+          "options": [
+            "wifi_5",
+            "wifi_6",
+            "wifi_6e",
+            "wifi_7"
+          ]
+        },
+        {
+          "key": "poe",
+          "label": "Poe",
+          "kind": "bool"
+        }
+      ]
+    },
+    {
+      "id": "smart_hub",
+      "category": "low_voltage_and_smart_home",
+      "label": "Smart home hub",
+      "placement": "point",
+      "default_service_interval_days": null,
+      "aliases": [
+        "hub",
+        "bridge",
+        "home assistant",
+        "smartthings"
+      ],
+      "fields": [
+        {
+          "key": "protocols",
+          "label": "Protocols",
+          "kind": "text"
+        }
+      ]
+    },
+    {
+      "id": "smart_lock",
+      "category": "low_voltage_and_smart_home",
+      "label": "Smart lock",
+      "placement": "point",
+      "default_service_interval_days": null,
+      "aliases": [
+        "door lock",
+        "deadbolt"
+      ],
+      "fields": [
+        {
+          "key": "connectivity",
+          "label": "Connectivity",
+          "kind": "enum",
+          "options": [
+            "wifi",
+            "zwave",
+            "zigbee",
+            "thread",
+            "bluetooth"
+          ]
+        },
+        {
+          "key": "battery_type",
+          "label": "Battery type",
+          "kind": "text"
+        }
+      ]
+    },
+    {
+      "id": "alarm_panel",
+      "category": "low_voltage_and_smart_home",
+      "label": "Alarm or security panel",
+      "placement": "point",
+      "default_service_interval_days": null,
+      "aliases": [
+        "security system",
+        "alarm keypad"
+      ],
+      "fields": [
+        {
+          "key": "monitored",
+          "label": "Monitored",
+          "kind": "bool"
+        },
+        {
+          "key": "monitoring_company",
+          "label": "Monitoring company",
+          "kind": "text"
+        }
+      ]
+    },
+    {
+      "id": "leak_sensor",
+      "category": "low_voltage_and_smart_home",
+      "label": "Water leak sensor",
+      "placement": "point",
+      "default_service_interval_days": null,
+      "aliases": [
+        "flood sensor",
+        "leak detector"
+      ],
+      "fields": [
+        {
+          "key": "battery_type",
+          "label": "Battery type",
+          "kind": "text"
+        }
+      ]
+    },
+    {
+      "id": "structured_wiring_panel",
+      "category": "low_voltage_and_smart_home",
+      "label": "Structured wiring panel",
+      "placement": "point",
+      "default_service_interval_days": null,
+      "aliases": [
+        "media panel",
+        "network panel",
+        "data panel"
+      ],
+      "fields": [
+        {
+          "key": "cable_types",
+          "label": "Cable types",
+          "kind": "text"
+        }
+      ]
+    },
+    {
+      "id": "low_voltage_cabling",
+      "category": "low_voltage_and_smart_home",
+      "label": "Low-voltage cabling",
+      "placement": "run",
+      "default_service_interval_days": null,
+      "aliases": [
+        "ethernet",
+        "cat6",
+        "coax",
+        "speaker wire",
+        "thermostat wire"
+      ],
+      "fields": [
+        {
+          "key": "cable_type",
+          "label": "Cable type",
+          "kind": "enum",
+          "options": [
+            "cat5e",
+            "cat6",
+            "cat6a",
+            "coax",
+            "speaker",
+            "fiber",
+            "thermostat",
+            "other"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "other",
+      "category": "any",
+      "label": "Other",
+      "placement": "either",
+      "default_service_interval_days": null,
+      "aliases": [
+        "misc",
+        "unlisted"
+      ],
+      "fields": [
+        {
+          "key": "description",
+          "label": "Description",
+          "kind": "text"
+        }
+      ]
+    }
+  ]
+}

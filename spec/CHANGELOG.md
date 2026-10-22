@@ -2,6 +2,33 @@
 
 All notable changes to the Home Record spec are documented in this file.
 
+## 0.5.0 - 2026-10-22
+
+- Widened `Component.component_type` from 15 to 78 values covering the seven
+  layers (plumbing, electrical, HVAC, roof and structure, appliances and water
+  heater, exterior and site, low-voltage and smart home) plus `other`. All 15
+  previous values stay valid and unchanged.
+- Added optional nullable `Component.manual_url` (format uri; clients and the
+  database accept only http and https) and `Component.location_note`.
+- `schema_version` accepts `0.5.0`; both Home Record fixtures use it and the
+  maximal fixture gains a heat pump component using the new fields.
+- Added `spec/taxonomy/components.json` (the single data source for the 78
+  types: category, label, placement, default service interval, aliases, typed
+  fields) and `spec/taxonomy/brands.json` (brand dictionary for nameplate make
+  detection).
+- Added shared behavior fixtures: `bootstrap-systems.json` (deterministic
+  UUIDv5 system ids), `condition-rollup.json`, `nameplate/` (17 parser
+  cases), and `components/` (`placement`, `reminders`, `search`, `links`).
+- Render model extension: optional `components` input, a `marker` draw
+  command, per-segment `component.run` strokes with `category`, and the
+  `component.*` style tokens, glyph paths and layer colors. Existing goldens are
+  unchanged; a `components-overlay` golden pair is added.
+- Added docs: `taxonomy.md`, `nameplate-parsing.md`, `condition-rollup.md`,
+  `systems-bootstrap.md`, `component-behavior.md`; `render-model.md` updated.
+- Compatibility: every new field is optional and nullable, so 0.4.0 records
+  still validate. A 0.5.0 record that uses a new `component_type` cannot be
+  imported by a 0.4.0 reader because the enum is widened.
+
 ## 0.4.0 - 2026-10-22
 
 - Added six optional nullable scan fields to `Level` (`scan_usdz_attachment_id`,

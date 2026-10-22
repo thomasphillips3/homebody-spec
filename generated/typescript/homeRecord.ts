@@ -54,8 +54,10 @@ export interface Component {
     last_serviced_at?:       null | string;
     level_id?:               null | string;
     linked_component_id?:    null | string;
+    location_note?:          null | string;
     make?:                   null | string;
     manual_attachment_id?:   null | string;
+    manual_url?:             null | string;
     model?:                  null | string;
     name:                    string;
     notes?:                  null | string;
@@ -67,7 +69,7 @@ export interface Component {
     warranty_start?:         null | string;
 }
 
-export type ComponentType = "water_heater" | "hvac_furnace" | "hvac_ac_unit" | "electrical_panel" | "outlet" | "light_fixture" | "plumbing_fixture" | "gutter" | "downspout" | "smoke_detector" | "thermostat" | "camera" | "network_router" | "appliance_generic" | "other";
+export type ComponentType = "plumbing_fixture" | "toilet" | "sink" | "bathtub_shower" | "main_water_shutoff" | "gas_shutoff" | "water_supply_line" | "drain_waste_vent" | "sewer_lateral" | "sump_pump" | "water_treatment" | "electrical_panel" | "subpanel" | "electric_meter" | "service_conductors" | "branch_circuit" | "outlet" | "gfci_receptacle" | "light_fixture" | "smoke_detector" | "co_detector" | "generator" | "solar_pv_system" | "hvac_furnace" | "hvac_ac_unit" | "hvac_heat_pump" | "hvac_mini_split" | "hvac_boiler" | "hvac_air_handler" | "hvac_ductwork" | "thermostat" | "hvac_filter" | "hvac_ventilation_fan" | "hvac_fireplace" | "roof_covering" | "flashing" | "skylight" | "chimney" | "roof_vent" | "gutter" | "downspout" | "soffit_fascia" | "attic_insulation" | "foundation" | "structural_member" | "water_heater" | "refrigerator" | "dishwasher" | "range_oven" | "microwave" | "range_hood" | "clothes_washer" | "clothes_dryer" | "garbage_disposal" | "appliance_generic" | "exterior_wall_covering" | "window" | "exterior_door" | "garage_door" | "garage_door_opener" | "deck_porch_patio" | "driveway_walkway" | "fence_wall" | "irrigation_system" | "septic_system" | "well_pump" | "pool_spa" | "camera" | "video_doorbell" | "network_router" | "network_access_point" | "smart_hub" | "smart_lock" | "alarm_panel" | "leak_sensor" | "structured_wiring_panel" | "low_voltage_cabling" | "other";
 
 /**
  * Shared condition scale used by Component.condition and Event.condition_after, so the two

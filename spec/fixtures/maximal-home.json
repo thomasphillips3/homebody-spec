@@ -1,5 +1,5 @@
 {
-  "schema_version": "0.4.0",
+  "schema_version": "0.5.0",
   "home": {
     "id": "00000000-0000-4000-8000-000000000001",
     "owner_user_id": "00000000-0000-4000-8000-000000000002",
@@ -416,6 +416,30 @@
       "notes": "Battery drains faster in winter.",
       "linked_component_id": null,
       "custom_fields": {}
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000057",
+      "system_id": "00000000-0000-4000-8000-000000000042",
+      "name": "Attic Heat Pump",
+      "component_type": "hvac_heat_pump",
+      "make": "Mitsubishi",
+      "model": "MXZ-3C24NA",
+      "manual_url": "https://example.com/manuals/mxz-3c24na.pdf",
+      "location_note": "Behind the attic access panel, north side",
+      "serial_number": "HP-TEST-000007",
+      "install_date": "2024-03-15",
+      "warranty_start": "2024-03-15",
+      "warranty_length_months": 120,
+      "manual_attachment_id": null,
+      "service_interval_days": 365,
+      "last_serviced_at": null,
+      "condition": "good",
+      "level_id": "00000000-0000-4000-8000-000000000010",
+      "room_ids": ["00000000-0000-4000-8000-000000000022"],
+      "geometry": null,
+      "notes": null,
+      "linked_component_id": null,
+      "custom_fields": { "heat_pump_type": "mini_split", "seer": 22 }
     }
   ],
   "events": [

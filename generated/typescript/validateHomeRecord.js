@@ -2,13 +2,14 @@
 "use strict";
 module.exports = validate20;
 module.exports.default = validate20;
-const schema31 = {"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"https://homebody.app/schema/home-record.schema.json","title":"HomeRecord","description":"Root document for a Home Record export. Flat, database-table-mirroring shape - one home, plus arrays of every other entity, each keyed by an id and its parent foreign keys rather than deep nesting.","type":"object","additionalProperties":false,"required":["schema_version","home","levels","rooms","plan_elements","systems","components","events","attachments","smart_home_readings","utility_bills"],"properties":{"schema_version":{"type":"string","pattern":"^\\d+\\.\\d+\\.\\d+$","enum":["0.1.0","0.1.1","0.2.0","0.3.0","0.4.0"],"description":"Semver of the Home Record spec this document conforms to, e.g. 0.2.0. Downstream import validation rejects unknown versions rather than duck-typing."},"home":{"title":"Home","type":"object","additionalProperties":false,"required":["id","owner_user_id","name","address","created_at"],"properties":{"id":{"type":"string","format":"uuid"},"owner_user_id":{"type":"string","format":"uuid"},"name":{"type":"string"},"address":{"type":"string"},"parcel_id":{"type":["string","null"]},"year_built":{"type":["integer","null"]},"sq_ft":{"type":["number","null"]},"beds":{"type":["integer","null"]},"baths":{"type":["number","null"]},"lot_size_m2":{"type":["number","null"]},"created_at":{"type":"string","format":"date-time"}}},"levels":{"type":"array","items":{"title":"Level","type":"object","additionalProperties":false,"required":["id","home_id","name","sort_order","elevation_offset_m","scale_confidence"],"properties":{"id":{"type":"string","format":"uuid"},"home_id":{"type":"string","format":"uuid"},"name":{"type":"string"},"sort_order":{"type":"integer"},"elevation_offset_m":{"type":"number"},"scale_confidence":{"type":"string","enum":["measured","estimated"]},"import_attachment_id":{"type":["string","null"],"format":"uuid"},"import_origin_m":{"type":["array","null"],"items":{"type":"number"},"minItems":2,"maxItems":2},"import_scale_m_per_px":{"type":["number","null"]},"import_pixel_width":{"type":["integer","null"]},"import_pixel_height":{"type":["integer","null"]},"scan_usdz_attachment_id":{"type":["string","null"],"format":"uuid","description":"Soft reference (not a foreign key) to the usdz_mesh Attachment of a RoomPlan scan; the level patch can sync before the attachment row."},"scan_structure_attachment_id":{"type":["string","null"],"format":"uuid","description":"Soft reference (not a foreign key) to the roomplan_structure Attachment holding the captured structure JSON."},"scan_glb_attachment_id":{"type":["string","null"],"format":"uuid","description":"Soft reference (not a foreign key) to the gltf_mesh Attachment used by Android and web 3D viewers."},"scan_origin_m":{"type":["array","null"],"items":{"type":"number"},"minItems":2,"maxItems":2,"description":"Translation in meters from scan XZ (after rotation) to plan space."},"scan_rotation_rad":{"type":["number","null"],"description":"Rotation in radians from scan XZ to plan space. planPoint = R(rotation) * (X, Z) + scan_origin_m."},"scan_review_state":{"type":["string","null"],"enum":["pending_review","reviewed",null]}}},"default":[]},"rooms":{"type":"array","items":{"title":"Room","type":"object","additionalProperties":false,"required":["id","level_id","name","room_type","geometry"],"properties":{"id":{"type":"string","format":"uuid"},"level_id":{"type":"string","format":"uuid"},"name":{"type":"string"},"room_type":{"type":"string","enum":["bedroom","bathroom","kitchen","living_room","dining_room","garage","basement","attic","hallway","closet","laundry","office","other"]},"geometry":{"allOf":[{"title":"PlanGeometry","description":"Shared geometry type embedded by Room, PlanElement, and Component. Coordinates are 2-element [x, y] pairs in meters, in per-level plan space (Y-down convention).","type":"object","additionalProperties":false,"required":["type","coordinates"],"allOf":[{"if":{"properties":{"type":{"const":"point"}},"required":["type"]},"then":{"properties":{"coordinates":{"type":"array","minItems":1,"maxItems":1}}}},{"if":{"properties":{"type":{"const":"polyline"}},"required":["type"]},"then":{"properties":{"coordinates":{"type":"array","minItems":2}}}},{"if":{"properties":{"type":{"const":"polygon"}},"required":["type"]},"then":{"properties":{"coordinates":{"type":"array","minItems":3}}}}],"properties":{"type":{"type":"string","enum":["point","polyline","polygon"]},"coordinates":{"type":"array","items":{"type":"array","items":{"type":"number"},"minItems":2,"maxItems":2}}}},{"type":"object","properties":{"type":{"const":"polygon"}}}]},"area_computed_m2":{"type":["number","null"]},"source":{"type":["string","null"],"enum":["hand","trace","roomplan",null],"description":"Provenance of the row. Null means hand."}}},"default":[]},"plan_elements":{"type":"array","items":{"title":"PlanElement","type":"object","additionalProperties":false,"required":["id","level_id","kind","geometry"],"properties":{"id":{"type":"string","format":"uuid"},"level_id":{"type":"string","format":"uuid"},"kind":{"type":"string","enum":["wall","door","window","opening"]},"geometry":{"title":"PlanGeometry","description":"Shared geometry type embedded by Room, PlanElement, and Component. Coordinates are 2-element [x, y] pairs in meters, in per-level plan space (Y-down convention).","type":"object","additionalProperties":false,"required":["type","coordinates"],"allOf":[{"if":{"properties":{"type":{"const":"point"}},"required":["type"]},"then":{"properties":{"coordinates":{"type":"array","minItems":1,"maxItems":1}}}},{"if":{"properties":{"type":{"const":"polyline"}},"required":["type"]},"then":{"properties":{"coordinates":{"type":"array","minItems":2}}}},{"if":{"properties":{"type":{"const":"polygon"}},"required":["type"]},"then":{"properties":{"coordinates":{"type":"array","minItems":3}}}}],"properties":{"type":{"type":"string","enum":["point","polyline","polygon"]},"coordinates":{"type":"array","items":{"type":"array","items":{"type":"number"},"minItems":2,"maxItems":2}}}},"host_element_id":{"type":["string","null"],"format":"uuid"},"source":{"type":["string","null"],"enum":["hand","trace","roomplan",null],"description":"Provenance of the row. Null means hand."}}},"default":[]},"systems":{"type":"array","items":{"title":"System","type":"object","additionalProperties":false,"required":["id","home_id","category","name"],"properties":{"id":{"type":"string","format":"uuid"},"home_id":{"type":"string","format":"uuid"},"category":{"type":"string","enum":["plumbing","electrical","hvac","roof_structure","appliances_and_water_heater","exterior_and_site","low_voltage_and_smart_home"]},"name":{"type":"string"},"notes":{"type":["string","null"]}}},"default":[]},"components":{"type":"array","items":{"title":"Component","type":"object","additionalProperties":false,"required":["id","system_id","name","component_type","condition","room_ids","custom_fields"],"properties":{"id":{"type":"string","format":"uuid"},"system_id":{"type":"string","format":"uuid"},"name":{"type":"string"},"component_type":{"type":"string","enum":["water_heater","hvac_furnace","hvac_ac_unit","electrical_panel","outlet","light_fixture","plumbing_fixture","gutter","downspout","smoke_detector","thermostat","camera","network_router","appliance_generic","other"]},"make":{"type":["string","null"]},"model":{"type":["string","null"]},"serial_number":{"type":["string","null"]},"install_date":{"type":["string","null"],"format":"date"},"warranty_start":{"type":["string","null"],"format":"date"},"warranty_length_months":{"type":["integer","null"]},"manual_attachment_id":{"type":["string","null"],"format":"uuid"},"service_interval_days":{"type":["integer","null"]},"last_serviced_at":{"type":["string","null"],"format":"date"},"condition":{"title":"Condition","description":"Shared condition scale used by Component.condition and Event.condition_after, so the two cannot drift. Matches REQUIREMENTS.md SYS-08's four-value scale plus unknown for not-yet-assessed.","type":"string","enum":["good","fair","needs_attention","needs_replacement","unknown"]},"level_id":{"type":["string","null"],"format":"uuid"},"room_ids":{"type":"array","items":{"type":"string","format":"uuid"},"default":[]},"geometry":{"anyOf":[{"title":"PlanGeometry","description":"Shared geometry type embedded by Room, PlanElement, and Component. Coordinates are 2-element [x, y] pairs in meters, in per-level plan space (Y-down convention).","type":"object","additionalProperties":false,"required":["type","coordinates"],"allOf":[{"if":{"properties":{"type":{"const":"point"}},"required":["type"]},"then":{"properties":{"coordinates":{"type":"array","minItems":1,"maxItems":1}}}},{"if":{"properties":{"type":{"const":"polyline"}},"required":["type"]},"then":{"properties":{"coordinates":{"type":"array","minItems":2}}}},{"if":{"properties":{"type":{"const":"polygon"}},"required":["type"]},"then":{"properties":{"coordinates":{"type":"array","minItems":3}}}}],"properties":{"type":{"type":"string","enum":["point","polyline","polygon"]},"coordinates":{"type":"array","items":{"type":"array","items":{"type":"number"},"minItems":2,"maxItems":2}}}},{"type":"null"}],"default":null},"notes":{"type":["string","null"]},"linked_component_id":{"type":["string","null"],"format":"uuid"},"custom_fields":{"type":"object","additionalProperties":true,"default":{}}}},"default":[]},"events":{"type":"array","items":{"title":"Event","type":"object","additionalProperties":false,"required":["id","home_id","event_type","occurred_at","attachment_ids"],"anyOf":[{"required":["system_id"],"properties":{"system_id":{"type":"string","format":"uuid"}}},{"required":["component_id"],"properties":{"component_id":{"type":"string","format":"uuid"}}}],"properties":{"id":{"type":"string","format":"uuid"},"home_id":{"type":"string","format":"uuid"},"system_id":{"type":["string","null"],"format":"uuid"},"component_id":{"type":["string","null"],"format":"uuid"},"event_type":{"type":"string","enum":["inspection","service","repair","replacement","reading","note"]},"occurred_at":{"type":"string","format":"date-time"},"performed_by":{"type":["string","null"]},"cost_cents":{"type":["integer","null"]},"notes":{"type":["string","null"]},"condition_after":{"anyOf":[{"title":"Condition","description":"Shared condition scale used by Component.condition and Event.condition_after, so the two cannot drift. Matches REQUIREMENTS.md SYS-08's four-value scale plus unknown for not-yet-assessed.","type":"string","enum":["good","fair","needs_attention","needs_replacement","unknown"]},{"type":"null"}],"default":null},"reading_value":{"type":["number","null"]},"reading_unit":{"type":["string","null"]},"attachment_ids":{"type":"array","items":{"type":"string","format":"uuid"},"default":[]}}},"default":[]},"attachments":{"type":"array","items":{"title":"Attachment","type":"object","additionalProperties":false,"required":["id","home_id","kind","storage_path","mime_type","file_size_bytes"],"properties":{"id":{"type":"string","format":"uuid"},"home_id":{"type":"string","format":"uuid"},"kind":{"type":"string","enum":["photo","receipt","manual_pdf","usdz_mesh","floor_plan_source","roomplan_structure","gltf_mesh"]},"storage_path":{"type":"string","pattern":"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}/homes/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}/attachments/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}\\.[A-Za-z0-9]+$","description":"Canonical owner-scoped Storage key: {owner_user_id}/homes/{home_id}/attachments/{attachment_id}.ext."},"mime_type":{"type":"string"},"file_size_bytes":{"type":"integer"},"captured_at":{"type":["string","null"],"format":"date-time"},"linked_event_id":{"type":["string","null"],"format":"uuid"},"linked_component_id":{"type":["string","null"],"format":"uuid"}}},"default":[]},"smart_home_readings":{"type":"array","items":{"title":"SmartHomeReading","type":"object","additionalProperties":false,"required":["id","component_id","source","metric","value","unit","recorded_at"],"properties":{"id":{"type":"string","format":"uuid"},"component_id":{"type":"string","format":"uuid"},"source":{"type":"string","enum":["homekit","ecobee","nest","other"]},"metric":{"type":"string"},"value":{"type":"number"},"unit":{"type":"string"},"recorded_at":{"type":"string","format":"date-time"}}},"default":[]},"utility_bills":{"type":"array","items":{"title":"UtilityBill","type":"object","additionalProperties":false,"required":["id","home_id","utility_type","billing_period_start","billing_period_end","usage_amount","usage_unit","source"],"properties":{"id":{"type":"string","format":"uuid"},"home_id":{"type":"string","format":"uuid"},"utility_type":{"type":"string","enum":["gas","electric","water"]},"billing_period_start":{"type":"string","format":"date"},"billing_period_end":{"type":"string","format":"date"},"usage_amount":{"type":"number"},"usage_unit":{"type":"string"},"cost_cents":{"type":["integer","null"]},"source":{"type":"string","enum":["manual","import"]},"attachment_id":{"type":["string","null"],"format":"uuid"}}},"default":[]}}};
+const schema31 = {"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"https://homebody.app/schema/home-record.schema.json","title":"HomeRecord","description":"Root document for a Home Record export. Flat, database-table-mirroring shape - one home, plus arrays of every other entity, each keyed by an id and its parent foreign keys rather than deep nesting.","type":"object","additionalProperties":false,"required":["schema_version","home","levels","rooms","plan_elements","systems","components","events","attachments","smart_home_readings","utility_bills"],"properties":{"schema_version":{"type":"string","pattern":"^\\d+\\.\\d+\\.\\d+$","enum":["0.1.0","0.1.1","0.2.0","0.3.0","0.4.0","0.5.0"],"description":"Semver of the Home Record spec this document conforms to, e.g. 0.2.0. Downstream import validation rejects unknown versions rather than duck-typing."},"home":{"title":"Home","type":"object","additionalProperties":false,"required":["id","owner_user_id","name","address","created_at"],"properties":{"id":{"type":"string","format":"uuid"},"owner_user_id":{"type":"string","format":"uuid"},"name":{"type":"string"},"address":{"type":"string"},"parcel_id":{"type":["string","null"]},"year_built":{"type":["integer","null"]},"sq_ft":{"type":["number","null"]},"beds":{"type":["integer","null"]},"baths":{"type":["number","null"]},"lot_size_m2":{"type":["number","null"]},"created_at":{"type":"string","format":"date-time"}}},"levels":{"type":"array","items":{"title":"Level","type":"object","additionalProperties":false,"required":["id","home_id","name","sort_order","elevation_offset_m","scale_confidence"],"properties":{"id":{"type":"string","format":"uuid"},"home_id":{"type":"string","format":"uuid"},"name":{"type":"string"},"sort_order":{"type":"integer"},"elevation_offset_m":{"type":"number"},"scale_confidence":{"type":"string","enum":["measured","estimated"]},"import_attachment_id":{"type":["string","null"],"format":"uuid"},"import_origin_m":{"type":["array","null"],"items":{"type":"number"},"minItems":2,"maxItems":2},"import_scale_m_per_px":{"type":["number","null"]},"import_pixel_width":{"type":["integer","null"]},"import_pixel_height":{"type":["integer","null"]},"scan_usdz_attachment_id":{"type":["string","null"],"format":"uuid","description":"Soft reference (not a foreign key) to the usdz_mesh Attachment of a RoomPlan scan; the level patch can sync before the attachment row."},"scan_structure_attachment_id":{"type":["string","null"],"format":"uuid","description":"Soft reference (not a foreign key) to the roomplan_structure Attachment holding the captured structure JSON."},"scan_glb_attachment_id":{"type":["string","null"],"format":"uuid","description":"Soft reference (not a foreign key) to the gltf_mesh Attachment used by Android and web 3D viewers."},"scan_origin_m":{"type":["array","null"],"items":{"type":"number"},"minItems":2,"maxItems":2,"description":"Translation in meters from scan XZ (after rotation) to plan space."},"scan_rotation_rad":{"type":["number","null"],"description":"Rotation in radians from scan XZ to plan space. planPoint = R(rotation) * (X, Z) + scan_origin_m."},"scan_review_state":{"type":["string","null"],"enum":["pending_review","reviewed",null]}}},"default":[]},"rooms":{"type":"array","items":{"title":"Room","type":"object","additionalProperties":false,"required":["id","level_id","name","room_type","geometry"],"properties":{"id":{"type":"string","format":"uuid"},"level_id":{"type":"string","format":"uuid"},"name":{"type":"string"},"room_type":{"type":"string","enum":["bedroom","bathroom","kitchen","living_room","dining_room","garage","basement","attic","hallway","closet","laundry","office","other"]},"geometry":{"allOf":[{"title":"PlanGeometry","description":"Shared geometry type embedded by Room, PlanElement, and Component. Coordinates are 2-element [x, y] pairs in meters, in per-level plan space (Y-down convention).","type":"object","additionalProperties":false,"required":["type","coordinates"],"allOf":[{"if":{"properties":{"type":{"const":"point"}},"required":["type"]},"then":{"properties":{"coordinates":{"type":"array","minItems":1,"maxItems":1}}}},{"if":{"properties":{"type":{"const":"polyline"}},"required":["type"]},"then":{"properties":{"coordinates":{"type":"array","minItems":2}}}},{"if":{"properties":{"type":{"const":"polygon"}},"required":["type"]},"then":{"properties":{"coordinates":{"type":"array","minItems":3}}}}],"properties":{"type":{"type":"string","enum":["point","polyline","polygon"]},"coordinates":{"type":"array","items":{"type":"array","items":{"type":"number"},"minItems":2,"maxItems":2}}}},{"type":"object","properties":{"type":{"const":"polygon"}}}]},"area_computed_m2":{"type":["number","null"]},"source":{"type":["string","null"],"enum":["hand","trace","roomplan",null],"description":"Provenance of the row. Null means hand."}}},"default":[]},"plan_elements":{"type":"array","items":{"title":"PlanElement","type":"object","additionalProperties":false,"required":["id","level_id","kind","geometry"],"properties":{"id":{"type":"string","format":"uuid"},"level_id":{"type":"string","format":"uuid"},"kind":{"type":"string","enum":["wall","door","window","opening"]},"geometry":{"title":"PlanGeometry","description":"Shared geometry type embedded by Room, PlanElement, and Component. Coordinates are 2-element [x, y] pairs in meters, in per-level plan space (Y-down convention).","type":"object","additionalProperties":false,"required":["type","coordinates"],"allOf":[{"if":{"properties":{"type":{"const":"point"}},"required":["type"]},"then":{"properties":{"coordinates":{"type":"array","minItems":1,"maxItems":1}}}},{"if":{"properties":{"type":{"const":"polyline"}},"required":["type"]},"then":{"properties":{"coordinates":{"type":"array","minItems":2}}}},{"if":{"properties":{"type":{"const":"polygon"}},"required":["type"]},"then":{"properties":{"coordinates":{"type":"array","minItems":3}}}}],"properties":{"type":{"type":"string","enum":["point","polyline","polygon"]},"coordinates":{"type":"array","items":{"type":"array","items":{"type":"number"},"minItems":2,"maxItems":2}}}},"host_element_id":{"type":["string","null"],"format":"uuid"},"source":{"type":["string","null"],"enum":["hand","trace","roomplan",null],"description":"Provenance of the row. Null means hand."}}},"default":[]},"systems":{"type":"array","items":{"title":"System","type":"object","additionalProperties":false,"required":["id","home_id","category","name"],"properties":{"id":{"type":"string","format":"uuid"},"home_id":{"type":"string","format":"uuid"},"category":{"type":"string","enum":["plumbing","electrical","hvac","roof_structure","appliances_and_water_heater","exterior_and_site","low_voltage_and_smart_home"]},"name":{"type":"string"},"notes":{"type":["string","null"]}}},"default":[]},"components":{"type":"array","items":{"title":"Component","type":"object","additionalProperties":false,"required":["id","system_id","name","component_type","condition","room_ids","custom_fields"],"properties":{"id":{"type":"string","format":"uuid"},"system_id":{"type":"string","format":"uuid"},"name":{"type":"string"},"component_type":{"type":"string","enum":["plumbing_fixture","toilet","sink","bathtub_shower","main_water_shutoff","gas_shutoff","water_supply_line","drain_waste_vent","sewer_lateral","sump_pump","water_treatment","electrical_panel","subpanel","electric_meter","service_conductors","branch_circuit","outlet","gfci_receptacle","light_fixture","smoke_detector","co_detector","generator","solar_pv_system","hvac_furnace","hvac_ac_unit","hvac_heat_pump","hvac_mini_split","hvac_boiler","hvac_air_handler","hvac_ductwork","thermostat","hvac_filter","hvac_ventilation_fan","hvac_fireplace","roof_covering","flashing","skylight","chimney","roof_vent","gutter","downspout","soffit_fascia","attic_insulation","foundation","structural_member","water_heater","refrigerator","dishwasher","range_oven","microwave","range_hood","clothes_washer","clothes_dryer","garbage_disposal","appliance_generic","exterior_wall_covering","window","exterior_door","garage_door","garage_door_opener","deck_porch_patio","driveway_walkway","fence_wall","irrigation_system","septic_system","well_pump","pool_spa","camera","video_doorbell","network_router","network_access_point","smart_hub","smart_lock","alarm_panel","leak_sensor","structured_wiring_panel","low_voltage_cabling","other"]},"make":{"type":["string","null"]},"model":{"type":["string","null"]},"manual_url":{"type":["string","null"],"format":"uri"},"location_note":{"type":["string","null"]},"serial_number":{"type":["string","null"]},"install_date":{"type":["string","null"],"format":"date"},"warranty_start":{"type":["string","null"],"format":"date"},"warranty_length_months":{"type":["integer","null"]},"manual_attachment_id":{"type":["string","null"],"format":"uuid"},"service_interval_days":{"type":["integer","null"]},"last_serviced_at":{"type":["string","null"],"format":"date"},"condition":{"title":"Condition","description":"Shared condition scale used by Component.condition and Event.condition_after, so the two cannot drift. Matches REQUIREMENTS.md SYS-08's four-value scale plus unknown for not-yet-assessed.","type":"string","enum":["good","fair","needs_attention","needs_replacement","unknown"]},"level_id":{"type":["string","null"],"format":"uuid"},"room_ids":{"type":"array","items":{"type":"string","format":"uuid"},"default":[]},"geometry":{"anyOf":[{"title":"PlanGeometry","description":"Shared geometry type embedded by Room, PlanElement, and Component. Coordinates are 2-element [x, y] pairs in meters, in per-level plan space (Y-down convention).","type":"object","additionalProperties":false,"required":["type","coordinates"],"allOf":[{"if":{"properties":{"type":{"const":"point"}},"required":["type"]},"then":{"properties":{"coordinates":{"type":"array","minItems":1,"maxItems":1}}}},{"if":{"properties":{"type":{"const":"polyline"}},"required":["type"]},"then":{"properties":{"coordinates":{"type":"array","minItems":2}}}},{"if":{"properties":{"type":{"const":"polygon"}},"required":["type"]},"then":{"properties":{"coordinates":{"type":"array","minItems":3}}}}],"properties":{"type":{"type":"string","enum":["point","polyline","polygon"]},"coordinates":{"type":"array","items":{"type":"array","items":{"type":"number"},"minItems":2,"maxItems":2}}}},{"type":"null"}],"default":null},"notes":{"type":["string","null"]},"linked_component_id":{"type":["string","null"],"format":"uuid"},"custom_fields":{"type":"object","additionalProperties":true,"default":{}}}},"default":[]},"events":{"type":"array","items":{"title":"Event","type":"object","additionalProperties":false,"required":["id","home_id","event_type","occurred_at","attachment_ids"],"anyOf":[{"required":["system_id"],"properties":{"system_id":{"type":"string","format":"uuid"}}},{"required":["component_id"],"properties":{"component_id":{"type":"string","format":"uuid"}}}],"properties":{"id":{"type":"string","format":"uuid"},"home_id":{"type":"string","format":"uuid"},"system_id":{"type":["string","null"],"format":"uuid"},"component_id":{"type":["string","null"],"format":"uuid"},"event_type":{"type":"string","enum":["inspection","service","repair","replacement","reading","note"]},"occurred_at":{"type":"string","format":"date-time"},"performed_by":{"type":["string","null"]},"cost_cents":{"type":["integer","null"]},"notes":{"type":["string","null"]},"condition_after":{"anyOf":[{"title":"Condition","description":"Shared condition scale used by Component.condition and Event.condition_after, so the two cannot drift. Matches REQUIREMENTS.md SYS-08's four-value scale plus unknown for not-yet-assessed.","type":"string","enum":["good","fair","needs_attention","needs_replacement","unknown"]},{"type":"null"}],"default":null},"reading_value":{"type":["number","null"]},"reading_unit":{"type":["string","null"]},"attachment_ids":{"type":"array","items":{"type":"string","format":"uuid"},"default":[]}}},"default":[]},"attachments":{"type":"array","items":{"title":"Attachment","type":"object","additionalProperties":false,"required":["id","home_id","kind","storage_path","mime_type","file_size_bytes"],"properties":{"id":{"type":"string","format":"uuid"},"home_id":{"type":"string","format":"uuid"},"kind":{"type":"string","enum":["photo","receipt","manual_pdf","usdz_mesh","floor_plan_source","roomplan_structure","gltf_mesh"]},"storage_path":{"type":"string","pattern":"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}/homes/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}/attachments/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}\\.[A-Za-z0-9]+$","description":"Canonical owner-scoped Storage key: {owner_user_id}/homes/{home_id}/attachments/{attachment_id}.ext."},"mime_type":{"type":"string"},"file_size_bytes":{"type":"integer"},"captured_at":{"type":["string","null"],"format":"date-time"},"linked_event_id":{"type":["string","null"],"format":"uuid"},"linked_component_id":{"type":["string","null"],"format":"uuid"}}},"default":[]},"smart_home_readings":{"type":"array","items":{"title":"SmartHomeReading","type":"object","additionalProperties":false,"required":["id","component_id","source","metric","value","unit","recorded_at"],"properties":{"id":{"type":"string","format":"uuid"},"component_id":{"type":"string","format":"uuid"},"source":{"type":"string","enum":["homekit","ecobee","nest","other"]},"metric":{"type":"string"},"value":{"type":"number"},"unit":{"type":"string"},"recorded_at":{"type":"string","format":"date-time"}}},"default":[]},"utility_bills":{"type":"array","items":{"title":"UtilityBill","type":"object","additionalProperties":false,"required":["id","home_id","utility_type","billing_period_start","billing_period_end","usage_amount","usage_unit","source"],"properties":{"id":{"type":"string","format":"uuid"},"home_id":{"type":"string","format":"uuid"},"utility_type":{"type":"string","enum":["gas","electric","water"]},"billing_period_start":{"type":"string","format":"date"},"billing_period_end":{"type":"string","format":"date"},"usage_amount":{"type":"number"},"usage_unit":{"type":"string"},"cost_cents":{"type":["integer","null"]},"source":{"type":"string","enum":["manual","import"]},"attachment_id":{"type":["string","null"],"format":"uuid"}}},"default":[]}}};
 const func1 = Object.prototype.hasOwnProperty;
 const pattern4 = new RegExp("^\\d+\\.\\d+\\.\\d+$", "u");
 const pattern5 = new RegExp("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}/homes/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}/attachments/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}\\.[A-Za-z0-9]+$", "u");
 const formats0 = /^(?:urn:uuid:)?[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/i;
 const formats4 = require("ajv-formats/dist/formats").fullFormats["date-time"];
-const formats36 = require("ajv-formats/dist/formats").fullFormats.date;
+const formats36 = require("ajv-formats/dist/formats").fullFormats.uri;
+const formats38 = require("ajv-formats/dist/formats").fullFormats.date;
 
 function validate20(data, {instancePath="", parentData, parentDataProperty, rootData=data, dynamicAnchors={}}={}){
 /*# sourceURL="https://homebody.app/schema/home-record.schema.json" */;
@@ -146,7 +147,7 @@ errors++;
 }
 if(data.schema_version !== undefined){
 let data0 = data.schema_version;
-if(!(((((data0 === "0.1.0") || (data0 === "0.1.1")) || (data0 === "0.2.0")) || (data0 === "0.3.0")) || (data0 === "0.4.0"))){
+if(!((((((data0 === "0.1.0") || (data0 === "0.1.1")) || (data0 === "0.2.0")) || (data0 === "0.3.0")) || (data0 === "0.4.0")) || (data0 === "0.5.0"))){
 const err12 = {instancePath:instancePath+"/schema_version",schemaPath:"#/properties/schema_version/enum",keyword:"enum",params:{allowedValues: schema31.properties.schema_version.enum},message:"must be equal to one of the allowed values"};
 if(vErrors === null){
 vErrors = [err12];
@@ -2554,7 +2555,7 @@ vErrors.push(err195);
 }
 errors++;
 }
-if(!(((((((((((((((data84 === "water_heater") || (data84 === "hvac_furnace")) || (data84 === "hvac_ac_unit")) || (data84 === "electrical_panel")) || (data84 === "outlet")) || (data84 === "light_fixture")) || (data84 === "plumbing_fixture")) || (data84 === "gutter")) || (data84 === "downspout")) || (data84 === "smoke_detector")) || (data84 === "thermostat")) || (data84 === "camera")) || (data84 === "network_router")) || (data84 === "appliance_generic")) || (data84 === "other"))){
+if(!((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((data84 === "plumbing_fixture") || (data84 === "toilet")) || (data84 === "sink")) || (data84 === "bathtub_shower")) || (data84 === "main_water_shutoff")) || (data84 === "gas_shutoff")) || (data84 === "water_supply_line")) || (data84 === "drain_waste_vent")) || (data84 === "sewer_lateral")) || (data84 === "sump_pump")) || (data84 === "water_treatment")) || (data84 === "electrical_panel")) || (data84 === "subpanel")) || (data84 === "electric_meter")) || (data84 === "service_conductors")) || (data84 === "branch_circuit")) || (data84 === "outlet")) || (data84 === "gfci_receptacle")) || (data84 === "light_fixture")) || (data84 === "smoke_detector")) || (data84 === "co_detector")) || (data84 === "generator")) || (data84 === "solar_pv_system")) || (data84 === "hvac_furnace")) || (data84 === "hvac_ac_unit")) || (data84 === "hvac_heat_pump")) || (data84 === "hvac_mini_split")) || (data84 === "hvac_boiler")) || (data84 === "hvac_air_handler")) || (data84 === "hvac_ductwork")) || (data84 === "thermostat")) || (data84 === "hvac_filter")) || (data84 === "hvac_ventilation_fan")) || (data84 === "hvac_fireplace")) || (data84 === "roof_covering")) || (data84 === "flashing")) || (data84 === "skylight")) || (data84 === "chimney")) || (data84 === "roof_vent")) || (data84 === "gutter")) || (data84 === "downspout")) || (data84 === "soffit_fascia")) || (data84 === "attic_insulation")) || (data84 === "foundation")) || (data84 === "structural_member")) || (data84 === "water_heater")) || (data84 === "refrigerator")) || (data84 === "dishwasher")) || (data84 === "range_oven")) || (data84 === "microwave")) || (data84 === "range_hood")) || (data84 === "clothes_washer")) || (data84 === "clothes_dryer")) || (data84 === "garbage_disposal")) || (data84 === "appliance_generic")) || (data84 === "exterior_wall_covering")) || (data84 === "window")) || (data84 === "exterior_door")) || (data84 === "garage_door")) || (data84 === "garage_door_opener")) || (data84 === "deck_porch_patio")) || (data84 === "driveway_walkway")) || (data84 === "fence_wall")) || (data84 === "irrigation_system")) || (data84 === "septic_system")) || (data84 === "well_pump")) || (data84 === "pool_spa")) || (data84 === "camera")) || (data84 === "video_doorbell")) || (data84 === "network_router")) || (data84 === "network_access_point")) || (data84 === "smart_hub")) || (data84 === "smart_lock")) || (data84 === "alarm_panel")) || (data84 === "leak_sensor")) || (data84 === "structured_wiring_panel")) || (data84 === "low_voltage_cabling")) || (data84 === "other"))){
 const err196 = {instancePath:instancePath+"/components/" + i10+"/component_type",schemaPath:"#/properties/components/items/properties/component_type/enum",keyword:"enum",params:{allowedValues: schema31.properties.components.items.properties.component_type.enum},message:"must be equal to one of the allowed values"};
 if(vErrors === null){
 vErrors = [err196];
@@ -2591,10 +2592,10 @@ vErrors.push(err198);
 errors++;
 }
 }
-if(data80.serial_number !== undefined){
-let data87 = data80.serial_number;
+if(data80.manual_url !== undefined){
+let data87 = data80.manual_url;
 if((typeof data87 !== "string") && (data87 !== null)){
-const err199 = {instancePath:instancePath+"/components/" + i10+"/serial_number",schemaPath:"#/properties/components/items/properties/serial_number/type",keyword:"type",params:{type: schema31.properties.components.items.properties.serial_number.type},message:"must be string,null"};
+const err199 = {instancePath:instancePath+"/components/" + i10+"/manual_url",schemaPath:"#/properties/components/items/properties/manual_url/type",keyword:"type",params:{type: schema31.properties.components.items.properties.manual_url.type},message:"must be string,null"};
 if(vErrors === null){
 vErrors = [err199];
 }
@@ -2603,11 +2604,9 @@ vErrors.push(err199);
 }
 errors++;
 }
-}
-if(data80.install_date !== undefined){
-let data88 = data80.install_date;
-if((typeof data88 !== "string") && (data88 !== null)){
-const err200 = {instancePath:instancePath+"/components/" + i10+"/install_date",schemaPath:"#/properties/components/items/properties/install_date/type",keyword:"type",params:{type: schema31.properties.components.items.properties.install_date.type},message:"must be string,null"};
+if(typeof data87 === "string"){
+if(!(formats36(data87))){
+const err200 = {instancePath:instancePath+"/components/" + i10+"/manual_url",schemaPath:"#/properties/components/items/properties/manual_url/format",keyword:"format",params:{format: "uri"},message:"must match format \""+"uri"+"\""};
 if(vErrors === null){
 vErrors = [err200];
 }
@@ -2616,9 +2615,12 @@ vErrors.push(err200);
 }
 errors++;
 }
-if(typeof data88 === "string"){
-if(!(formats36.validate(data88))){
-const err201 = {instancePath:instancePath+"/components/" + i10+"/install_date",schemaPath:"#/properties/components/items/properties/install_date/format",keyword:"format",params:{format: "date"},message:"must match format \""+"date"+"\""};
+}
+}
+if(data80.location_note !== undefined){
+let data88 = data80.location_note;
+if((typeof data88 !== "string") && (data88 !== null)){
+const err201 = {instancePath:instancePath+"/components/" + i10+"/location_note",schemaPath:"#/properties/components/items/properties/location_note/type",keyword:"type",params:{type: schema31.properties.components.items.properties.location_note.type},message:"must be string,null"};
 if(vErrors === null){
 vErrors = [err201];
 }
@@ -2628,11 +2630,10 @@ vErrors.push(err201);
 errors++;
 }
 }
-}
-if(data80.warranty_start !== undefined){
-let data89 = data80.warranty_start;
+if(data80.serial_number !== undefined){
+let data89 = data80.serial_number;
 if((typeof data89 !== "string") && (data89 !== null)){
-const err202 = {instancePath:instancePath+"/components/" + i10+"/warranty_start",schemaPath:"#/properties/components/items/properties/warranty_start/type",keyword:"type",params:{type: schema31.properties.components.items.properties.warranty_start.type},message:"must be string,null"};
+const err202 = {instancePath:instancePath+"/components/" + i10+"/serial_number",schemaPath:"#/properties/components/items/properties/serial_number/type",keyword:"type",params:{type: schema31.properties.components.items.properties.serial_number.type},message:"must be string,null"};
 if(vErrors === null){
 vErrors = [err202];
 }
@@ -2641,9 +2642,11 @@ vErrors.push(err202);
 }
 errors++;
 }
-if(typeof data89 === "string"){
-if(!(formats36.validate(data89))){
-const err203 = {instancePath:instancePath+"/components/" + i10+"/warranty_start",schemaPath:"#/properties/components/items/properties/warranty_start/format",keyword:"format",params:{format: "date"},message:"must match format \""+"date"+"\""};
+}
+if(data80.install_date !== undefined){
+let data90 = data80.install_date;
+if((typeof data90 !== "string") && (data90 !== null)){
+const err203 = {instancePath:instancePath+"/components/" + i10+"/install_date",schemaPath:"#/properties/components/items/properties/install_date/type",keyword:"type",params:{type: schema31.properties.components.items.properties.install_date.type},message:"must be string,null"};
 if(vErrors === null){
 vErrors = [err203];
 }
@@ -2652,12 +2655,9 @@ vErrors.push(err203);
 }
 errors++;
 }
-}
-}
-if(data80.warranty_length_months !== undefined){
-let data90 = data80.warranty_length_months;
-if((!(((typeof data90 == "number") && (!(data90 % 1) && !isNaN(data90))) && (isFinite(data90)))) && (data90 !== null)){
-const err204 = {instancePath:instancePath+"/components/" + i10+"/warranty_length_months",schemaPath:"#/properties/components/items/properties/warranty_length_months/type",keyword:"type",params:{type: schema31.properties.components.items.properties.warranty_length_months.type},message:"must be integer,null"};
+if(typeof data90 === "string"){
+if(!(formats38.validate(data90))){
+const err204 = {instancePath:instancePath+"/components/" + i10+"/install_date",schemaPath:"#/properties/components/items/properties/install_date/format",keyword:"format",params:{format: "date"},message:"must match format \""+"date"+"\""};
 if(vErrors === null){
 vErrors = [err204];
 }
@@ -2667,10 +2667,11 @@ vErrors.push(err204);
 errors++;
 }
 }
-if(data80.manual_attachment_id !== undefined){
-let data91 = data80.manual_attachment_id;
+}
+if(data80.warranty_start !== undefined){
+let data91 = data80.warranty_start;
 if((typeof data91 !== "string") && (data91 !== null)){
-const err205 = {instancePath:instancePath+"/components/" + i10+"/manual_attachment_id",schemaPath:"#/properties/components/items/properties/manual_attachment_id/type",keyword:"type",params:{type: schema31.properties.components.items.properties.manual_attachment_id.type},message:"must be string,null"};
+const err205 = {instancePath:instancePath+"/components/" + i10+"/warranty_start",schemaPath:"#/properties/components/items/properties/warranty_start/type",keyword:"type",params:{type: schema31.properties.components.items.properties.warranty_start.type},message:"must be string,null"};
 if(vErrors === null){
 vErrors = [err205];
 }
@@ -2680,8 +2681,8 @@ vErrors.push(err205);
 errors++;
 }
 if(typeof data91 === "string"){
-if(!(formats0.test(data91))){
-const err206 = {instancePath:instancePath+"/components/" + i10+"/manual_attachment_id",schemaPath:"#/properties/components/items/properties/manual_attachment_id/format",keyword:"format",params:{format: "uuid"},message:"must match format \""+"uuid"+"\""};
+if(!(formats38.validate(data91))){
+const err206 = {instancePath:instancePath+"/components/" + i10+"/warranty_start",schemaPath:"#/properties/components/items/properties/warranty_start/format",keyword:"format",params:{format: "date"},message:"must match format \""+"date"+"\""};
 if(vErrors === null){
 vErrors = [err206];
 }
@@ -2692,10 +2693,10 @@ errors++;
 }
 }
 }
-if(data80.service_interval_days !== undefined){
-let data92 = data80.service_interval_days;
+if(data80.warranty_length_months !== undefined){
+let data92 = data80.warranty_length_months;
 if((!(((typeof data92 == "number") && (!(data92 % 1) && !isNaN(data92))) && (isFinite(data92)))) && (data92 !== null)){
-const err207 = {instancePath:instancePath+"/components/" + i10+"/service_interval_days",schemaPath:"#/properties/components/items/properties/service_interval_days/type",keyword:"type",params:{type: schema31.properties.components.items.properties.service_interval_days.type},message:"must be integer,null"};
+const err207 = {instancePath:instancePath+"/components/" + i10+"/warranty_length_months",schemaPath:"#/properties/components/items/properties/warranty_length_months/type",keyword:"type",params:{type: schema31.properties.components.items.properties.warranty_length_months.type},message:"must be integer,null"};
 if(vErrors === null){
 vErrors = [err207];
 }
@@ -2705,10 +2706,10 @@ vErrors.push(err207);
 errors++;
 }
 }
-if(data80.last_serviced_at !== undefined){
-let data93 = data80.last_serviced_at;
+if(data80.manual_attachment_id !== undefined){
+let data93 = data80.manual_attachment_id;
 if((typeof data93 !== "string") && (data93 !== null)){
-const err208 = {instancePath:instancePath+"/components/" + i10+"/last_serviced_at",schemaPath:"#/properties/components/items/properties/last_serviced_at/type",keyword:"type",params:{type: schema31.properties.components.items.properties.last_serviced_at.type},message:"must be string,null"};
+const err208 = {instancePath:instancePath+"/components/" + i10+"/manual_attachment_id",schemaPath:"#/properties/components/items/properties/manual_attachment_id/type",keyword:"type",params:{type: schema31.properties.components.items.properties.manual_attachment_id.type},message:"must be string,null"};
 if(vErrors === null){
 vErrors = [err208];
 }
@@ -2718,8 +2719,8 @@ vErrors.push(err208);
 errors++;
 }
 if(typeof data93 === "string"){
-if(!(formats36.validate(data93))){
-const err209 = {instancePath:instancePath+"/components/" + i10+"/last_serviced_at",schemaPath:"#/properties/components/items/properties/last_serviced_at/format",keyword:"format",params:{format: "date"},message:"must match format \""+"date"+"\""};
+if(!(formats0.test(data93))){
+const err209 = {instancePath:instancePath+"/components/" + i10+"/manual_attachment_id",schemaPath:"#/properties/components/items/properties/manual_attachment_id/format",keyword:"format",params:{format: "uuid"},message:"must match format \""+"uuid"+"\""};
 if(vErrors === null){
 vErrors = [err209];
 }
@@ -2730,10 +2731,10 @@ errors++;
 }
 }
 }
-if(data80.condition !== undefined){
-let data94 = data80.condition;
-if(typeof data94 !== "string"){
-const err210 = {instancePath:instancePath+"/components/" + i10+"/condition",schemaPath:"#/properties/components/items/properties/condition/type",keyword:"type",params:{type: "string"},message:"must be string"};
+if(data80.service_interval_days !== undefined){
+let data94 = data80.service_interval_days;
+if((!(((typeof data94 == "number") && (!(data94 % 1) && !isNaN(data94))) && (isFinite(data94)))) && (data94 !== null)){
+const err210 = {instancePath:instancePath+"/components/" + i10+"/service_interval_days",schemaPath:"#/properties/components/items/properties/service_interval_days/type",keyword:"type",params:{type: schema31.properties.components.items.properties.service_interval_days.type},message:"must be integer,null"};
 if(vErrors === null){
 vErrors = [err210];
 }
@@ -2742,8 +2743,11 @@ vErrors.push(err210);
 }
 errors++;
 }
-if(!(((((data94 === "good") || (data94 === "fair")) || (data94 === "needs_attention")) || (data94 === "needs_replacement")) || (data94 === "unknown"))){
-const err211 = {instancePath:instancePath+"/components/" + i10+"/condition",schemaPath:"#/properties/components/items/properties/condition/enum",keyword:"enum",params:{allowedValues: schema31.properties.components.items.properties.condition.enum},message:"must be equal to one of the allowed values"};
+}
+if(data80.last_serviced_at !== undefined){
+let data95 = data80.last_serviced_at;
+if((typeof data95 !== "string") && (data95 !== null)){
+const err211 = {instancePath:instancePath+"/components/" + i10+"/last_serviced_at",schemaPath:"#/properties/components/items/properties/last_serviced_at/type",keyword:"type",params:{type: schema31.properties.components.items.properties.last_serviced_at.type},message:"must be string,null"};
 if(vErrors === null){
 vErrors = [err211];
 }
@@ -2752,11 +2756,9 @@ vErrors.push(err211);
 }
 errors++;
 }
-}
-if(data80.level_id !== undefined){
-let data95 = data80.level_id;
-if((typeof data95 !== "string") && (data95 !== null)){
-const err212 = {instancePath:instancePath+"/components/" + i10+"/level_id",schemaPath:"#/properties/components/items/properties/level_id/type",keyword:"type",params:{type: schema31.properties.components.items.properties.level_id.type},message:"must be string,null"};
+if(typeof data95 === "string"){
+if(!(formats38.validate(data95))){
+const err212 = {instancePath:instancePath+"/components/" + i10+"/last_serviced_at",schemaPath:"#/properties/components/items/properties/last_serviced_at/format",keyword:"format",params:{format: "date"},message:"must match format \""+"date"+"\""};
 if(vErrors === null){
 vErrors = [err212];
 }
@@ -2765,9 +2767,12 @@ vErrors.push(err212);
 }
 errors++;
 }
-if(typeof data95 === "string"){
-if(!(formats0.test(data95))){
-const err213 = {instancePath:instancePath+"/components/" + i10+"/level_id",schemaPath:"#/properties/components/items/properties/level_id/format",keyword:"format",params:{format: "uuid"},message:"must match format \""+"uuid"+"\""};
+}
+}
+if(data80.condition !== undefined){
+let data96 = data80.condition;
+if(typeof data96 !== "string"){
+const err213 = {instancePath:instancePath+"/components/" + i10+"/condition",schemaPath:"#/properties/components/items/properties/condition/type",keyword:"type",params:{type: "string"},message:"must be string"};
 if(vErrors === null){
 vErrors = [err213];
 }
@@ -2776,17 +2781,8 @@ vErrors.push(err213);
 }
 errors++;
 }
-}
-}
-if(data80.room_ids !== undefined){
-let data96 = data80.room_ids;
-if(Array.isArray(data96)){
-const len11 = data96.length;
-for(let i11=0; i11<len11; i11++){
-let data97 = data96[i11];
-if(typeof data97 === "string"){
-if(!(formats0.test(data97))){
-const err214 = {instancePath:instancePath+"/components/" + i10+"/room_ids/" + i11,schemaPath:"#/properties/components/items/properties/room_ids/items/format",keyword:"format",params:{format: "uuid"},message:"must match format \""+"uuid"+"\""};
+if(!(((((data96 === "good") || (data96 === "fair")) || (data96 === "needs_attention")) || (data96 === "needs_replacement")) || (data96 === "unknown"))){
+const err214 = {instancePath:instancePath+"/components/" + i10+"/condition",schemaPath:"#/properties/components/items/properties/condition/enum",keyword:"enum",params:{allowedValues: schema31.properties.components.items.properties.condition.enum},message:"must be equal to one of the allowed values"};
 if(vErrors === null){
 vErrors = [err214];
 }
@@ -2796,8 +2792,10 @@ vErrors.push(err214);
 errors++;
 }
 }
-else {
-const err215 = {instancePath:instancePath+"/components/" + i10+"/room_ids/" + i11,schemaPath:"#/properties/components/items/properties/room_ids/items/type",keyword:"type",params:{type: "string"},message:"must be string"};
+if(data80.level_id !== undefined){
+let data97 = data80.level_id;
+if((typeof data97 !== "string") && (data97 !== null)){
+const err215 = {instancePath:instancePath+"/components/" + i10+"/level_id",schemaPath:"#/properties/components/items/properties/level_id/type",keyword:"type",params:{type: schema31.properties.components.items.properties.level_id.type},message:"must be string,null"};
 if(vErrors === null){
 vErrors = [err215];
 }
@@ -2806,10 +2804,9 @@ vErrors.push(err215);
 }
 errors++;
 }
-}
-}
-else {
-const err216 = {instancePath:instancePath+"/components/" + i10+"/room_ids",schemaPath:"#/properties/components/items/properties/room_ids/type",keyword:"type",params:{type: "array"},message:"must be array"};
+if(typeof data97 === "string"){
+if(!(formats0.test(data97))){
+const err216 = {instancePath:instancePath+"/components/" + i10+"/level_id",schemaPath:"#/properties/components/items/properties/level_id/format",keyword:"format",params:{format: "uuid"},message:"must match format \""+"uuid"+"\""};
 if(vErrors === null){
 vErrors = [err216];
 }
@@ -2819,18 +2816,16 @@ vErrors.push(err216);
 errors++;
 }
 }
-if(data80.geometry !== undefined){
-let data98 = data80.geometry;
-const _errs227 = errors;
-let valid55 = false;
-const _errs228 = errors;
-const _errs231 = errors;
-let valid57 = true;
-const _errs232 = errors;
-if(data98 && typeof data98 == "object" && !Array.isArray(data98)){
-let missing6;
-if((data98.type === undefined) && (missing6 = "type")){
-const err217 = {};
+}
+if(data80.room_ids !== undefined){
+let data98 = data80.room_ids;
+if(Array.isArray(data98)){
+const len11 = data98.length;
+for(let i11=0; i11<len11; i11++){
+let data99 = data98[i11];
+if(typeof data99 === "string"){
+if(!(formats0.test(data99))){
+const err217 = {instancePath:instancePath+"/components/" + i10+"/room_ids/" + i11,schemaPath:"#/properties/components/items/properties/room_ids/items/format",keyword:"format",params:{format: "uuid"},message:"must match format \""+"uuid"+"\""};
 if(vErrors === null){
 vErrors = [err217];
 }
@@ -2839,10 +2834,9 @@ vErrors.push(err217);
 }
 errors++;
 }
+}
 else {
-if(data98.type !== undefined){
-if("point" !== data98.type){
-const err218 = {};
+const err218 = {instancePath:instancePath+"/components/" + i10+"/room_ids/" + i11,schemaPath:"#/properties/components/items/properties/room_ids/items/type",keyword:"type",params:{type: "string"},message:"must be string"};
 if(vErrors === null){
 vErrors = [err218];
 }
@@ -2853,25 +2847,8 @@ errors++;
 }
 }
 }
-}
-var _valid7 = _errs232 === errors;
-errors = _errs231;
-if(vErrors !== null){
-if(_errs231){
-vErrors.length = _errs231;
-}
 else {
-vErrors = null;
-}
-}
-if(_valid7){
-const _errs234 = errors;
-if(data98 && typeof data98 == "object" && !Array.isArray(data98)){
-if(data98.coordinates !== undefined){
-let data100 = data98.coordinates;
-if(Array.isArray(data100)){
-if(data100.length > 1){
-const err219 = {instancePath:instancePath+"/components/" + i10+"/geometry/coordinates",schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/allOf/0/then/properties/coordinates/maxItems",keyword:"maxItems",params:{limit: 1},message:"must NOT have more than 1 items"};
+const err219 = {instancePath:instancePath+"/components/" + i10+"/room_ids",schemaPath:"#/properties/components/items/properties/room_ids/type",keyword:"type",params:{type: "array"},message:"must be array"};
 if(vErrors === null){
 vErrors = [err219];
 }
@@ -2880,8 +2857,19 @@ vErrors.push(err219);
 }
 errors++;
 }
-if(data100.length < 1){
-const err220 = {instancePath:instancePath+"/components/" + i10+"/geometry/coordinates",schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/allOf/0/then/properties/coordinates/minItems",keyword:"minItems",params:{limit: 1},message:"must NOT have fewer than 1 items"};
+}
+if(data80.geometry !== undefined){
+let data100 = data80.geometry;
+const _errs231 = errors;
+let valid55 = false;
+const _errs232 = errors;
+const _errs235 = errors;
+let valid57 = true;
+const _errs236 = errors;
+if(data100 && typeof data100 == "object" && !Array.isArray(data100)){
+let missing6;
+if((data100.type === undefined) && (missing6 = "type")){
+const err220 = {};
 if(vErrors === null){
 vErrors = [err220];
 }
@@ -2890,9 +2878,10 @@ vErrors.push(err220);
 }
 errors++;
 }
-}
 else {
-const err221 = {instancePath:instancePath+"/components/" + i10+"/geometry/coordinates",schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/allOf/0/then/properties/coordinates/type",keyword:"type",params:{type: "array"},message:"must be array"};
+if(data100.type !== undefined){
+if("point" !== data100.type){
+const err221 = {};
 if(vErrors === null){
 vErrors = [err221];
 }
@@ -2903,16 +2892,25 @@ errors++;
 }
 }
 }
-var _valid7 = _errs234 === errors;
-valid57 = _valid7;
-if(valid57){
-var props6 = {};
-props6.coordinates = true;
-props6.type = true;
+}
+var _valid7 = _errs236 === errors;
+errors = _errs235;
+if(vErrors !== null){
+if(_errs235){
+vErrors.length = _errs235;
+}
+else {
+vErrors = null;
 }
 }
-if(!valid57){
-const err222 = {instancePath:instancePath+"/components/" + i10+"/geometry",schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/allOf/0/if",keyword:"if",params:{failingKeyword: "then"},message:"must match \"then\" schema"};
+if(_valid7){
+const _errs238 = errors;
+if(data100 && typeof data100 == "object" && !Array.isArray(data100)){
+if(data100.coordinates !== undefined){
+let data102 = data100.coordinates;
+if(Array.isArray(data102)){
+if(data102.length > 1){
+const err222 = {instancePath:instancePath+"/components/" + i10+"/geometry/coordinates",schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/allOf/0/then/properties/coordinates/maxItems",keyword:"maxItems",params:{limit: 1},message:"must NOT have more than 1 items"};
 if(vErrors === null){
 vErrors = [err222];
 }
@@ -2921,13 +2919,8 @@ vErrors.push(err222);
 }
 errors++;
 }
-const _errs238 = errors;
-let valid60 = true;
-const _errs239 = errors;
-if(data98 && typeof data98 == "object" && !Array.isArray(data98)){
-let missing7;
-if((data98.type === undefined) && (missing7 = "type")){
-const err223 = {};
+if(data102.length < 1){
+const err223 = {instancePath:instancePath+"/components/" + i10+"/geometry/coordinates",schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/allOf/0/then/properties/coordinates/minItems",keyword:"minItems",params:{limit: 1},message:"must NOT have fewer than 1 items"};
 if(vErrors === null){
 vErrors = [err223];
 }
@@ -2936,10 +2929,9 @@ vErrors.push(err223);
 }
 errors++;
 }
+}
 else {
-if(data98.type !== undefined){
-if("polyline" !== data98.type){
-const err224 = {};
+const err224 = {instancePath:instancePath+"/components/" + i10+"/geometry/coordinates",schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/allOf/0/then/properties/coordinates/type",keyword:"type",params:{type: "array"},message:"must be array"};
 if(vErrors === null){
 vErrors = [err224];
 }
@@ -2950,25 +2942,16 @@ errors++;
 }
 }
 }
-}
-var _valid8 = _errs239 === errors;
-errors = _errs238;
-if(vErrors !== null){
-if(_errs238){
-vErrors.length = _errs238;
-}
-else {
-vErrors = null;
+var _valid7 = _errs238 === errors;
+valid57 = _valid7;
+if(valid57){
+var props6 = {};
+props6.coordinates = true;
+props6.type = true;
 }
 }
-if(_valid8){
-const _errs241 = errors;
-if(data98 && typeof data98 == "object" && !Array.isArray(data98)){
-if(data98.coordinates !== undefined){
-let data102 = data98.coordinates;
-if(Array.isArray(data102)){
-if(data102.length < 2){
-const err225 = {instancePath:instancePath+"/components/" + i10+"/geometry/coordinates",schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/allOf/1/then/properties/coordinates/minItems",keyword:"minItems",params:{limit: 2},message:"must NOT have fewer than 2 items"};
+if(!valid57){
+const err225 = {instancePath:instancePath+"/components/" + i10+"/geometry",schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/allOf/0/if",keyword:"if",params:{failingKeyword: "then"},message:"must match \"then\" schema"};
 if(vErrors === null){
 vErrors = [err225];
 }
@@ -2977,9 +2960,13 @@ vErrors.push(err225);
 }
 errors++;
 }
-}
-else {
-const err226 = {instancePath:instancePath+"/components/" + i10+"/geometry/coordinates",schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/allOf/1/then/properties/coordinates/type",keyword:"type",params:{type: "array"},message:"must be array"};
+const _errs242 = errors;
+let valid60 = true;
+const _errs243 = errors;
+if(data100 && typeof data100 == "object" && !Array.isArray(data100)){
+let missing7;
+if((data100.type === undefined) && (missing7 = "type")){
+const err226 = {};
 if(vErrors === null){
 vErrors = [err226];
 }
@@ -2988,9 +2975,61 @@ vErrors.push(err226);
 }
 errors++;
 }
+else {
+if(data100.type !== undefined){
+if("polyline" !== data100.type){
+const err227 = {};
+if(vErrors === null){
+vErrors = [err227];
+}
+else {
+vErrors.push(err227);
+}
+errors++;
 }
 }
-var _valid8 = _errs241 === errors;
+}
+}
+var _valid8 = _errs243 === errors;
+errors = _errs242;
+if(vErrors !== null){
+if(_errs242){
+vErrors.length = _errs242;
+}
+else {
+vErrors = null;
+}
+}
+if(_valid8){
+const _errs245 = errors;
+if(data100 && typeof data100 == "object" && !Array.isArray(data100)){
+if(data100.coordinates !== undefined){
+let data104 = data100.coordinates;
+if(Array.isArray(data104)){
+if(data104.length < 2){
+const err228 = {instancePath:instancePath+"/components/" + i10+"/geometry/coordinates",schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/allOf/1/then/properties/coordinates/minItems",keyword:"minItems",params:{limit: 2},message:"must NOT have fewer than 2 items"};
+if(vErrors === null){
+vErrors = [err228];
+}
+else {
+vErrors.push(err228);
+}
+errors++;
+}
+}
+else {
+const err229 = {instancePath:instancePath+"/components/" + i10+"/geometry/coordinates",schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/allOf/1/then/properties/coordinates/type",keyword:"type",params:{type: "array"},message:"must be array"};
+if(vErrors === null){
+vErrors = [err229];
+}
+else {
+vErrors.push(err229);
+}
+errors++;
+}
+}
+}
+var _valid8 = _errs245 === errors;
 valid60 = _valid8;
 if(valid60){
 var props7 = {};
@@ -2999,12 +3038,12 @@ props7.type = true;
 }
 }
 if(!valid60){
-const err227 = {instancePath:instancePath+"/components/" + i10+"/geometry",schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/allOf/1/if",keyword:"if",params:{failingKeyword: "then"},message:"must match \"then\" schema"};
+const err230 = {instancePath:instancePath+"/components/" + i10+"/geometry",schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/allOf/1/if",keyword:"if",params:{failingKeyword: "then"},message:"must match \"then\" schema"};
 if(vErrors === null){
-vErrors = [err227];
+vErrors = [err230];
 }
 else {
-vErrors.push(err227);
+vErrors.push(err230);
 }
 errors++;
 }
@@ -3017,65 +3056,13 @@ props6 = props6 || {};
 Object.assign(props6, props7);
 }
 }
-const _errs245 = errors;
+const _errs249 = errors;
 let valid63 = true;
-const _errs246 = errors;
-if(data98 && typeof data98 == "object" && !Array.isArray(data98)){
+const _errs250 = errors;
+if(data100 && typeof data100 == "object" && !Array.isArray(data100)){
 let missing8;
-if((data98.type === undefined) && (missing8 = "type")){
-const err228 = {};
-if(vErrors === null){
-vErrors = [err228];
-}
-else {
-vErrors.push(err228);
-}
-errors++;
-}
-else {
-if(data98.type !== undefined){
-if("polygon" !== data98.type){
-const err229 = {};
-if(vErrors === null){
-vErrors = [err229];
-}
-else {
-vErrors.push(err229);
-}
-errors++;
-}
-}
-}
-}
-var _valid9 = _errs246 === errors;
-errors = _errs245;
-if(vErrors !== null){
-if(_errs245){
-vErrors.length = _errs245;
-}
-else {
-vErrors = null;
-}
-}
-if(_valid9){
-const _errs248 = errors;
-if(data98 && typeof data98 == "object" && !Array.isArray(data98)){
-if(data98.coordinates !== undefined){
-let data104 = data98.coordinates;
-if(Array.isArray(data104)){
-if(data104.length < 3){
-const err230 = {instancePath:instancePath+"/components/" + i10+"/geometry/coordinates",schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/allOf/2/then/properties/coordinates/minItems",keyword:"minItems",params:{limit: 3},message:"must NOT have fewer than 3 items"};
-if(vErrors === null){
-vErrors = [err230];
-}
-else {
-vErrors.push(err230);
-}
-errors++;
-}
-}
-else {
-const err231 = {instancePath:instancePath+"/components/" + i10+"/geometry/coordinates",schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/allOf/2/then/properties/coordinates/type",keyword:"type",params:{type: "array"},message:"must be array"};
+if((data100.type === undefined) && (missing8 = "type")){
+const err231 = {};
 if(vErrors === null){
 vErrors = [err231];
 }
@@ -3084,9 +3071,61 @@ vErrors.push(err231);
 }
 errors++;
 }
+else {
+if(data100.type !== undefined){
+if("polygon" !== data100.type){
+const err232 = {};
+if(vErrors === null){
+vErrors = [err232];
+}
+else {
+vErrors.push(err232);
+}
+errors++;
 }
 }
-var _valid9 = _errs248 === errors;
+}
+}
+var _valid9 = _errs250 === errors;
+errors = _errs249;
+if(vErrors !== null){
+if(_errs249){
+vErrors.length = _errs249;
+}
+else {
+vErrors = null;
+}
+}
+if(_valid9){
+const _errs252 = errors;
+if(data100 && typeof data100 == "object" && !Array.isArray(data100)){
+if(data100.coordinates !== undefined){
+let data106 = data100.coordinates;
+if(Array.isArray(data106)){
+if(data106.length < 3){
+const err233 = {instancePath:instancePath+"/components/" + i10+"/geometry/coordinates",schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/allOf/2/then/properties/coordinates/minItems",keyword:"minItems",params:{limit: 3},message:"must NOT have fewer than 3 items"};
+if(vErrors === null){
+vErrors = [err233];
+}
+else {
+vErrors.push(err233);
+}
+errors++;
+}
+}
+else {
+const err234 = {instancePath:instancePath+"/components/" + i10+"/geometry/coordinates",schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/allOf/2/then/properties/coordinates/type",keyword:"type",params:{type: "array"},message:"must be array"};
+if(vErrors === null){
+vErrors = [err234];
+}
+else {
+vErrors.push(err234);
+}
+errors++;
+}
+}
+}
+var _valid9 = _errs252 === errors;
 valid63 = _valid9;
 if(valid63){
 var props8 = {};
@@ -3095,12 +3134,12 @@ props8.type = true;
 }
 }
 if(!valid63){
-const err232 = {instancePath:instancePath+"/components/" + i10+"/geometry",schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/allOf/2/if",keyword:"if",params:{failingKeyword: "then"},message:"must match \"then\" schema"};
+const err235 = {instancePath:instancePath+"/components/" + i10+"/geometry",schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/allOf/2/if",keyword:"if",params:{failingKeyword: "then"},message:"must match \"then\" schema"};
 if(vErrors === null){
-vErrors = [err232];
+vErrors = [err235];
 }
 else {
-vErrors.push(err232);
+vErrors.push(err235);
 }
 errors++;
 }
@@ -3113,43 +3152,9 @@ props6 = props6 || {};
 Object.assign(props6, props8);
 }
 }
-if(data98 && typeof data98 == "object" && !Array.isArray(data98)){
-if(data98.type === undefined){
-const err233 = {instancePath:instancePath+"/components/" + i10+"/geometry",schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/required",keyword:"required",params:{missingProperty: "type"},message:"must have required property '"+"type"+"'"};
-if(vErrors === null){
-vErrors = [err233];
-}
-else {
-vErrors.push(err233);
-}
-errors++;
-}
-if(data98.coordinates === undefined){
-const err234 = {instancePath:instancePath+"/components/" + i10+"/geometry",schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/required",keyword:"required",params:{missingProperty: "coordinates"},message:"must have required property '"+"coordinates"+"'"};
-if(vErrors === null){
-vErrors = [err234];
-}
-else {
-vErrors.push(err234);
-}
-errors++;
-}
-for(const key9 in data98){
-if(!((key9 === "type") || (key9 === "coordinates"))){
-const err235 = {instancePath:instancePath+"/components/" + i10+"/geometry",schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/additionalProperties",keyword:"additionalProperties",params:{additionalProperty: key9},message:"must NOT have additional properties"};
-if(vErrors === null){
-vErrors = [err235];
-}
-else {
-vErrors.push(err235);
-}
-errors++;
-}
-}
-if(data98.type !== undefined){
-let data105 = data98.type;
-if(typeof data105 !== "string"){
-const err236 = {instancePath:instancePath+"/components/" + i10+"/geometry/type",schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/properties/type/type",keyword:"type",params:{type: "string"},message:"must be string"};
+if(data100 && typeof data100 == "object" && !Array.isArray(data100)){
+if(data100.type === undefined){
+const err236 = {instancePath:instancePath+"/components/" + i10+"/geometry",schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/required",keyword:"required",params:{missingProperty: "type"},message:"must have required property '"+"type"+"'"};
 if(vErrors === null){
 vErrors = [err236];
 }
@@ -3158,8 +3163,8 @@ vErrors.push(err236);
 }
 errors++;
 }
-if(!(((data105 === "point") || (data105 === "polyline")) || (data105 === "polygon"))){
-const err237 = {instancePath:instancePath+"/components/" + i10+"/geometry/type",schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/properties/type/enum",keyword:"enum",params:{allowedValues: schema31.properties.components.items.properties.geometry.anyOf[0].properties.type.enum},message:"must be equal to one of the allowed values"};
+if(data100.coordinates === undefined){
+const err237 = {instancePath:instancePath+"/components/" + i10+"/geometry",schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/required",keyword:"required",params:{missingProperty: "coordinates"},message:"must have required property '"+"coordinates"+"'"};
 if(vErrors === null){
 vErrors = [err237];
 }
@@ -3168,16 +3173,9 @@ vErrors.push(err237);
 }
 errors++;
 }
-}
-if(data98.coordinates !== undefined){
-let data106 = data98.coordinates;
-if(Array.isArray(data106)){
-const len12 = data106.length;
-for(let i12=0; i12<len12; i12++){
-let data107 = data106[i12];
-if(Array.isArray(data107)){
-if(data107.length > 2){
-const err238 = {instancePath:instancePath+"/components/" + i10+"/geometry/coordinates/" + i12,schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/properties/coordinates/items/maxItems",keyword:"maxItems",params:{limit: 2},message:"must NOT have more than 2 items"};
+for(const key9 in data100){
+if(!((key9 === "type") || (key9 === "coordinates"))){
+const err238 = {instancePath:instancePath+"/components/" + i10+"/geometry",schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/additionalProperties",keyword:"additionalProperties",params:{additionalProperty: key9},message:"must NOT have additional properties"};
 if(vErrors === null){
 vErrors = [err238];
 }
@@ -3186,8 +3184,11 @@ vErrors.push(err238);
 }
 errors++;
 }
-if(data107.length < 2){
-const err239 = {instancePath:instancePath+"/components/" + i10+"/geometry/coordinates/" + i12,schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/properties/coordinates/items/minItems",keyword:"minItems",params:{limit: 2},message:"must NOT have fewer than 2 items"};
+}
+if(data100.type !== undefined){
+let data107 = data100.type;
+if(typeof data107 !== "string"){
+const err239 = {instancePath:instancePath+"/components/" + i10+"/geometry/type",schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/properties/type/type",keyword:"type",params:{type: "string"},message:"must be string"};
 if(vErrors === null){
 vErrors = [err239];
 }
@@ -3196,11 +3197,8 @@ vErrors.push(err239);
 }
 errors++;
 }
-const len13 = data107.length;
-for(let i13=0; i13<len13; i13++){
-let data108 = data107[i13];
-if(!((typeof data108 == "number") && (isFinite(data108)))){
-const err240 = {instancePath:instancePath+"/components/" + i10+"/geometry/coordinates/" + i12+"/" + i13,schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/properties/coordinates/items/items/type",keyword:"type",params:{type: "number"},message:"must be number"};
+if(!(((data107 === "point") || (data107 === "polyline")) || (data107 === "polygon"))){
+const err240 = {instancePath:instancePath+"/components/" + i10+"/geometry/type",schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/properties/type/enum",keyword:"enum",params:{allowedValues: schema31.properties.components.items.properties.geometry.anyOf[0].properties.type.enum},message:"must be equal to one of the allowed values"};
 if(vErrors === null){
 vErrors = [err240];
 }
@@ -3210,9 +3208,15 @@ vErrors.push(err240);
 errors++;
 }
 }
-}
-else {
-const err241 = {instancePath:instancePath+"/components/" + i10+"/geometry/coordinates/" + i12,schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/properties/coordinates/items/type",keyword:"type",params:{type: "array"},message:"must be array"};
+if(data100.coordinates !== undefined){
+let data108 = data100.coordinates;
+if(Array.isArray(data108)){
+const len12 = data108.length;
+for(let i12=0; i12<len12; i12++){
+let data109 = data108[i12];
+if(Array.isArray(data109)){
+if(data109.length > 2){
+const err241 = {instancePath:instancePath+"/components/" + i10+"/geometry/coordinates/" + i12,schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/properties/coordinates/items/maxItems",keyword:"maxItems",params:{limit: 2},message:"must NOT have more than 2 items"};
 if(vErrors === null){
 vErrors = [err241];
 }
@@ -3221,10 +3225,8 @@ vErrors.push(err241);
 }
 errors++;
 }
-}
-}
-else {
-const err242 = {instancePath:instancePath+"/components/" + i10+"/geometry/coordinates",schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/properties/coordinates/type",keyword:"type",params:{type: "array"},message:"must be array"};
+if(data109.length < 2){
+const err242 = {instancePath:instancePath+"/components/" + i10+"/geometry/coordinates/" + i12,schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/properties/coordinates/items/minItems",keyword:"minItems",params:{limit: 2},message:"must NOT have fewer than 2 items"};
 if(vErrors === null){
 vErrors = [err242];
 }
@@ -3233,10 +3235,11 @@ vErrors.push(err242);
 }
 errors++;
 }
-}
-}
-else {
-const err243 = {instancePath:instancePath+"/components/" + i10+"/geometry",schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/type",keyword:"type",params:{type: "object"},message:"must be object"};
+const len13 = data109.length;
+for(let i13=0; i13<len13; i13++){
+let data110 = data109[i13];
+if(!((typeof data110 == "number") && (isFinite(data110)))){
+const err243 = {instancePath:instancePath+"/components/" + i10+"/geometry/coordinates/" + i12+"/" + i13,schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/properties/coordinates/items/items/type",keyword:"type",params:{type: "number"},message:"must be number"};
 if(vErrors === null){
 vErrors = [err243];
 }
@@ -3245,11 +3248,10 @@ vErrors.push(err243);
 }
 errors++;
 }
-var _valid6 = _errs228 === errors;
-valid55 = valid55 || _valid6;
-const _errs260 = errors;
-if(data98 !== null){
-const err244 = {instancePath:instancePath+"/components/" + i10+"/geometry",schemaPath:"#/properties/components/items/properties/geometry/anyOf/1/type",keyword:"type",params:{type: "null"},message:"must be null"};
+}
+}
+else {
+const err244 = {instancePath:instancePath+"/components/" + i10+"/geometry/coordinates/" + i12,schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/properties/coordinates/items/type",keyword:"type",params:{type: "array"},message:"must be array"};
 if(vErrors === null){
 vErrors = [err244];
 }
@@ -3258,10 +3260,10 @@ vErrors.push(err244);
 }
 errors++;
 }
-var _valid6 = _errs260 === errors;
-valid55 = valid55 || _valid6;
-if(!valid55){
-const err245 = {instancePath:instancePath+"/components/" + i10+"/geometry",schemaPath:"#/properties/components/items/properties/geometry/anyOf",keyword:"anyOf",params:{},message:"must match a schema in anyOf"};
+}
+}
+else {
+const err245 = {instancePath:instancePath+"/components/" + i10+"/geometry/coordinates",schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/properties/coordinates/type",keyword:"type",params:{type: "array"},message:"must be array"};
 if(vErrors === null){
 vErrors = [err245];
 }
@@ -3270,22 +3272,10 @@ vErrors.push(err245);
 }
 errors++;
 }
-else {
-errors = _errs227;
-if(vErrors !== null){
-if(_errs227){
-vErrors.length = _errs227;
+}
 }
 else {
-vErrors = null;
-}
-}
-}
-}
-if(data80.notes !== undefined){
-let data109 = data80.notes;
-if((typeof data109 !== "string") && (data109 !== null)){
-const err246 = {instancePath:instancePath+"/components/" + i10+"/notes",schemaPath:"#/properties/components/items/properties/notes/type",keyword:"type",params:{type: schema31.properties.components.items.properties.notes.type},message:"must be string,null"};
+const err246 = {instancePath:instancePath+"/components/" + i10+"/geometry",schemaPath:"#/properties/components/items/properties/geometry/anyOf/0/type",keyword:"type",params:{type: "object"},message:"must be object"};
 if(vErrors === null){
 vErrors = [err246];
 }
@@ -3294,11 +3284,11 @@ vErrors.push(err246);
 }
 errors++;
 }
-}
-if(data80.linked_component_id !== undefined){
-let data110 = data80.linked_component_id;
-if((typeof data110 !== "string") && (data110 !== null)){
-const err247 = {instancePath:instancePath+"/components/" + i10+"/linked_component_id",schemaPath:"#/properties/components/items/properties/linked_component_id/type",keyword:"type",params:{type: schema31.properties.components.items.properties.linked_component_id.type},message:"must be string,null"};
+var _valid6 = _errs232 === errors;
+valid55 = valid55 || _valid6;
+const _errs264 = errors;
+if(data100 !== null){
+const err247 = {instancePath:instancePath+"/components/" + i10+"/geometry",schemaPath:"#/properties/components/items/properties/geometry/anyOf/1/type",keyword:"type",params:{type: "null"},message:"must be null"};
 if(vErrors === null){
 vErrors = [err247];
 }
@@ -3307,9 +3297,10 @@ vErrors.push(err247);
 }
 errors++;
 }
-if(typeof data110 === "string"){
-if(!(formats0.test(data110))){
-const err248 = {instancePath:instancePath+"/components/" + i10+"/linked_component_id",schemaPath:"#/properties/components/items/properties/linked_component_id/format",keyword:"format",params:{format: "uuid"},message:"must match format \""+"uuid"+"\""};
+var _valid6 = _errs264 === errors;
+valid55 = valid55 || _valid6;
+if(!valid55){
+const err248 = {instancePath:instancePath+"/components/" + i10+"/geometry",schemaPath:"#/properties/components/items/properties/geometry/anyOf",keyword:"anyOf",params:{},message:"must match a schema in anyOf"};
 if(vErrors === null){
 vErrors = [err248];
 }
@@ -3318,14 +3309,22 @@ vErrors.push(err248);
 }
 errors++;
 }
-}
-}
-if(data80.custom_fields !== undefined){
-let data111 = data80.custom_fields;
-if(data111 && typeof data111 == "object" && !Array.isArray(data111)){
+else {
+errors = _errs231;
+if(vErrors !== null){
+if(_errs231){
+vErrors.length = _errs231;
 }
 else {
-const err249 = {instancePath:instancePath+"/components/" + i10+"/custom_fields",schemaPath:"#/properties/components/items/properties/custom_fields/type",keyword:"type",params:{type: "object"},message:"must be object"};
+vErrors = null;
+}
+}
+}
+}
+if(data80.notes !== undefined){
+let data111 = data80.notes;
+if((typeof data111 !== "string") && (data111 !== null)){
+const err249 = {instancePath:instancePath+"/components/" + i10+"/notes",schemaPath:"#/properties/components/items/properties/notes/type",keyword:"type",params:{type: schema31.properties.components.items.properties.notes.type},message:"must be string,null"};
 if(vErrors === null){
 vErrors = [err249];
 }
@@ -3335,9 +3334,10 @@ vErrors.push(err249);
 errors++;
 }
 }
-}
-else {
-const err250 = {instancePath:instancePath+"/components/" + i10,schemaPath:"#/properties/components/items/type",keyword:"type",params:{type: "object"},message:"must be object"};
+if(data80.linked_component_id !== undefined){
+let data112 = data80.linked_component_id;
+if((typeof data112 !== "string") && (data112 !== null)){
+const err250 = {instancePath:instancePath+"/components/" + i10+"/linked_component_id",schemaPath:"#/properties/components/items/properties/linked_component_id/type",keyword:"type",params:{type: schema31.properties.components.items.properties.linked_component_id.type},message:"must be string,null"};
 if(vErrors === null){
 vErrors = [err250];
 }
@@ -3346,10 +3346,9 @@ vErrors.push(err250);
 }
 errors++;
 }
-}
-}
-else {
-const err251 = {instancePath:instancePath+"/components",schemaPath:"#/properties/components/type",keyword:"type",params:{type: "array"},message:"must be array"};
+if(typeof data112 === "string"){
+if(!(formats0.test(data112))){
+const err251 = {instancePath:instancePath+"/components/" + i10+"/linked_component_id",schemaPath:"#/properties/components/items/properties/linked_component_id/format",keyword:"format",params:{format: "uuid"},message:"must match format \""+"uuid"+"\""};
 if(vErrors === null){
 vErrors = [err251];
 }
@@ -3359,18 +3358,13 @@ vErrors.push(err251);
 errors++;
 }
 }
-if(data.events !== undefined){
-let data112 = data.events;
-if(Array.isArray(data112)){
-const len14 = data112.length;
-for(let i14=0; i14<len14; i14++){
-let data113 = data112[i14];
-const _errs273 = errors;
-let valid73 = false;
-const _errs274 = errors;
+}
+if(data80.custom_fields !== undefined){
+let data113 = data80.custom_fields;
 if(data113 && typeof data113 == "object" && !Array.isArray(data113)){
-if(data113.system_id === undefined){
-const err252 = {instancePath:instancePath+"/events/" + i14,schemaPath:"#/properties/events/items/anyOf/0/required",keyword:"required",params:{missingProperty: "system_id"},message:"must have required property '"+"system_id"+"'"};
+}
+else {
+const err252 = {instancePath:instancePath+"/components/" + i10+"/custom_fields",schemaPath:"#/properties/components/items/properties/custom_fields/type",keyword:"type",params:{type: "object"},message:"must be object"};
 if(vErrors === null){
 vErrors = [err252];
 }
@@ -3379,11 +3373,10 @@ vErrors.push(err252);
 }
 errors++;
 }
-if(data113.system_id !== undefined){
-let data114 = data113.system_id;
-if(typeof data114 === "string"){
-if(!(formats0.test(data114))){
-const err253 = {instancePath:instancePath+"/events/" + i14+"/system_id",schemaPath:"#/properties/events/items/anyOf/0/properties/system_id/format",keyword:"format",params:{format: "uuid"},message:"must match format \""+"uuid"+"\""};
+}
+}
+else {
+const err253 = {instancePath:instancePath+"/components/" + i10,schemaPath:"#/properties/components/items/type",keyword:"type",params:{type: "object"},message:"must be object"};
 if(vErrors === null){
 vErrors = [err253];
 }
@@ -3393,8 +3386,9 @@ vErrors.push(err253);
 errors++;
 }
 }
+}
 else {
-const err254 = {instancePath:instancePath+"/events/" + i14+"/system_id",schemaPath:"#/properties/events/items/anyOf/0/properties/system_id/type",keyword:"type",params:{type: "string"},message:"must be string"};
+const err254 = {instancePath:instancePath+"/components",schemaPath:"#/properties/components/type",keyword:"type",params:{type: "array"},message:"must be array"};
 if(vErrors === null){
 vErrors = [err254];
 }
@@ -3404,17 +3398,18 @@ vErrors.push(err254);
 errors++;
 }
 }
-}
-var _valid10 = _errs274 === errors;
-valid73 = valid73 || _valid10;
-if(_valid10){
-var props10 = {};
-props10.system_id = true;
-}
+if(data.events !== undefined){
+let data114 = data.events;
+if(Array.isArray(data114)){
+const len14 = data114.length;
+for(let i14=0; i14<len14; i14++){
+let data115 = data114[i14];
 const _errs277 = errors;
-if(data113 && typeof data113 == "object" && !Array.isArray(data113)){
-if(data113.component_id === undefined){
-const err255 = {instancePath:instancePath+"/events/" + i14,schemaPath:"#/properties/events/items/anyOf/1/required",keyword:"required",params:{missingProperty: "component_id"},message:"must have required property '"+"component_id"+"'"};
+let valid73 = false;
+const _errs278 = errors;
+if(data115 && typeof data115 == "object" && !Array.isArray(data115)){
+if(data115.system_id === undefined){
+const err255 = {instancePath:instancePath+"/events/" + i14,schemaPath:"#/properties/events/items/anyOf/0/required",keyword:"required",params:{missingProperty: "system_id"},message:"must have required property '"+"system_id"+"'"};
 if(vErrors === null){
 vErrors = [err255];
 }
@@ -3423,11 +3418,11 @@ vErrors.push(err255);
 }
 errors++;
 }
-if(data113.component_id !== undefined){
-let data115 = data113.component_id;
-if(typeof data115 === "string"){
-if(!(formats0.test(data115))){
-const err256 = {instancePath:instancePath+"/events/" + i14+"/component_id",schemaPath:"#/properties/events/items/anyOf/1/properties/component_id/format",keyword:"format",params:{format: "uuid"},message:"must match format \""+"uuid"+"\""};
+if(data115.system_id !== undefined){
+let data116 = data115.system_id;
+if(typeof data116 === "string"){
+if(!(formats0.test(data116))){
+const err256 = {instancePath:instancePath+"/events/" + i14+"/system_id",schemaPath:"#/properties/events/items/anyOf/0/properties/system_id/format",keyword:"format",params:{format: "uuid"},message:"must match format \""+"uuid"+"\""};
 if(vErrors === null){
 vErrors = [err256];
 }
@@ -3438,7 +3433,7 @@ errors++;
 }
 }
 else {
-const err257 = {instancePath:instancePath+"/events/" + i14+"/component_id",schemaPath:"#/properties/events/items/anyOf/1/properties/component_id/type",keyword:"type",params:{type: "string"},message:"must be string"};
+const err257 = {instancePath:instancePath+"/events/" + i14+"/system_id",schemaPath:"#/properties/events/items/anyOf/0/properties/system_id/type",keyword:"type",params:{type: "string"},message:"must be string"};
 if(vErrors === null){
 vErrors = [err257];
 }
@@ -3449,16 +3444,16 @@ errors++;
 }
 }
 }
-var _valid10 = _errs277 === errors;
+var _valid10 = _errs278 === errors;
 valid73 = valid73 || _valid10;
 if(_valid10){
-if(props10 !== true){
-props10 = props10 || {};
-props10.component_id = true;
+var props10 = {};
+props10.system_id = true;
 }
-}
-if(!valid73){
-const err258 = {instancePath:instancePath+"/events/" + i14,schemaPath:"#/properties/events/items/anyOf",keyword:"anyOf",params:{},message:"must match a schema in anyOf"};
+const _errs281 = errors;
+if(data115 && typeof data115 == "object" && !Array.isArray(data115)){
+if(data115.component_id === undefined){
+const err258 = {instancePath:instancePath+"/events/" + i14,schemaPath:"#/properties/events/items/anyOf/1/required",keyword:"required",params:{missingProperty: "component_id"},message:"must have required property '"+"component_id"+"'"};
 if(vErrors === null){
 vErrors = [err258];
 }
@@ -3467,20 +3462,11 @@ vErrors.push(err258);
 }
 errors++;
 }
-else {
-errors = _errs273;
-if(vErrors !== null){
-if(_errs273){
-vErrors.length = _errs273;
-}
-else {
-vErrors = null;
-}
-}
-}
-if(data113 && typeof data113 == "object" && !Array.isArray(data113)){
-if(data113.id === undefined){
-const err259 = {instancePath:instancePath+"/events/" + i14,schemaPath:"#/properties/events/items/required",keyword:"required",params:{missingProperty: "id"},message:"must have required property '"+"id"+"'"};
+if(data115.component_id !== undefined){
+let data117 = data115.component_id;
+if(typeof data117 === "string"){
+if(!(formats0.test(data117))){
+const err259 = {instancePath:instancePath+"/events/" + i14+"/component_id",schemaPath:"#/properties/events/items/anyOf/1/properties/component_id/format",keyword:"format",params:{format: "uuid"},message:"must match format \""+"uuid"+"\""};
 if(vErrors === null){
 vErrors = [err259];
 }
@@ -3489,8 +3475,9 @@ vErrors.push(err259);
 }
 errors++;
 }
-if(data113.home_id === undefined){
-const err260 = {instancePath:instancePath+"/events/" + i14,schemaPath:"#/properties/events/items/required",keyword:"required",params:{missingProperty: "home_id"},message:"must have required property '"+"home_id"+"'"};
+}
+else {
+const err260 = {instancePath:instancePath+"/events/" + i14+"/component_id",schemaPath:"#/properties/events/items/anyOf/1/properties/component_id/type",keyword:"type",params:{type: "string"},message:"must be string"};
 if(vErrors === null){
 vErrors = [err260];
 }
@@ -3499,8 +3486,18 @@ vErrors.push(err260);
 }
 errors++;
 }
-if(data113.event_type === undefined){
-const err261 = {instancePath:instancePath+"/events/" + i14,schemaPath:"#/properties/events/items/required",keyword:"required",params:{missingProperty: "event_type"},message:"must have required property '"+"event_type"+"'"};
+}
+}
+var _valid10 = _errs281 === errors;
+valid73 = valid73 || _valid10;
+if(_valid10){
+if(props10 !== true){
+props10 = props10 || {};
+props10.component_id = true;
+}
+}
+if(!valid73){
+const err261 = {instancePath:instancePath+"/events/" + i14,schemaPath:"#/properties/events/items/anyOf",keyword:"anyOf",params:{},message:"must match a schema in anyOf"};
 if(vErrors === null){
 vErrors = [err261];
 }
@@ -3509,8 +3506,20 @@ vErrors.push(err261);
 }
 errors++;
 }
-if(data113.occurred_at === undefined){
-const err262 = {instancePath:instancePath+"/events/" + i14,schemaPath:"#/properties/events/items/required",keyword:"required",params:{missingProperty: "occurred_at"},message:"must have required property '"+"occurred_at"+"'"};
+else {
+errors = _errs277;
+if(vErrors !== null){
+if(_errs277){
+vErrors.length = _errs277;
+}
+else {
+vErrors = null;
+}
+}
+}
+if(data115 && typeof data115 == "object" && !Array.isArray(data115)){
+if(data115.id === undefined){
+const err262 = {instancePath:instancePath+"/events/" + i14,schemaPath:"#/properties/events/items/required",keyword:"required",params:{missingProperty: "id"},message:"must have required property '"+"id"+"'"};
 if(vErrors === null){
 vErrors = [err262];
 }
@@ -3519,8 +3528,8 @@ vErrors.push(err262);
 }
 errors++;
 }
-if(data113.attachment_ids === undefined){
-const err263 = {instancePath:instancePath+"/events/" + i14,schemaPath:"#/properties/events/items/required",keyword:"required",params:{missingProperty: "attachment_ids"},message:"must have required property '"+"attachment_ids"+"'"};
+if(data115.home_id === undefined){
+const err263 = {instancePath:instancePath+"/events/" + i14,schemaPath:"#/properties/events/items/required",keyword:"required",params:{missingProperty: "home_id"},message:"must have required property '"+"home_id"+"'"};
 if(vErrors === null){
 vErrors = [err263];
 }
@@ -3529,9 +3538,8 @@ vErrors.push(err263);
 }
 errors++;
 }
-for(const key10 in data113){
-if(!(func1.call(schema31.properties.events.items.properties, key10))){
-const err264 = {instancePath:instancePath+"/events/" + i14,schemaPath:"#/properties/events/items/additionalProperties",keyword:"additionalProperties",params:{additionalProperty: key10},message:"must NOT have additional properties"};
+if(data115.event_type === undefined){
+const err264 = {instancePath:instancePath+"/events/" + i14,schemaPath:"#/properties/events/items/required",keyword:"required",params:{missingProperty: "event_type"},message:"must have required property '"+"event_type"+"'"};
 if(vErrors === null){
 vErrors = [err264];
 }
@@ -3540,12 +3548,8 @@ vErrors.push(err264);
 }
 errors++;
 }
-}
-if(data113.id !== undefined){
-let data116 = data113.id;
-if(typeof data116 === "string"){
-if(!(formats0.test(data116))){
-const err265 = {instancePath:instancePath+"/events/" + i14+"/id",schemaPath:"#/properties/events/items/properties/id/format",keyword:"format",params:{format: "uuid"},message:"must match format \""+"uuid"+"\""};
+if(data115.occurred_at === undefined){
+const err265 = {instancePath:instancePath+"/events/" + i14,schemaPath:"#/properties/events/items/required",keyword:"required",params:{missingProperty: "occurred_at"},message:"must have required property '"+"occurred_at"+"'"};
 if(vErrors === null){
 vErrors = [err265];
 }
@@ -3554,9 +3558,8 @@ vErrors.push(err265);
 }
 errors++;
 }
-}
-else {
-const err266 = {instancePath:instancePath+"/events/" + i14+"/id",schemaPath:"#/properties/events/items/properties/id/type",keyword:"type",params:{type: "string"},message:"must be string"};
+if(data115.attachment_ids === undefined){
+const err266 = {instancePath:instancePath+"/events/" + i14,schemaPath:"#/properties/events/items/required",keyword:"required",params:{missingProperty: "attachment_ids"},message:"must have required property '"+"attachment_ids"+"'"};
 if(vErrors === null){
 vErrors = [err266];
 }
@@ -3565,12 +3568,9 @@ vErrors.push(err266);
 }
 errors++;
 }
-}
-if(data113.home_id !== undefined){
-let data117 = data113.home_id;
-if(typeof data117 === "string"){
-if(!(formats0.test(data117))){
-const err267 = {instancePath:instancePath+"/events/" + i14+"/home_id",schemaPath:"#/properties/events/items/properties/home_id/format",keyword:"format",params:{format: "uuid"},message:"must match format \""+"uuid"+"\""};
+for(const key10 in data115){
+if(!(func1.call(schema31.properties.events.items.properties, key10))){
+const err267 = {instancePath:instancePath+"/events/" + i14,schemaPath:"#/properties/events/items/additionalProperties",keyword:"additionalProperties",params:{additionalProperty: key10},message:"must NOT have additional properties"};
 if(vErrors === null){
 vErrors = [err267];
 }
@@ -3580,8 +3580,11 @@ vErrors.push(err267);
 errors++;
 }
 }
-else {
-const err268 = {instancePath:instancePath+"/events/" + i14+"/home_id",schemaPath:"#/properties/events/items/properties/home_id/type",keyword:"type",params:{type: "string"},message:"must be string"};
+if(data115.id !== undefined){
+let data118 = data115.id;
+if(typeof data118 === "string"){
+if(!(formats0.test(data118))){
+const err268 = {instancePath:instancePath+"/events/" + i14+"/id",schemaPath:"#/properties/events/items/properties/id/format",keyword:"format",params:{format: "uuid"},message:"must match format \""+"uuid"+"\""};
 if(vErrors === null){
 vErrors = [err268];
 }
@@ -3591,10 +3594,8 @@ vErrors.push(err268);
 errors++;
 }
 }
-if(data113.system_id !== undefined){
-let data118 = data113.system_id;
-if((typeof data118 !== "string") && (data118 !== null)){
-const err269 = {instancePath:instancePath+"/events/" + i14+"/system_id",schemaPath:"#/properties/events/items/properties/system_id/type",keyword:"type",params:{type: schema31.properties.events.items.properties.system_id.type},message:"must be string,null"};
+else {
+const err269 = {instancePath:instancePath+"/events/" + i14+"/id",schemaPath:"#/properties/events/items/properties/id/type",keyword:"type",params:{type: "string"},message:"must be string"};
 if(vErrors === null){
 vErrors = [err269];
 }
@@ -3603,9 +3604,12 @@ vErrors.push(err269);
 }
 errors++;
 }
-if(typeof data118 === "string"){
-if(!(formats0.test(data118))){
-const err270 = {instancePath:instancePath+"/events/" + i14+"/system_id",schemaPath:"#/properties/events/items/properties/system_id/format",keyword:"format",params:{format: "uuid"},message:"must match format \""+"uuid"+"\""};
+}
+if(data115.home_id !== undefined){
+let data119 = data115.home_id;
+if(typeof data119 === "string"){
+if(!(formats0.test(data119))){
+const err270 = {instancePath:instancePath+"/events/" + i14+"/home_id",schemaPath:"#/properties/events/items/properties/home_id/format",keyword:"format",params:{format: "uuid"},message:"must match format \""+"uuid"+"\""};
 if(vErrors === null){
 vErrors = [err270];
 }
@@ -3615,11 +3619,8 @@ vErrors.push(err270);
 errors++;
 }
 }
-}
-if(data113.component_id !== undefined){
-let data119 = data113.component_id;
-if((typeof data119 !== "string") && (data119 !== null)){
-const err271 = {instancePath:instancePath+"/events/" + i14+"/component_id",schemaPath:"#/properties/events/items/properties/component_id/type",keyword:"type",params:{type: schema31.properties.events.items.properties.component_id.type},message:"must be string,null"};
+else {
+const err271 = {instancePath:instancePath+"/events/" + i14+"/home_id",schemaPath:"#/properties/events/items/properties/home_id/type",keyword:"type",params:{type: "string"},message:"must be string"};
 if(vErrors === null){
 vErrors = [err271];
 }
@@ -3628,9 +3629,11 @@ vErrors.push(err271);
 }
 errors++;
 }
-if(typeof data119 === "string"){
-if(!(formats0.test(data119))){
-const err272 = {instancePath:instancePath+"/events/" + i14+"/component_id",schemaPath:"#/properties/events/items/properties/component_id/format",keyword:"format",params:{format: "uuid"},message:"must match format \""+"uuid"+"\""};
+}
+if(data115.system_id !== undefined){
+let data120 = data115.system_id;
+if((typeof data120 !== "string") && (data120 !== null)){
+const err272 = {instancePath:instancePath+"/events/" + i14+"/system_id",schemaPath:"#/properties/events/items/properties/system_id/type",keyword:"type",params:{type: schema31.properties.events.items.properties.system_id.type},message:"must be string,null"};
 if(vErrors === null){
 vErrors = [err272];
 }
@@ -3639,12 +3642,9 @@ vErrors.push(err272);
 }
 errors++;
 }
-}
-}
-if(data113.event_type !== undefined){
-let data120 = data113.event_type;
-if(typeof data120 !== "string"){
-const err273 = {instancePath:instancePath+"/events/" + i14+"/event_type",schemaPath:"#/properties/events/items/properties/event_type/type",keyword:"type",params:{type: "string"},message:"must be string"};
+if(typeof data120 === "string"){
+if(!(formats0.test(data120))){
+const err273 = {instancePath:instancePath+"/events/" + i14+"/system_id",schemaPath:"#/properties/events/items/properties/system_id/format",keyword:"format",params:{format: "uuid"},message:"must match format \""+"uuid"+"\""};
 if(vErrors === null){
 vErrors = [err273];
 }
@@ -3653,8 +3653,12 @@ vErrors.push(err273);
 }
 errors++;
 }
-if(!((((((data120 === "inspection") || (data120 === "service")) || (data120 === "repair")) || (data120 === "replacement")) || (data120 === "reading")) || (data120 === "note"))){
-const err274 = {instancePath:instancePath+"/events/" + i14+"/event_type",schemaPath:"#/properties/events/items/properties/event_type/enum",keyword:"enum",params:{allowedValues: schema31.properties.events.items.properties.event_type.enum},message:"must be equal to one of the allowed values"};
+}
+}
+if(data115.component_id !== undefined){
+let data121 = data115.component_id;
+if((typeof data121 !== "string") && (data121 !== null)){
+const err274 = {instancePath:instancePath+"/events/" + i14+"/component_id",schemaPath:"#/properties/events/items/properties/component_id/type",keyword:"type",params:{type: schema31.properties.events.items.properties.component_id.type},message:"must be string,null"};
 if(vErrors === null){
 vErrors = [err274];
 }
@@ -3663,12 +3667,9 @@ vErrors.push(err274);
 }
 errors++;
 }
-}
-if(data113.occurred_at !== undefined){
-let data121 = data113.occurred_at;
 if(typeof data121 === "string"){
-if(!(formats4.validate(data121))){
-const err275 = {instancePath:instancePath+"/events/" + i14+"/occurred_at",schemaPath:"#/properties/events/items/properties/occurred_at/format",keyword:"format",params:{format: "date-time"},message:"must match format \""+"date-time"+"\""};
+if(!(formats0.test(data121))){
+const err275 = {instancePath:instancePath+"/events/" + i14+"/component_id",schemaPath:"#/properties/events/items/properties/component_id/format",keyword:"format",params:{format: "uuid"},message:"must match format \""+"uuid"+"\""};
 if(vErrors === null){
 vErrors = [err275];
 }
@@ -3678,8 +3679,11 @@ vErrors.push(err275);
 errors++;
 }
 }
-else {
-const err276 = {instancePath:instancePath+"/events/" + i14+"/occurred_at",schemaPath:"#/properties/events/items/properties/occurred_at/type",keyword:"type",params:{type: "string"},message:"must be string"};
+}
+if(data115.event_type !== undefined){
+let data122 = data115.event_type;
+if(typeof data122 !== "string"){
+const err276 = {instancePath:instancePath+"/events/" + i14+"/event_type",schemaPath:"#/properties/events/items/properties/event_type/type",keyword:"type",params:{type: "string"},message:"must be string"};
 if(vErrors === null){
 vErrors = [err276];
 }
@@ -3688,11 +3692,8 @@ vErrors.push(err276);
 }
 errors++;
 }
-}
-if(data113.performed_by !== undefined){
-let data122 = data113.performed_by;
-if((typeof data122 !== "string") && (data122 !== null)){
-const err277 = {instancePath:instancePath+"/events/" + i14+"/performed_by",schemaPath:"#/properties/events/items/properties/performed_by/type",keyword:"type",params:{type: schema31.properties.events.items.properties.performed_by.type},message:"must be string,null"};
+if(!((((((data122 === "inspection") || (data122 === "service")) || (data122 === "repair")) || (data122 === "replacement")) || (data122 === "reading")) || (data122 === "note"))){
+const err277 = {instancePath:instancePath+"/events/" + i14+"/event_type",schemaPath:"#/properties/events/items/properties/event_type/enum",keyword:"enum",params:{allowedValues: schema31.properties.events.items.properties.event_type.enum},message:"must be equal to one of the allowed values"};
 if(vErrors === null){
 vErrors = [err277];
 }
@@ -3702,10 +3703,11 @@ vErrors.push(err277);
 errors++;
 }
 }
-if(data113.cost_cents !== undefined){
-let data123 = data113.cost_cents;
-if((!(((typeof data123 == "number") && (!(data123 % 1) && !isNaN(data123))) && (isFinite(data123)))) && (data123 !== null)){
-const err278 = {instancePath:instancePath+"/events/" + i14+"/cost_cents",schemaPath:"#/properties/events/items/properties/cost_cents/type",keyword:"type",params:{type: schema31.properties.events.items.properties.cost_cents.type},message:"must be integer,null"};
+if(data115.occurred_at !== undefined){
+let data123 = data115.occurred_at;
+if(typeof data123 === "string"){
+if(!(formats4.validate(data123))){
+const err278 = {instancePath:instancePath+"/events/" + i14+"/occurred_at",schemaPath:"#/properties/events/items/properties/occurred_at/format",keyword:"format",params:{format: "date-time"},message:"must match format \""+"date-time"+"\""};
 if(vErrors === null){
 vErrors = [err278];
 }
@@ -3715,10 +3717,8 @@ vErrors.push(err278);
 errors++;
 }
 }
-if(data113.notes !== undefined){
-let data124 = data113.notes;
-if((typeof data124 !== "string") && (data124 !== null)){
-const err279 = {instancePath:instancePath+"/events/" + i14+"/notes",schemaPath:"#/properties/events/items/properties/notes/type",keyword:"type",params:{type: schema31.properties.events.items.properties.notes.type},message:"must be string,null"};
+else {
+const err279 = {instancePath:instancePath+"/events/" + i14+"/occurred_at",schemaPath:"#/properties/events/items/properties/occurred_at/type",keyword:"type",params:{type: "string"},message:"must be string"};
 if(vErrors === null){
 vErrors = [err279];
 }
@@ -3728,13 +3728,10 @@ vErrors.push(err279);
 errors++;
 }
 }
-if(data113.condition_after !== undefined){
-let data125 = data113.condition_after;
-const _errs300 = errors;
-let valid77 = false;
-const _errs301 = errors;
-if(typeof data125 !== "string"){
-const err280 = {instancePath:instancePath+"/events/" + i14+"/condition_after",schemaPath:"#/properties/events/items/properties/condition_after/anyOf/0/type",keyword:"type",params:{type: "string"},message:"must be string"};
+if(data115.performed_by !== undefined){
+let data124 = data115.performed_by;
+if((typeof data124 !== "string") && (data124 !== null)){
+const err280 = {instancePath:instancePath+"/events/" + i14+"/performed_by",schemaPath:"#/properties/events/items/properties/performed_by/type",keyword:"type",params:{type: schema31.properties.events.items.properties.performed_by.type},message:"must be string,null"};
 if(vErrors === null){
 vErrors = [err280];
 }
@@ -3743,8 +3740,11 @@ vErrors.push(err280);
 }
 errors++;
 }
-if(!(((((data125 === "good") || (data125 === "fair")) || (data125 === "needs_attention")) || (data125 === "needs_replacement")) || (data125 === "unknown"))){
-const err281 = {instancePath:instancePath+"/events/" + i14+"/condition_after",schemaPath:"#/properties/events/items/properties/condition_after/anyOf/0/enum",keyword:"enum",params:{allowedValues: schema31.properties.events.items.properties.condition_after.anyOf[0].enum},message:"must be equal to one of the allowed values"};
+}
+if(data115.cost_cents !== undefined){
+let data125 = data115.cost_cents;
+if((!(((typeof data125 == "number") && (!(data125 % 1) && !isNaN(data125))) && (isFinite(data125)))) && (data125 !== null)){
+const err281 = {instancePath:instancePath+"/events/" + i14+"/cost_cents",schemaPath:"#/properties/events/items/properties/cost_cents/type",keyword:"type",params:{type: schema31.properties.events.items.properties.cost_cents.type},message:"must be integer,null"};
 if(vErrors === null){
 vErrors = [err281];
 }
@@ -3753,11 +3753,11 @@ vErrors.push(err281);
 }
 errors++;
 }
-var _valid11 = _errs301 === errors;
-valid77 = valid77 || _valid11;
-const _errs303 = errors;
-if(data125 !== null){
-const err282 = {instancePath:instancePath+"/events/" + i14+"/condition_after",schemaPath:"#/properties/events/items/properties/condition_after/anyOf/1/type",keyword:"type",params:{type: "null"},message:"must be null"};
+}
+if(data115.notes !== undefined){
+let data126 = data115.notes;
+if((typeof data126 !== "string") && (data126 !== null)){
+const err282 = {instancePath:instancePath+"/events/" + i14+"/notes",schemaPath:"#/properties/events/items/properties/notes/type",keyword:"type",params:{type: schema31.properties.events.items.properties.notes.type},message:"must be string,null"};
 if(vErrors === null){
 vErrors = [err282];
 }
@@ -3766,10 +3766,14 @@ vErrors.push(err282);
 }
 errors++;
 }
-var _valid11 = _errs303 === errors;
-valid77 = valid77 || _valid11;
-if(!valid77){
-const err283 = {instancePath:instancePath+"/events/" + i14+"/condition_after",schemaPath:"#/properties/events/items/properties/condition_after/anyOf",keyword:"anyOf",params:{},message:"must match a schema in anyOf"};
+}
+if(data115.condition_after !== undefined){
+let data127 = data115.condition_after;
+const _errs304 = errors;
+let valid77 = false;
+const _errs305 = errors;
+if(typeof data127 !== "string"){
+const err283 = {instancePath:instancePath+"/events/" + i14+"/condition_after",schemaPath:"#/properties/events/items/properties/condition_after/anyOf/0/type",keyword:"type",params:{type: "string"},message:"must be string"};
 if(vErrors === null){
 vErrors = [err283];
 }
@@ -3778,22 +3782,8 @@ vErrors.push(err283);
 }
 errors++;
 }
-else {
-errors = _errs300;
-if(vErrors !== null){
-if(_errs300){
-vErrors.length = _errs300;
-}
-else {
-vErrors = null;
-}
-}
-}
-}
-if(data113.reading_value !== undefined){
-let data126 = data113.reading_value;
-if((!((typeof data126 == "number") && (isFinite(data126)))) && (data126 !== null)){
-const err284 = {instancePath:instancePath+"/events/" + i14+"/reading_value",schemaPath:"#/properties/events/items/properties/reading_value/type",keyword:"type",params:{type: schema31.properties.events.items.properties.reading_value.type},message:"must be number,null"};
+if(!(((((data127 === "good") || (data127 === "fair")) || (data127 === "needs_attention")) || (data127 === "needs_replacement")) || (data127 === "unknown"))){
+const err284 = {instancePath:instancePath+"/events/" + i14+"/condition_after",schemaPath:"#/properties/events/items/properties/condition_after/anyOf/0/enum",keyword:"enum",params:{allowedValues: schema31.properties.events.items.properties.condition_after.anyOf[0].enum},message:"must be equal to one of the allowed values"};
 if(vErrors === null){
 vErrors = [err284];
 }
@@ -3802,11 +3792,11 @@ vErrors.push(err284);
 }
 errors++;
 }
-}
-if(data113.reading_unit !== undefined){
-let data127 = data113.reading_unit;
-if((typeof data127 !== "string") && (data127 !== null)){
-const err285 = {instancePath:instancePath+"/events/" + i14+"/reading_unit",schemaPath:"#/properties/events/items/properties/reading_unit/type",keyword:"type",params:{type: schema31.properties.events.items.properties.reading_unit.type},message:"must be string,null"};
+var _valid11 = _errs305 === errors;
+valid77 = valid77 || _valid11;
+const _errs307 = errors;
+if(data127 !== null){
+const err285 = {instancePath:instancePath+"/events/" + i14+"/condition_after",schemaPath:"#/properties/events/items/properties/condition_after/anyOf/1/type",keyword:"type",params:{type: "null"},message:"must be null"};
 if(vErrors === null){
 vErrors = [err285];
 }
@@ -3815,16 +3805,10 @@ vErrors.push(err285);
 }
 errors++;
 }
-}
-if(data113.attachment_ids !== undefined){
-let data128 = data113.attachment_ids;
-if(Array.isArray(data128)){
-const len15 = data128.length;
-for(let i15=0; i15<len15; i15++){
-let data129 = data128[i15];
-if(typeof data129 === "string"){
-if(!(formats0.test(data129))){
-const err286 = {instancePath:instancePath+"/events/" + i14+"/attachment_ids/" + i15,schemaPath:"#/properties/events/items/properties/attachment_ids/items/format",keyword:"format",params:{format: "uuid"},message:"must match format \""+"uuid"+"\""};
+var _valid11 = _errs307 === errors;
+valid77 = valid77 || _valid11;
+if(!valid77){
+const err286 = {instancePath:instancePath+"/events/" + i14+"/condition_after",schemaPath:"#/properties/events/items/properties/condition_after/anyOf",keyword:"anyOf",params:{},message:"must match a schema in anyOf"};
 if(vErrors === null){
 vErrors = [err286];
 }
@@ -3833,9 +3817,22 @@ vErrors.push(err286);
 }
 errors++;
 }
+else {
+errors = _errs304;
+if(vErrors !== null){
+if(_errs304){
+vErrors.length = _errs304;
 }
 else {
-const err287 = {instancePath:instancePath+"/events/" + i14+"/attachment_ids/" + i15,schemaPath:"#/properties/events/items/properties/attachment_ids/items/type",keyword:"type",params:{type: "string"},message:"must be string"};
+vErrors = null;
+}
+}
+}
+}
+if(data115.reading_value !== undefined){
+let data128 = data115.reading_value;
+if((!((typeof data128 == "number") && (isFinite(data128)))) && (data128 !== null)){
+const err287 = {instancePath:instancePath+"/events/" + i14+"/reading_value",schemaPath:"#/properties/events/items/properties/reading_value/type",keyword:"type",params:{type: schema31.properties.events.items.properties.reading_value.type},message:"must be number,null"};
 if(vErrors === null){
 vErrors = [err287];
 }
@@ -3845,9 +3842,10 @@ vErrors.push(err287);
 errors++;
 }
 }
-}
-else {
-const err288 = {instancePath:instancePath+"/events/" + i14+"/attachment_ids",schemaPath:"#/properties/events/items/properties/attachment_ids/type",keyword:"type",params:{type: "array"},message:"must be array"};
+if(data115.reading_unit !== undefined){
+let data129 = data115.reading_unit;
+if((typeof data129 !== "string") && (data129 !== null)){
+const err288 = {instancePath:instancePath+"/events/" + i14+"/reading_unit",schemaPath:"#/properties/events/items/properties/reading_unit/type",keyword:"type",params:{type: schema31.properties.events.items.properties.reading_unit.type},message:"must be string,null"};
 if(vErrors === null){
 vErrors = [err288];
 }
@@ -3857,9 +3855,15 @@ vErrors.push(err288);
 errors++;
 }
 }
-}
-else {
-const err289 = {instancePath:instancePath+"/events/" + i14,schemaPath:"#/properties/events/items/type",keyword:"type",params:{type: "object"},message:"must be object"};
+if(data115.attachment_ids !== undefined){
+let data130 = data115.attachment_ids;
+if(Array.isArray(data130)){
+const len15 = data130.length;
+for(let i15=0; i15<len15; i15++){
+let data131 = data130[i15];
+if(typeof data131 === "string"){
+if(!(formats0.test(data131))){
+const err289 = {instancePath:instancePath+"/events/" + i14+"/attachment_ids/" + i15,schemaPath:"#/properties/events/items/properties/attachment_ids/items/format",keyword:"format",params:{format: "uuid"},message:"must match format \""+"uuid"+"\""};
 if(vErrors === null){
 vErrors = [err289];
 }
@@ -3869,9 +3873,8 @@ vErrors.push(err289);
 errors++;
 }
 }
-}
 else {
-const err290 = {instancePath:instancePath+"/events",schemaPath:"#/properties/events/type",keyword:"type",params:{type: "array"},message:"must be array"};
+const err290 = {instancePath:instancePath+"/events/" + i14+"/attachment_ids/" + i15,schemaPath:"#/properties/events/items/properties/attachment_ids/items/type",keyword:"type",params:{type: "string"},message:"must be string"};
 if(vErrors === null){
 vErrors = [err290];
 }
@@ -3881,15 +3884,9 @@ vErrors.push(err290);
 errors++;
 }
 }
-if(data.attachments !== undefined){
-let data130 = data.attachments;
-if(Array.isArray(data130)){
-const len16 = data130.length;
-for(let i16=0; i16<len16; i16++){
-let data131 = data130[i16];
-if(data131 && typeof data131 == "object" && !Array.isArray(data131)){
-if(data131.id === undefined){
-const err291 = {instancePath:instancePath+"/attachments/" + i16,schemaPath:"#/properties/attachments/items/required",keyword:"required",params:{missingProperty: "id"},message:"must have required property '"+"id"+"'"};
+}
+else {
+const err291 = {instancePath:instancePath+"/events/" + i14+"/attachment_ids",schemaPath:"#/properties/events/items/properties/attachment_ids/type",keyword:"type",params:{type: "array"},message:"must be array"};
 if(vErrors === null){
 vErrors = [err291];
 }
@@ -3898,8 +3895,10 @@ vErrors.push(err291);
 }
 errors++;
 }
-if(data131.home_id === undefined){
-const err292 = {instancePath:instancePath+"/attachments/" + i16,schemaPath:"#/properties/attachments/items/required",keyword:"required",params:{missingProperty: "home_id"},message:"must have required property '"+"home_id"+"'"};
+}
+}
+else {
+const err292 = {instancePath:instancePath+"/events/" + i14,schemaPath:"#/properties/events/items/type",keyword:"type",params:{type: "object"},message:"must be object"};
 if(vErrors === null){
 vErrors = [err292];
 }
@@ -3908,8 +3907,10 @@ vErrors.push(err292);
 }
 errors++;
 }
-if(data131.kind === undefined){
-const err293 = {instancePath:instancePath+"/attachments/" + i16,schemaPath:"#/properties/attachments/items/required",keyword:"required",params:{missingProperty: "kind"},message:"must have required property '"+"kind"+"'"};
+}
+}
+else {
+const err293 = {instancePath:instancePath+"/events",schemaPath:"#/properties/events/type",keyword:"type",params:{type: "array"},message:"must be array"};
 if(vErrors === null){
 vErrors = [err293];
 }
@@ -3918,8 +3919,16 @@ vErrors.push(err293);
 }
 errors++;
 }
-if(data131.storage_path === undefined){
-const err294 = {instancePath:instancePath+"/attachments/" + i16,schemaPath:"#/properties/attachments/items/required",keyword:"required",params:{missingProperty: "storage_path"},message:"must have required property '"+"storage_path"+"'"};
+}
+if(data.attachments !== undefined){
+let data132 = data.attachments;
+if(Array.isArray(data132)){
+const len16 = data132.length;
+for(let i16=0; i16<len16; i16++){
+let data133 = data132[i16];
+if(data133 && typeof data133 == "object" && !Array.isArray(data133)){
+if(data133.id === undefined){
+const err294 = {instancePath:instancePath+"/attachments/" + i16,schemaPath:"#/properties/attachments/items/required",keyword:"required",params:{missingProperty: "id"},message:"must have required property '"+"id"+"'"};
 if(vErrors === null){
 vErrors = [err294];
 }
@@ -3928,8 +3937,8 @@ vErrors.push(err294);
 }
 errors++;
 }
-if(data131.mime_type === undefined){
-const err295 = {instancePath:instancePath+"/attachments/" + i16,schemaPath:"#/properties/attachments/items/required",keyword:"required",params:{missingProperty: "mime_type"},message:"must have required property '"+"mime_type"+"'"};
+if(data133.home_id === undefined){
+const err295 = {instancePath:instancePath+"/attachments/" + i16,schemaPath:"#/properties/attachments/items/required",keyword:"required",params:{missingProperty: "home_id"},message:"must have required property '"+"home_id"+"'"};
 if(vErrors === null){
 vErrors = [err295];
 }
@@ -3938,8 +3947,8 @@ vErrors.push(err295);
 }
 errors++;
 }
-if(data131.file_size_bytes === undefined){
-const err296 = {instancePath:instancePath+"/attachments/" + i16,schemaPath:"#/properties/attachments/items/required",keyword:"required",params:{missingProperty: "file_size_bytes"},message:"must have required property '"+"file_size_bytes"+"'"};
+if(data133.kind === undefined){
+const err296 = {instancePath:instancePath+"/attachments/" + i16,schemaPath:"#/properties/attachments/items/required",keyword:"required",params:{missingProperty: "kind"},message:"must have required property '"+"kind"+"'"};
 if(vErrors === null){
 vErrors = [err296];
 }
@@ -3948,9 +3957,8 @@ vErrors.push(err296);
 }
 errors++;
 }
-for(const key11 in data131){
-if(!(func1.call(schema31.properties.attachments.items.properties, key11))){
-const err297 = {instancePath:instancePath+"/attachments/" + i16,schemaPath:"#/properties/attachments/items/additionalProperties",keyword:"additionalProperties",params:{additionalProperty: key11},message:"must NOT have additional properties"};
+if(data133.storage_path === undefined){
+const err297 = {instancePath:instancePath+"/attachments/" + i16,schemaPath:"#/properties/attachments/items/required",keyword:"required",params:{missingProperty: "storage_path"},message:"must have required property '"+"storage_path"+"'"};
 if(vErrors === null){
 vErrors = [err297];
 }
@@ -3959,12 +3967,8 @@ vErrors.push(err297);
 }
 errors++;
 }
-}
-if(data131.id !== undefined){
-let data132 = data131.id;
-if(typeof data132 === "string"){
-if(!(formats0.test(data132))){
-const err298 = {instancePath:instancePath+"/attachments/" + i16+"/id",schemaPath:"#/properties/attachments/items/properties/id/format",keyword:"format",params:{format: "uuid"},message:"must match format \""+"uuid"+"\""};
+if(data133.mime_type === undefined){
+const err298 = {instancePath:instancePath+"/attachments/" + i16,schemaPath:"#/properties/attachments/items/required",keyword:"required",params:{missingProperty: "mime_type"},message:"must have required property '"+"mime_type"+"'"};
 if(vErrors === null){
 vErrors = [err298];
 }
@@ -3973,9 +3977,8 @@ vErrors.push(err298);
 }
 errors++;
 }
-}
-else {
-const err299 = {instancePath:instancePath+"/attachments/" + i16+"/id",schemaPath:"#/properties/attachments/items/properties/id/type",keyword:"type",params:{type: "string"},message:"must be string"};
+if(data133.file_size_bytes === undefined){
+const err299 = {instancePath:instancePath+"/attachments/" + i16,schemaPath:"#/properties/attachments/items/required",keyword:"required",params:{missingProperty: "file_size_bytes"},message:"must have required property '"+"file_size_bytes"+"'"};
 if(vErrors === null){
 vErrors = [err299];
 }
@@ -3984,12 +3987,9 @@ vErrors.push(err299);
 }
 errors++;
 }
-}
-if(data131.home_id !== undefined){
-let data133 = data131.home_id;
-if(typeof data133 === "string"){
-if(!(formats0.test(data133))){
-const err300 = {instancePath:instancePath+"/attachments/" + i16+"/home_id",schemaPath:"#/properties/attachments/items/properties/home_id/format",keyword:"format",params:{format: "uuid"},message:"must match format \""+"uuid"+"\""};
+for(const key11 in data133){
+if(!(func1.call(schema31.properties.attachments.items.properties, key11))){
+const err300 = {instancePath:instancePath+"/attachments/" + i16,schemaPath:"#/properties/attachments/items/additionalProperties",keyword:"additionalProperties",params:{additionalProperty: key11},message:"must NOT have additional properties"};
 if(vErrors === null){
 vErrors = [err300];
 }
@@ -3999,8 +3999,11 @@ vErrors.push(err300);
 errors++;
 }
 }
-else {
-const err301 = {instancePath:instancePath+"/attachments/" + i16+"/home_id",schemaPath:"#/properties/attachments/items/properties/home_id/type",keyword:"type",params:{type: "string"},message:"must be string"};
+if(data133.id !== undefined){
+let data134 = data133.id;
+if(typeof data134 === "string"){
+if(!(formats0.test(data134))){
+const err301 = {instancePath:instancePath+"/attachments/" + i16+"/id",schemaPath:"#/properties/attachments/items/properties/id/format",keyword:"format",params:{format: "uuid"},message:"must match format \""+"uuid"+"\""};
 if(vErrors === null){
 vErrors = [err301];
 }
@@ -4010,10 +4013,8 @@ vErrors.push(err301);
 errors++;
 }
 }
-if(data131.kind !== undefined){
-let data134 = data131.kind;
-if(typeof data134 !== "string"){
-const err302 = {instancePath:instancePath+"/attachments/" + i16+"/kind",schemaPath:"#/properties/attachments/items/properties/kind/type",keyword:"type",params:{type: "string"},message:"must be string"};
+else {
+const err302 = {instancePath:instancePath+"/attachments/" + i16+"/id",schemaPath:"#/properties/attachments/items/properties/id/type",keyword:"type",params:{type: "string"},message:"must be string"};
 if(vErrors === null){
 vErrors = [err302];
 }
@@ -4022,8 +4023,12 @@ vErrors.push(err302);
 }
 errors++;
 }
-if(!(((((((data134 === "photo") || (data134 === "receipt")) || (data134 === "manual_pdf")) || (data134 === "usdz_mesh")) || (data134 === "floor_plan_source")) || (data134 === "roomplan_structure")) || (data134 === "gltf_mesh"))){
-const err303 = {instancePath:instancePath+"/attachments/" + i16+"/kind",schemaPath:"#/properties/attachments/items/properties/kind/enum",keyword:"enum",params:{allowedValues: schema31.properties.attachments.items.properties.kind.enum},message:"must be equal to one of the allowed values"};
+}
+if(data133.home_id !== undefined){
+let data135 = data133.home_id;
+if(typeof data135 === "string"){
+if(!(formats0.test(data135))){
+const err303 = {instancePath:instancePath+"/attachments/" + i16+"/home_id",schemaPath:"#/properties/attachments/items/properties/home_id/format",keyword:"format",params:{format: "uuid"},message:"must match format \""+"uuid"+"\""};
 if(vErrors === null){
 vErrors = [err303];
 }
@@ -4033,11 +4038,8 @@ vErrors.push(err303);
 errors++;
 }
 }
-if(data131.storage_path !== undefined){
-let data135 = data131.storage_path;
-if(typeof data135 === "string"){
-if(!pattern5.test(data135)){
-const err304 = {instancePath:instancePath+"/attachments/" + i16+"/storage_path",schemaPath:"#/properties/attachments/items/properties/storage_path/pattern",keyword:"pattern",params:{pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}/homes/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}/attachments/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}\\.[A-Za-z0-9]+$"},message:"must match pattern \""+"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}/homes/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}/attachments/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}\\.[A-Za-z0-9]+$"+"\""};
+else {
+const err304 = {instancePath:instancePath+"/attachments/" + i16+"/home_id",schemaPath:"#/properties/attachments/items/properties/home_id/type",keyword:"type",params:{type: "string"},message:"must be string"};
 if(vErrors === null){
 vErrors = [err304];
 }
@@ -4047,8 +4049,10 @@ vErrors.push(err304);
 errors++;
 }
 }
-else {
-const err305 = {instancePath:instancePath+"/attachments/" + i16+"/storage_path",schemaPath:"#/properties/attachments/items/properties/storage_path/type",keyword:"type",params:{type: "string"},message:"must be string"};
+if(data133.kind !== undefined){
+let data136 = data133.kind;
+if(typeof data136 !== "string"){
+const err305 = {instancePath:instancePath+"/attachments/" + i16+"/kind",schemaPath:"#/properties/attachments/items/properties/kind/type",keyword:"type",params:{type: "string"},message:"must be string"};
 if(vErrors === null){
 vErrors = [err305];
 }
@@ -4057,10 +4061,8 @@ vErrors.push(err305);
 }
 errors++;
 }
-}
-if(data131.mime_type !== undefined){
-if(typeof data131.mime_type !== "string"){
-const err306 = {instancePath:instancePath+"/attachments/" + i16+"/mime_type",schemaPath:"#/properties/attachments/items/properties/mime_type/type",keyword:"type",params:{type: "string"},message:"must be string"};
+if(!(((((((data136 === "photo") || (data136 === "receipt")) || (data136 === "manual_pdf")) || (data136 === "usdz_mesh")) || (data136 === "floor_plan_source")) || (data136 === "roomplan_structure")) || (data136 === "gltf_mesh"))){
+const err306 = {instancePath:instancePath+"/attachments/" + i16+"/kind",schemaPath:"#/properties/attachments/items/properties/kind/enum",keyword:"enum",params:{allowedValues: schema31.properties.attachments.items.properties.kind.enum},message:"must be equal to one of the allowed values"};
 if(vErrors === null){
 vErrors = [err306];
 }
@@ -4070,10 +4072,11 @@ vErrors.push(err306);
 errors++;
 }
 }
-if(data131.file_size_bytes !== undefined){
-let data137 = data131.file_size_bytes;
-if(!(((typeof data137 == "number") && (!(data137 % 1) && !isNaN(data137))) && (isFinite(data137)))){
-const err307 = {instancePath:instancePath+"/attachments/" + i16+"/file_size_bytes",schemaPath:"#/properties/attachments/items/properties/file_size_bytes/type",keyword:"type",params:{type: "integer"},message:"must be integer"};
+if(data133.storage_path !== undefined){
+let data137 = data133.storage_path;
+if(typeof data137 === "string"){
+if(!pattern5.test(data137)){
+const err307 = {instancePath:instancePath+"/attachments/" + i16+"/storage_path",schemaPath:"#/properties/attachments/items/properties/storage_path/pattern",keyword:"pattern",params:{pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}/homes/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}/attachments/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}\\.[A-Za-z0-9]+$"},message:"must match pattern \""+"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}/homes/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}/attachments/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}\\.[A-Za-z0-9]+$"+"\""};
 if(vErrors === null){
 vErrors = [err307];
 }
@@ -4083,10 +4086,8 @@ vErrors.push(err307);
 errors++;
 }
 }
-if(data131.captured_at !== undefined){
-let data138 = data131.captured_at;
-if((typeof data138 !== "string") && (data138 !== null)){
-const err308 = {instancePath:instancePath+"/attachments/" + i16+"/captured_at",schemaPath:"#/properties/attachments/items/properties/captured_at/type",keyword:"type",params:{type: schema31.properties.attachments.items.properties.captured_at.type},message:"must be string,null"};
+else {
+const err308 = {instancePath:instancePath+"/attachments/" + i16+"/storage_path",schemaPath:"#/properties/attachments/items/properties/storage_path/type",keyword:"type",params:{type: "string"},message:"must be string"};
 if(vErrors === null){
 vErrors = [err308];
 }
@@ -4095,9 +4096,10 @@ vErrors.push(err308);
 }
 errors++;
 }
-if(typeof data138 === "string"){
-if(!(formats4.validate(data138))){
-const err309 = {instancePath:instancePath+"/attachments/" + i16+"/captured_at",schemaPath:"#/properties/attachments/items/properties/captured_at/format",keyword:"format",params:{format: "date-time"},message:"must match format \""+"date-time"+"\""};
+}
+if(data133.mime_type !== undefined){
+if(typeof data133.mime_type !== "string"){
+const err309 = {instancePath:instancePath+"/attachments/" + i16+"/mime_type",schemaPath:"#/properties/attachments/items/properties/mime_type/type",keyword:"type",params:{type: "string"},message:"must be string"};
 if(vErrors === null){
 vErrors = [err309];
 }
@@ -4107,11 +4109,10 @@ vErrors.push(err309);
 errors++;
 }
 }
-}
-if(data131.linked_event_id !== undefined){
-let data139 = data131.linked_event_id;
-if((typeof data139 !== "string") && (data139 !== null)){
-const err310 = {instancePath:instancePath+"/attachments/" + i16+"/linked_event_id",schemaPath:"#/properties/attachments/items/properties/linked_event_id/type",keyword:"type",params:{type: schema31.properties.attachments.items.properties.linked_event_id.type},message:"must be string,null"};
+if(data133.file_size_bytes !== undefined){
+let data139 = data133.file_size_bytes;
+if(!(((typeof data139 == "number") && (!(data139 % 1) && !isNaN(data139))) && (isFinite(data139)))){
+const err310 = {instancePath:instancePath+"/attachments/" + i16+"/file_size_bytes",schemaPath:"#/properties/attachments/items/properties/file_size_bytes/type",keyword:"type",params:{type: "integer"},message:"must be integer"};
 if(vErrors === null){
 vErrors = [err310];
 }
@@ -4120,9 +4121,11 @@ vErrors.push(err310);
 }
 errors++;
 }
-if(typeof data139 === "string"){
-if(!(formats0.test(data139))){
-const err311 = {instancePath:instancePath+"/attachments/" + i16+"/linked_event_id",schemaPath:"#/properties/attachments/items/properties/linked_event_id/format",keyword:"format",params:{format: "uuid"},message:"must match format \""+"uuid"+"\""};
+}
+if(data133.captured_at !== undefined){
+let data140 = data133.captured_at;
+if((typeof data140 !== "string") && (data140 !== null)){
+const err311 = {instancePath:instancePath+"/attachments/" + i16+"/captured_at",schemaPath:"#/properties/attachments/items/properties/captured_at/type",keyword:"type",params:{type: schema31.properties.attachments.items.properties.captured_at.type},message:"must be string,null"};
 if(vErrors === null){
 vErrors = [err311];
 }
@@ -4131,12 +4134,9 @@ vErrors.push(err311);
 }
 errors++;
 }
-}
-}
-if(data131.linked_component_id !== undefined){
-let data140 = data131.linked_component_id;
-if((typeof data140 !== "string") && (data140 !== null)){
-const err312 = {instancePath:instancePath+"/attachments/" + i16+"/linked_component_id",schemaPath:"#/properties/attachments/items/properties/linked_component_id/type",keyword:"type",params:{type: schema31.properties.attachments.items.properties.linked_component_id.type},message:"must be string,null"};
+if(typeof data140 === "string"){
+if(!(formats4.validate(data140))){
+const err312 = {instancePath:instancePath+"/attachments/" + i16+"/captured_at",schemaPath:"#/properties/attachments/items/properties/captured_at/format",keyword:"format",params:{format: "date-time"},message:"must match format \""+"date-time"+"\""};
 if(vErrors === null){
 vErrors = [err312];
 }
@@ -4145,9 +4145,12 @@ vErrors.push(err312);
 }
 errors++;
 }
-if(typeof data140 === "string"){
-if(!(formats0.test(data140))){
-const err313 = {instancePath:instancePath+"/attachments/" + i16+"/linked_component_id",schemaPath:"#/properties/attachments/items/properties/linked_component_id/format",keyword:"format",params:{format: "uuid"},message:"must match format \""+"uuid"+"\""};
+}
+}
+if(data133.linked_event_id !== undefined){
+let data141 = data133.linked_event_id;
+if((typeof data141 !== "string") && (data141 !== null)){
+const err313 = {instancePath:instancePath+"/attachments/" + i16+"/linked_event_id",schemaPath:"#/properties/attachments/items/properties/linked_event_id/type",keyword:"type",params:{type: schema31.properties.attachments.items.properties.linked_event_id.type},message:"must be string,null"};
 if(vErrors === null){
 vErrors = [err313];
 }
@@ -4156,11 +4159,9 @@ vErrors.push(err313);
 }
 errors++;
 }
-}
-}
-}
-else {
-const err314 = {instancePath:instancePath+"/attachments/" + i16,schemaPath:"#/properties/attachments/items/type",keyword:"type",params:{type: "object"},message:"must be object"};
+if(typeof data141 === "string"){
+if(!(formats0.test(data141))){
+const err314 = {instancePath:instancePath+"/attachments/" + i16+"/linked_event_id",schemaPath:"#/properties/attachments/items/properties/linked_event_id/format",keyword:"format",params:{format: "uuid"},message:"must match format \""+"uuid"+"\""};
 if(vErrors === null){
 vErrors = [err314];
 }
@@ -4171,8 +4172,10 @@ errors++;
 }
 }
 }
-else {
-const err315 = {instancePath:instancePath+"/attachments",schemaPath:"#/properties/attachments/type",keyword:"type",params:{type: "array"},message:"must be array"};
+if(data133.linked_component_id !== undefined){
+let data142 = data133.linked_component_id;
+if((typeof data142 !== "string") && (data142 !== null)){
+const err315 = {instancePath:instancePath+"/attachments/" + i16+"/linked_component_id",schemaPath:"#/properties/attachments/items/properties/linked_component_id/type",keyword:"type",params:{type: schema31.properties.attachments.items.properties.linked_component_id.type},message:"must be string,null"};
 if(vErrors === null){
 vErrors = [err315];
 }
@@ -4181,16 +4184,9 @@ vErrors.push(err315);
 }
 errors++;
 }
-}
-if(data.smart_home_readings !== undefined){
-let data141 = data.smart_home_readings;
-if(Array.isArray(data141)){
-const len17 = data141.length;
-for(let i17=0; i17<len17; i17++){
-let data142 = data141[i17];
-if(data142 && typeof data142 == "object" && !Array.isArray(data142)){
-if(data142.id === undefined){
-const err316 = {instancePath:instancePath+"/smart_home_readings/" + i17,schemaPath:"#/properties/smart_home_readings/items/required",keyword:"required",params:{missingProperty: "id"},message:"must have required property '"+"id"+"'"};
+if(typeof data142 === "string"){
+if(!(formats0.test(data142))){
+const err316 = {instancePath:instancePath+"/attachments/" + i16+"/linked_component_id",schemaPath:"#/properties/attachments/items/properties/linked_component_id/format",keyword:"format",params:{format: "uuid"},message:"must match format \""+"uuid"+"\""};
 if(vErrors === null){
 vErrors = [err316];
 }
@@ -4199,8 +4195,11 @@ vErrors.push(err316);
 }
 errors++;
 }
-if(data142.component_id === undefined){
-const err317 = {instancePath:instancePath+"/smart_home_readings/" + i17,schemaPath:"#/properties/smart_home_readings/items/required",keyword:"required",params:{missingProperty: "component_id"},message:"must have required property '"+"component_id"+"'"};
+}
+}
+}
+else {
+const err317 = {instancePath:instancePath+"/attachments/" + i16,schemaPath:"#/properties/attachments/items/type",keyword:"type",params:{type: "object"},message:"must be object"};
 if(vErrors === null){
 vErrors = [err317];
 }
@@ -4209,8 +4208,10 @@ vErrors.push(err317);
 }
 errors++;
 }
-if(data142.source === undefined){
-const err318 = {instancePath:instancePath+"/smart_home_readings/" + i17,schemaPath:"#/properties/smart_home_readings/items/required",keyword:"required",params:{missingProperty: "source"},message:"must have required property '"+"source"+"'"};
+}
+}
+else {
+const err318 = {instancePath:instancePath+"/attachments",schemaPath:"#/properties/attachments/type",keyword:"type",params:{type: "array"},message:"must be array"};
 if(vErrors === null){
 vErrors = [err318];
 }
@@ -4219,8 +4220,16 @@ vErrors.push(err318);
 }
 errors++;
 }
-if(data142.metric === undefined){
-const err319 = {instancePath:instancePath+"/smart_home_readings/" + i17,schemaPath:"#/properties/smart_home_readings/items/required",keyword:"required",params:{missingProperty: "metric"},message:"must have required property '"+"metric"+"'"};
+}
+if(data.smart_home_readings !== undefined){
+let data143 = data.smart_home_readings;
+if(Array.isArray(data143)){
+const len17 = data143.length;
+for(let i17=0; i17<len17; i17++){
+let data144 = data143[i17];
+if(data144 && typeof data144 == "object" && !Array.isArray(data144)){
+if(data144.id === undefined){
+const err319 = {instancePath:instancePath+"/smart_home_readings/" + i17,schemaPath:"#/properties/smart_home_readings/items/required",keyword:"required",params:{missingProperty: "id"},message:"must have required property '"+"id"+"'"};
 if(vErrors === null){
 vErrors = [err319];
 }
@@ -4229,8 +4238,8 @@ vErrors.push(err319);
 }
 errors++;
 }
-if(data142.value === undefined){
-const err320 = {instancePath:instancePath+"/smart_home_readings/" + i17,schemaPath:"#/properties/smart_home_readings/items/required",keyword:"required",params:{missingProperty: "value"},message:"must have required property '"+"value"+"'"};
+if(data144.component_id === undefined){
+const err320 = {instancePath:instancePath+"/smart_home_readings/" + i17,schemaPath:"#/properties/smart_home_readings/items/required",keyword:"required",params:{missingProperty: "component_id"},message:"must have required property '"+"component_id"+"'"};
 if(vErrors === null){
 vErrors = [err320];
 }
@@ -4239,8 +4248,8 @@ vErrors.push(err320);
 }
 errors++;
 }
-if(data142.unit === undefined){
-const err321 = {instancePath:instancePath+"/smart_home_readings/" + i17,schemaPath:"#/properties/smart_home_readings/items/required",keyword:"required",params:{missingProperty: "unit"},message:"must have required property '"+"unit"+"'"};
+if(data144.source === undefined){
+const err321 = {instancePath:instancePath+"/smart_home_readings/" + i17,schemaPath:"#/properties/smart_home_readings/items/required",keyword:"required",params:{missingProperty: "source"},message:"must have required property '"+"source"+"'"};
 if(vErrors === null){
 vErrors = [err321];
 }
@@ -4249,8 +4258,8 @@ vErrors.push(err321);
 }
 errors++;
 }
-if(data142.recorded_at === undefined){
-const err322 = {instancePath:instancePath+"/smart_home_readings/" + i17,schemaPath:"#/properties/smart_home_readings/items/required",keyword:"required",params:{missingProperty: "recorded_at"},message:"must have required property '"+"recorded_at"+"'"};
+if(data144.metric === undefined){
+const err322 = {instancePath:instancePath+"/smart_home_readings/" + i17,schemaPath:"#/properties/smart_home_readings/items/required",keyword:"required",params:{missingProperty: "metric"},message:"must have required property '"+"metric"+"'"};
 if(vErrors === null){
 vErrors = [err322];
 }
@@ -4259,9 +4268,8 @@ vErrors.push(err322);
 }
 errors++;
 }
-for(const key12 in data142){
-if(!(((((((key12 === "id") || (key12 === "component_id")) || (key12 === "source")) || (key12 === "metric")) || (key12 === "value")) || (key12 === "unit")) || (key12 === "recorded_at"))){
-const err323 = {instancePath:instancePath+"/smart_home_readings/" + i17,schemaPath:"#/properties/smart_home_readings/items/additionalProperties",keyword:"additionalProperties",params:{additionalProperty: key12},message:"must NOT have additional properties"};
+if(data144.value === undefined){
+const err323 = {instancePath:instancePath+"/smart_home_readings/" + i17,schemaPath:"#/properties/smart_home_readings/items/required",keyword:"required",params:{missingProperty: "value"},message:"must have required property '"+"value"+"'"};
 if(vErrors === null){
 vErrors = [err323];
 }
@@ -4270,12 +4278,8 @@ vErrors.push(err323);
 }
 errors++;
 }
-}
-if(data142.id !== undefined){
-let data143 = data142.id;
-if(typeof data143 === "string"){
-if(!(formats0.test(data143))){
-const err324 = {instancePath:instancePath+"/smart_home_readings/" + i17+"/id",schemaPath:"#/properties/smart_home_readings/items/properties/id/format",keyword:"format",params:{format: "uuid"},message:"must match format \""+"uuid"+"\""};
+if(data144.unit === undefined){
+const err324 = {instancePath:instancePath+"/smart_home_readings/" + i17,schemaPath:"#/properties/smart_home_readings/items/required",keyword:"required",params:{missingProperty: "unit"},message:"must have required property '"+"unit"+"'"};
 if(vErrors === null){
 vErrors = [err324];
 }
@@ -4284,9 +4288,8 @@ vErrors.push(err324);
 }
 errors++;
 }
-}
-else {
-const err325 = {instancePath:instancePath+"/smart_home_readings/" + i17+"/id",schemaPath:"#/properties/smart_home_readings/items/properties/id/type",keyword:"type",params:{type: "string"},message:"must be string"};
+if(data144.recorded_at === undefined){
+const err325 = {instancePath:instancePath+"/smart_home_readings/" + i17,schemaPath:"#/properties/smart_home_readings/items/required",keyword:"required",params:{missingProperty: "recorded_at"},message:"must have required property '"+"recorded_at"+"'"};
 if(vErrors === null){
 vErrors = [err325];
 }
@@ -4295,12 +4298,9 @@ vErrors.push(err325);
 }
 errors++;
 }
-}
-if(data142.component_id !== undefined){
-let data144 = data142.component_id;
-if(typeof data144 === "string"){
-if(!(formats0.test(data144))){
-const err326 = {instancePath:instancePath+"/smart_home_readings/" + i17+"/component_id",schemaPath:"#/properties/smart_home_readings/items/properties/component_id/format",keyword:"format",params:{format: "uuid"},message:"must match format \""+"uuid"+"\""};
+for(const key12 in data144){
+if(!(((((((key12 === "id") || (key12 === "component_id")) || (key12 === "source")) || (key12 === "metric")) || (key12 === "value")) || (key12 === "unit")) || (key12 === "recorded_at"))){
+const err326 = {instancePath:instancePath+"/smart_home_readings/" + i17,schemaPath:"#/properties/smart_home_readings/items/additionalProperties",keyword:"additionalProperties",params:{additionalProperty: key12},message:"must NOT have additional properties"};
 if(vErrors === null){
 vErrors = [err326];
 }
@@ -4310,8 +4310,11 @@ vErrors.push(err326);
 errors++;
 }
 }
-else {
-const err327 = {instancePath:instancePath+"/smart_home_readings/" + i17+"/component_id",schemaPath:"#/properties/smart_home_readings/items/properties/component_id/type",keyword:"type",params:{type: "string"},message:"must be string"};
+if(data144.id !== undefined){
+let data145 = data144.id;
+if(typeof data145 === "string"){
+if(!(formats0.test(data145))){
+const err327 = {instancePath:instancePath+"/smart_home_readings/" + i17+"/id",schemaPath:"#/properties/smart_home_readings/items/properties/id/format",keyword:"format",params:{format: "uuid"},message:"must match format \""+"uuid"+"\""};
 if(vErrors === null){
 vErrors = [err327];
 }
@@ -4321,10 +4324,8 @@ vErrors.push(err327);
 errors++;
 }
 }
-if(data142.source !== undefined){
-let data145 = data142.source;
-if(typeof data145 !== "string"){
-const err328 = {instancePath:instancePath+"/smart_home_readings/" + i17+"/source",schemaPath:"#/properties/smart_home_readings/items/properties/source/type",keyword:"type",params:{type: "string"},message:"must be string"};
+else {
+const err328 = {instancePath:instancePath+"/smart_home_readings/" + i17+"/id",schemaPath:"#/properties/smart_home_readings/items/properties/id/type",keyword:"type",params:{type: "string"},message:"must be string"};
 if(vErrors === null){
 vErrors = [err328];
 }
@@ -4333,8 +4334,12 @@ vErrors.push(err328);
 }
 errors++;
 }
-if(!((((data145 === "homekit") || (data145 === "ecobee")) || (data145 === "nest")) || (data145 === "other"))){
-const err329 = {instancePath:instancePath+"/smart_home_readings/" + i17+"/source",schemaPath:"#/properties/smart_home_readings/items/properties/source/enum",keyword:"enum",params:{allowedValues: schema31.properties.smart_home_readings.items.properties.source.enum},message:"must be equal to one of the allowed values"};
+}
+if(data144.component_id !== undefined){
+let data146 = data144.component_id;
+if(typeof data146 === "string"){
+if(!(formats0.test(data146))){
+const err329 = {instancePath:instancePath+"/smart_home_readings/" + i17+"/component_id",schemaPath:"#/properties/smart_home_readings/items/properties/component_id/format",keyword:"format",params:{format: "uuid"},message:"must match format \""+"uuid"+"\""};
 if(vErrors === null){
 vErrors = [err329];
 }
@@ -4344,9 +4349,8 @@ vErrors.push(err329);
 errors++;
 }
 }
-if(data142.metric !== undefined){
-if(typeof data142.metric !== "string"){
-const err330 = {instancePath:instancePath+"/smart_home_readings/" + i17+"/metric",schemaPath:"#/properties/smart_home_readings/items/properties/metric/type",keyword:"type",params:{type: "string"},message:"must be string"};
+else {
+const err330 = {instancePath:instancePath+"/smart_home_readings/" + i17+"/component_id",schemaPath:"#/properties/smart_home_readings/items/properties/component_id/type",keyword:"type",params:{type: "string"},message:"must be string"};
 if(vErrors === null){
 vErrors = [err330];
 }
@@ -4356,10 +4360,10 @@ vErrors.push(err330);
 errors++;
 }
 }
-if(data142.value !== undefined){
-let data147 = data142.value;
-if(!((typeof data147 == "number") && (isFinite(data147)))){
-const err331 = {instancePath:instancePath+"/smart_home_readings/" + i17+"/value",schemaPath:"#/properties/smart_home_readings/items/properties/value/type",keyword:"type",params:{type: "number"},message:"must be number"};
+if(data144.source !== undefined){
+let data147 = data144.source;
+if(typeof data147 !== "string"){
+const err331 = {instancePath:instancePath+"/smart_home_readings/" + i17+"/source",schemaPath:"#/properties/smart_home_readings/items/properties/source/type",keyword:"type",params:{type: "string"},message:"must be string"};
 if(vErrors === null){
 vErrors = [err331];
 }
@@ -4368,10 +4372,8 @@ vErrors.push(err331);
 }
 errors++;
 }
-}
-if(data142.unit !== undefined){
-if(typeof data142.unit !== "string"){
-const err332 = {instancePath:instancePath+"/smart_home_readings/" + i17+"/unit",schemaPath:"#/properties/smart_home_readings/items/properties/unit/type",keyword:"type",params:{type: "string"},message:"must be string"};
+if(!((((data147 === "homekit") || (data147 === "ecobee")) || (data147 === "nest")) || (data147 === "other"))){
+const err332 = {instancePath:instancePath+"/smart_home_readings/" + i17+"/source",schemaPath:"#/properties/smart_home_readings/items/properties/source/enum",keyword:"enum",params:{allowedValues: schema31.properties.smart_home_readings.items.properties.source.enum},message:"must be equal to one of the allowed values"};
 if(vErrors === null){
 vErrors = [err332];
 }
@@ -4381,11 +4383,9 @@ vErrors.push(err332);
 errors++;
 }
 }
-if(data142.recorded_at !== undefined){
-let data149 = data142.recorded_at;
-if(typeof data149 === "string"){
-if(!(formats4.validate(data149))){
-const err333 = {instancePath:instancePath+"/smart_home_readings/" + i17+"/recorded_at",schemaPath:"#/properties/smart_home_readings/items/properties/recorded_at/format",keyword:"format",params:{format: "date-time"},message:"must match format \""+"date-time"+"\""};
+if(data144.metric !== undefined){
+if(typeof data144.metric !== "string"){
+const err333 = {instancePath:instancePath+"/smart_home_readings/" + i17+"/metric",schemaPath:"#/properties/smart_home_readings/items/properties/metric/type",keyword:"type",params:{type: "string"},message:"must be string"};
 if(vErrors === null){
 vErrors = [err333];
 }
@@ -4395,8 +4395,10 @@ vErrors.push(err333);
 errors++;
 }
 }
-else {
-const err334 = {instancePath:instancePath+"/smart_home_readings/" + i17+"/recorded_at",schemaPath:"#/properties/smart_home_readings/items/properties/recorded_at/type",keyword:"type",params:{type: "string"},message:"must be string"};
+if(data144.value !== undefined){
+let data149 = data144.value;
+if(!((typeof data149 == "number") && (isFinite(data149)))){
+const err334 = {instancePath:instancePath+"/smart_home_readings/" + i17+"/value",schemaPath:"#/properties/smart_home_readings/items/properties/value/type",keyword:"type",params:{type: "number"},message:"must be number"};
 if(vErrors === null){
 vErrors = [err334];
 }
@@ -4406,9 +4408,9 @@ vErrors.push(err334);
 errors++;
 }
 }
-}
-else {
-const err335 = {instancePath:instancePath+"/smart_home_readings/" + i17,schemaPath:"#/properties/smart_home_readings/items/type",keyword:"type",params:{type: "object"},message:"must be object"};
+if(data144.unit !== undefined){
+if(typeof data144.unit !== "string"){
+const err335 = {instancePath:instancePath+"/smart_home_readings/" + i17+"/unit",schemaPath:"#/properties/smart_home_readings/items/properties/unit/type",keyword:"type",params:{type: "string"},message:"must be string"};
 if(vErrors === null){
 vErrors = [err335];
 }
@@ -4418,9 +4420,11 @@ vErrors.push(err335);
 errors++;
 }
 }
-}
-else {
-const err336 = {instancePath:instancePath+"/smart_home_readings",schemaPath:"#/properties/smart_home_readings/type",keyword:"type",params:{type: "array"},message:"must be array"};
+if(data144.recorded_at !== undefined){
+let data151 = data144.recorded_at;
+if(typeof data151 === "string"){
+if(!(formats4.validate(data151))){
+const err336 = {instancePath:instancePath+"/smart_home_readings/" + i17+"/recorded_at",schemaPath:"#/properties/smart_home_readings/items/properties/recorded_at/format",keyword:"format",params:{format: "date-time"},message:"must match format \""+"date-time"+"\""};
 if(vErrors === null){
 vErrors = [err336];
 }
@@ -4430,15 +4434,8 @@ vErrors.push(err336);
 errors++;
 }
 }
-if(data.utility_bills !== undefined){
-let data150 = data.utility_bills;
-if(Array.isArray(data150)){
-const len18 = data150.length;
-for(let i18=0; i18<len18; i18++){
-let data151 = data150[i18];
-if(data151 && typeof data151 == "object" && !Array.isArray(data151)){
-if(data151.id === undefined){
-const err337 = {instancePath:instancePath+"/utility_bills/" + i18,schemaPath:"#/properties/utility_bills/items/required",keyword:"required",params:{missingProperty: "id"},message:"must have required property '"+"id"+"'"};
+else {
+const err337 = {instancePath:instancePath+"/smart_home_readings/" + i17+"/recorded_at",schemaPath:"#/properties/smart_home_readings/items/properties/recorded_at/type",keyword:"type",params:{type: "string"},message:"must be string"};
 if(vErrors === null){
 vErrors = [err337];
 }
@@ -4447,8 +4444,10 @@ vErrors.push(err337);
 }
 errors++;
 }
-if(data151.home_id === undefined){
-const err338 = {instancePath:instancePath+"/utility_bills/" + i18,schemaPath:"#/properties/utility_bills/items/required",keyword:"required",params:{missingProperty: "home_id"},message:"must have required property '"+"home_id"+"'"};
+}
+}
+else {
+const err338 = {instancePath:instancePath+"/smart_home_readings/" + i17,schemaPath:"#/properties/smart_home_readings/items/type",keyword:"type",params:{type: "object"},message:"must be object"};
 if(vErrors === null){
 vErrors = [err338];
 }
@@ -4457,8 +4456,10 @@ vErrors.push(err338);
 }
 errors++;
 }
-if(data151.utility_type === undefined){
-const err339 = {instancePath:instancePath+"/utility_bills/" + i18,schemaPath:"#/properties/utility_bills/items/required",keyword:"required",params:{missingProperty: "utility_type"},message:"must have required property '"+"utility_type"+"'"};
+}
+}
+else {
+const err339 = {instancePath:instancePath+"/smart_home_readings",schemaPath:"#/properties/smart_home_readings/type",keyword:"type",params:{type: "array"},message:"must be array"};
 if(vErrors === null){
 vErrors = [err339];
 }
@@ -4467,8 +4468,16 @@ vErrors.push(err339);
 }
 errors++;
 }
-if(data151.billing_period_start === undefined){
-const err340 = {instancePath:instancePath+"/utility_bills/" + i18,schemaPath:"#/properties/utility_bills/items/required",keyword:"required",params:{missingProperty: "billing_period_start"},message:"must have required property '"+"billing_period_start"+"'"};
+}
+if(data.utility_bills !== undefined){
+let data152 = data.utility_bills;
+if(Array.isArray(data152)){
+const len18 = data152.length;
+for(let i18=0; i18<len18; i18++){
+let data153 = data152[i18];
+if(data153 && typeof data153 == "object" && !Array.isArray(data153)){
+if(data153.id === undefined){
+const err340 = {instancePath:instancePath+"/utility_bills/" + i18,schemaPath:"#/properties/utility_bills/items/required",keyword:"required",params:{missingProperty: "id"},message:"must have required property '"+"id"+"'"};
 if(vErrors === null){
 vErrors = [err340];
 }
@@ -4477,8 +4486,8 @@ vErrors.push(err340);
 }
 errors++;
 }
-if(data151.billing_period_end === undefined){
-const err341 = {instancePath:instancePath+"/utility_bills/" + i18,schemaPath:"#/properties/utility_bills/items/required",keyword:"required",params:{missingProperty: "billing_period_end"},message:"must have required property '"+"billing_period_end"+"'"};
+if(data153.home_id === undefined){
+const err341 = {instancePath:instancePath+"/utility_bills/" + i18,schemaPath:"#/properties/utility_bills/items/required",keyword:"required",params:{missingProperty: "home_id"},message:"must have required property '"+"home_id"+"'"};
 if(vErrors === null){
 vErrors = [err341];
 }
@@ -4487,8 +4496,8 @@ vErrors.push(err341);
 }
 errors++;
 }
-if(data151.usage_amount === undefined){
-const err342 = {instancePath:instancePath+"/utility_bills/" + i18,schemaPath:"#/properties/utility_bills/items/required",keyword:"required",params:{missingProperty: "usage_amount"},message:"must have required property '"+"usage_amount"+"'"};
+if(data153.utility_type === undefined){
+const err342 = {instancePath:instancePath+"/utility_bills/" + i18,schemaPath:"#/properties/utility_bills/items/required",keyword:"required",params:{missingProperty: "utility_type"},message:"must have required property '"+"utility_type"+"'"};
 if(vErrors === null){
 vErrors = [err342];
 }
@@ -4497,8 +4506,8 @@ vErrors.push(err342);
 }
 errors++;
 }
-if(data151.usage_unit === undefined){
-const err343 = {instancePath:instancePath+"/utility_bills/" + i18,schemaPath:"#/properties/utility_bills/items/required",keyword:"required",params:{missingProperty: "usage_unit"},message:"must have required property '"+"usage_unit"+"'"};
+if(data153.billing_period_start === undefined){
+const err343 = {instancePath:instancePath+"/utility_bills/" + i18,schemaPath:"#/properties/utility_bills/items/required",keyword:"required",params:{missingProperty: "billing_period_start"},message:"must have required property '"+"billing_period_start"+"'"};
 if(vErrors === null){
 vErrors = [err343];
 }
@@ -4507,8 +4516,8 @@ vErrors.push(err343);
 }
 errors++;
 }
-if(data151.source === undefined){
-const err344 = {instancePath:instancePath+"/utility_bills/" + i18,schemaPath:"#/properties/utility_bills/items/required",keyword:"required",params:{missingProperty: "source"},message:"must have required property '"+"source"+"'"};
+if(data153.billing_period_end === undefined){
+const err344 = {instancePath:instancePath+"/utility_bills/" + i18,schemaPath:"#/properties/utility_bills/items/required",keyword:"required",params:{missingProperty: "billing_period_end"},message:"must have required property '"+"billing_period_end"+"'"};
 if(vErrors === null){
 vErrors = [err344];
 }
@@ -4517,9 +4526,8 @@ vErrors.push(err344);
 }
 errors++;
 }
-for(const key13 in data151){
-if(!(func1.call(schema31.properties.utility_bills.items.properties, key13))){
-const err345 = {instancePath:instancePath+"/utility_bills/" + i18,schemaPath:"#/properties/utility_bills/items/additionalProperties",keyword:"additionalProperties",params:{additionalProperty: key13},message:"must NOT have additional properties"};
+if(data153.usage_amount === undefined){
+const err345 = {instancePath:instancePath+"/utility_bills/" + i18,schemaPath:"#/properties/utility_bills/items/required",keyword:"required",params:{missingProperty: "usage_amount"},message:"must have required property '"+"usage_amount"+"'"};
 if(vErrors === null){
 vErrors = [err345];
 }
@@ -4528,12 +4536,8 @@ vErrors.push(err345);
 }
 errors++;
 }
-}
-if(data151.id !== undefined){
-let data152 = data151.id;
-if(typeof data152 === "string"){
-if(!(formats0.test(data152))){
-const err346 = {instancePath:instancePath+"/utility_bills/" + i18+"/id",schemaPath:"#/properties/utility_bills/items/properties/id/format",keyword:"format",params:{format: "uuid"},message:"must match format \""+"uuid"+"\""};
+if(data153.usage_unit === undefined){
+const err346 = {instancePath:instancePath+"/utility_bills/" + i18,schemaPath:"#/properties/utility_bills/items/required",keyword:"required",params:{missingProperty: "usage_unit"},message:"must have required property '"+"usage_unit"+"'"};
 if(vErrors === null){
 vErrors = [err346];
 }
@@ -4542,9 +4546,8 @@ vErrors.push(err346);
 }
 errors++;
 }
-}
-else {
-const err347 = {instancePath:instancePath+"/utility_bills/" + i18+"/id",schemaPath:"#/properties/utility_bills/items/properties/id/type",keyword:"type",params:{type: "string"},message:"must be string"};
+if(data153.source === undefined){
+const err347 = {instancePath:instancePath+"/utility_bills/" + i18,schemaPath:"#/properties/utility_bills/items/required",keyword:"required",params:{missingProperty: "source"},message:"must have required property '"+"source"+"'"};
 if(vErrors === null){
 vErrors = [err347];
 }
@@ -4553,12 +4556,9 @@ vErrors.push(err347);
 }
 errors++;
 }
-}
-if(data151.home_id !== undefined){
-let data153 = data151.home_id;
-if(typeof data153 === "string"){
-if(!(formats0.test(data153))){
-const err348 = {instancePath:instancePath+"/utility_bills/" + i18+"/home_id",schemaPath:"#/properties/utility_bills/items/properties/home_id/format",keyword:"format",params:{format: "uuid"},message:"must match format \""+"uuid"+"\""};
+for(const key13 in data153){
+if(!(func1.call(schema31.properties.utility_bills.items.properties, key13))){
+const err348 = {instancePath:instancePath+"/utility_bills/" + i18,schemaPath:"#/properties/utility_bills/items/additionalProperties",keyword:"additionalProperties",params:{additionalProperty: key13},message:"must NOT have additional properties"};
 if(vErrors === null){
 vErrors = [err348];
 }
@@ -4568,8 +4568,11 @@ vErrors.push(err348);
 errors++;
 }
 }
-else {
-const err349 = {instancePath:instancePath+"/utility_bills/" + i18+"/home_id",schemaPath:"#/properties/utility_bills/items/properties/home_id/type",keyword:"type",params:{type: "string"},message:"must be string"};
+if(data153.id !== undefined){
+let data154 = data153.id;
+if(typeof data154 === "string"){
+if(!(formats0.test(data154))){
+const err349 = {instancePath:instancePath+"/utility_bills/" + i18+"/id",schemaPath:"#/properties/utility_bills/items/properties/id/format",keyword:"format",params:{format: "uuid"},message:"must match format \""+"uuid"+"\""};
 if(vErrors === null){
 vErrors = [err349];
 }
@@ -4579,10 +4582,8 @@ vErrors.push(err349);
 errors++;
 }
 }
-if(data151.utility_type !== undefined){
-let data154 = data151.utility_type;
-if(typeof data154 !== "string"){
-const err350 = {instancePath:instancePath+"/utility_bills/" + i18+"/utility_type",schemaPath:"#/properties/utility_bills/items/properties/utility_type/type",keyword:"type",params:{type: "string"},message:"must be string"};
+else {
+const err350 = {instancePath:instancePath+"/utility_bills/" + i18+"/id",schemaPath:"#/properties/utility_bills/items/properties/id/type",keyword:"type",params:{type: "string"},message:"must be string"};
 if(vErrors === null){
 vErrors = [err350];
 }
@@ -4591,8 +4592,12 @@ vErrors.push(err350);
 }
 errors++;
 }
-if(!(((data154 === "gas") || (data154 === "electric")) || (data154 === "water"))){
-const err351 = {instancePath:instancePath+"/utility_bills/" + i18+"/utility_type",schemaPath:"#/properties/utility_bills/items/properties/utility_type/enum",keyword:"enum",params:{allowedValues: schema31.properties.utility_bills.items.properties.utility_type.enum},message:"must be equal to one of the allowed values"};
+}
+if(data153.home_id !== undefined){
+let data155 = data153.home_id;
+if(typeof data155 === "string"){
+if(!(formats0.test(data155))){
+const err351 = {instancePath:instancePath+"/utility_bills/" + i18+"/home_id",schemaPath:"#/properties/utility_bills/items/properties/home_id/format",keyword:"format",params:{format: "uuid"},message:"must match format \""+"uuid"+"\""};
 if(vErrors === null){
 vErrors = [err351];
 }
@@ -4602,11 +4607,8 @@ vErrors.push(err351);
 errors++;
 }
 }
-if(data151.billing_period_start !== undefined){
-let data155 = data151.billing_period_start;
-if(typeof data155 === "string"){
-if(!(formats36.validate(data155))){
-const err352 = {instancePath:instancePath+"/utility_bills/" + i18+"/billing_period_start",schemaPath:"#/properties/utility_bills/items/properties/billing_period_start/format",keyword:"format",params:{format: "date"},message:"must match format \""+"date"+"\""};
+else {
+const err352 = {instancePath:instancePath+"/utility_bills/" + i18+"/home_id",schemaPath:"#/properties/utility_bills/items/properties/home_id/type",keyword:"type",params:{type: "string"},message:"must be string"};
 if(vErrors === null){
 vErrors = [err352];
 }
@@ -4616,8 +4618,10 @@ vErrors.push(err352);
 errors++;
 }
 }
-else {
-const err353 = {instancePath:instancePath+"/utility_bills/" + i18+"/billing_period_start",schemaPath:"#/properties/utility_bills/items/properties/billing_period_start/type",keyword:"type",params:{type: "string"},message:"must be string"};
+if(data153.utility_type !== undefined){
+let data156 = data153.utility_type;
+if(typeof data156 !== "string"){
+const err353 = {instancePath:instancePath+"/utility_bills/" + i18+"/utility_type",schemaPath:"#/properties/utility_bills/items/properties/utility_type/type",keyword:"type",params:{type: "string"},message:"must be string"};
 if(vErrors === null){
 vErrors = [err353];
 }
@@ -4626,12 +4630,8 @@ vErrors.push(err353);
 }
 errors++;
 }
-}
-if(data151.billing_period_end !== undefined){
-let data156 = data151.billing_period_end;
-if(typeof data156 === "string"){
-if(!(formats36.validate(data156))){
-const err354 = {instancePath:instancePath+"/utility_bills/" + i18+"/billing_period_end",schemaPath:"#/properties/utility_bills/items/properties/billing_period_end/format",keyword:"format",params:{format: "date"},message:"must match format \""+"date"+"\""};
+if(!(((data156 === "gas") || (data156 === "electric")) || (data156 === "water"))){
+const err354 = {instancePath:instancePath+"/utility_bills/" + i18+"/utility_type",schemaPath:"#/properties/utility_bills/items/properties/utility_type/enum",keyword:"enum",params:{allowedValues: schema31.properties.utility_bills.items.properties.utility_type.enum},message:"must be equal to one of the allowed values"};
 if(vErrors === null){
 vErrors = [err354];
 }
@@ -4641,8 +4641,11 @@ vErrors.push(err354);
 errors++;
 }
 }
-else {
-const err355 = {instancePath:instancePath+"/utility_bills/" + i18+"/billing_period_end",schemaPath:"#/properties/utility_bills/items/properties/billing_period_end/type",keyword:"type",params:{type: "string"},message:"must be string"};
+if(data153.billing_period_start !== undefined){
+let data157 = data153.billing_period_start;
+if(typeof data157 === "string"){
+if(!(formats38.validate(data157))){
+const err355 = {instancePath:instancePath+"/utility_bills/" + i18+"/billing_period_start",schemaPath:"#/properties/utility_bills/items/properties/billing_period_start/format",keyword:"format",params:{format: "date"},message:"must match format \""+"date"+"\""};
 if(vErrors === null){
 vErrors = [err355];
 }
@@ -4652,10 +4655,8 @@ vErrors.push(err355);
 errors++;
 }
 }
-if(data151.usage_amount !== undefined){
-let data157 = data151.usage_amount;
-if(!((typeof data157 == "number") && (isFinite(data157)))){
-const err356 = {instancePath:instancePath+"/utility_bills/" + i18+"/usage_amount",schemaPath:"#/properties/utility_bills/items/properties/usage_amount/type",keyword:"type",params:{type: "number"},message:"must be number"};
+else {
+const err356 = {instancePath:instancePath+"/utility_bills/" + i18+"/billing_period_start",schemaPath:"#/properties/utility_bills/items/properties/billing_period_start/type",keyword:"type",params:{type: "string"},message:"must be string"};
 if(vErrors === null){
 vErrors = [err356];
 }
@@ -4665,9 +4666,11 @@ vErrors.push(err356);
 errors++;
 }
 }
-if(data151.usage_unit !== undefined){
-if(typeof data151.usage_unit !== "string"){
-const err357 = {instancePath:instancePath+"/utility_bills/" + i18+"/usage_unit",schemaPath:"#/properties/utility_bills/items/properties/usage_unit/type",keyword:"type",params:{type: "string"},message:"must be string"};
+if(data153.billing_period_end !== undefined){
+let data158 = data153.billing_period_end;
+if(typeof data158 === "string"){
+if(!(formats38.validate(data158))){
+const err357 = {instancePath:instancePath+"/utility_bills/" + i18+"/billing_period_end",schemaPath:"#/properties/utility_bills/items/properties/billing_period_end/format",keyword:"format",params:{format: "date"},message:"must match format \""+"date"+"\""};
 if(vErrors === null){
 vErrors = [err357];
 }
@@ -4677,10 +4680,8 @@ vErrors.push(err357);
 errors++;
 }
 }
-if(data151.cost_cents !== undefined){
-let data159 = data151.cost_cents;
-if((!(((typeof data159 == "number") && (!(data159 % 1) && !isNaN(data159))) && (isFinite(data159)))) && (data159 !== null)){
-const err358 = {instancePath:instancePath+"/utility_bills/" + i18+"/cost_cents",schemaPath:"#/properties/utility_bills/items/properties/cost_cents/type",keyword:"type",params:{type: schema31.properties.utility_bills.items.properties.cost_cents.type},message:"must be integer,null"};
+else {
+const err358 = {instancePath:instancePath+"/utility_bills/" + i18+"/billing_period_end",schemaPath:"#/properties/utility_bills/items/properties/billing_period_end/type",keyword:"type",params:{type: "string"},message:"must be string"};
 if(vErrors === null){
 vErrors = [err358];
 }
@@ -4690,10 +4691,10 @@ vErrors.push(err358);
 errors++;
 }
 }
-if(data151.source !== undefined){
-let data160 = data151.source;
-if(typeof data160 !== "string"){
-const err359 = {instancePath:instancePath+"/utility_bills/" + i18+"/source",schemaPath:"#/properties/utility_bills/items/properties/source/type",keyword:"type",params:{type: "string"},message:"must be string"};
+if(data153.usage_amount !== undefined){
+let data159 = data153.usage_amount;
+if(!((typeof data159 == "number") && (isFinite(data159)))){
+const err359 = {instancePath:instancePath+"/utility_bills/" + i18+"/usage_amount",schemaPath:"#/properties/utility_bills/items/properties/usage_amount/type",keyword:"type",params:{type: "number"},message:"must be number"};
 if(vErrors === null){
 vErrors = [err359];
 }
@@ -4702,8 +4703,10 @@ vErrors.push(err359);
 }
 errors++;
 }
-if(!((data160 === "manual") || (data160 === "import"))){
-const err360 = {instancePath:instancePath+"/utility_bills/" + i18+"/source",schemaPath:"#/properties/utility_bills/items/properties/source/enum",keyword:"enum",params:{allowedValues: schema31.properties.utility_bills.items.properties.source.enum},message:"must be equal to one of the allowed values"};
+}
+if(data153.usage_unit !== undefined){
+if(typeof data153.usage_unit !== "string"){
+const err360 = {instancePath:instancePath+"/utility_bills/" + i18+"/usage_unit",schemaPath:"#/properties/utility_bills/items/properties/usage_unit/type",keyword:"type",params:{type: "string"},message:"must be string"};
 if(vErrors === null){
 vErrors = [err360];
 }
@@ -4713,10 +4716,10 @@ vErrors.push(err360);
 errors++;
 }
 }
-if(data151.attachment_id !== undefined){
-let data161 = data151.attachment_id;
-if((typeof data161 !== "string") && (data161 !== null)){
-const err361 = {instancePath:instancePath+"/utility_bills/" + i18+"/attachment_id",schemaPath:"#/properties/utility_bills/items/properties/attachment_id/type",keyword:"type",params:{type: schema31.properties.utility_bills.items.properties.attachment_id.type},message:"must be string,null"};
+if(data153.cost_cents !== undefined){
+let data161 = data153.cost_cents;
+if((!(((typeof data161 == "number") && (!(data161 % 1) && !isNaN(data161))) && (isFinite(data161)))) && (data161 !== null)){
+const err361 = {instancePath:instancePath+"/utility_bills/" + i18+"/cost_cents",schemaPath:"#/properties/utility_bills/items/properties/cost_cents/type",keyword:"type",params:{type: schema31.properties.utility_bills.items.properties.cost_cents.type},message:"must be integer,null"};
 if(vErrors === null){
 vErrors = [err361];
 }
@@ -4725,9 +4728,11 @@ vErrors.push(err361);
 }
 errors++;
 }
-if(typeof data161 === "string"){
-if(!(formats0.test(data161))){
-const err362 = {instancePath:instancePath+"/utility_bills/" + i18+"/attachment_id",schemaPath:"#/properties/utility_bills/items/properties/attachment_id/format",keyword:"format",params:{format: "uuid"},message:"must match format \""+"uuid"+"\""};
+}
+if(data153.source !== undefined){
+let data162 = data153.source;
+if(typeof data162 !== "string"){
+const err362 = {instancePath:instancePath+"/utility_bills/" + i18+"/source",schemaPath:"#/properties/utility_bills/items/properties/source/type",keyword:"type",params:{type: "string"},message:"must be string"};
 if(vErrors === null){
 vErrors = [err362];
 }
@@ -4736,11 +4741,8 @@ vErrors.push(err362);
 }
 errors++;
 }
-}
-}
-}
-else {
-const err363 = {instancePath:instancePath+"/utility_bills/" + i18,schemaPath:"#/properties/utility_bills/items/type",keyword:"type",params:{type: "object"},message:"must be object"};
+if(!((data162 === "manual") || (data162 === "import"))){
+const err363 = {instancePath:instancePath+"/utility_bills/" + i18+"/source",schemaPath:"#/properties/utility_bills/items/properties/source/enum",keyword:"enum",params:{allowedValues: schema31.properties.utility_bills.items.properties.source.enum},message:"must be equal to one of the allowed values"};
 if(vErrors === null){
 vErrors = [err363];
 }
@@ -4750,9 +4752,10 @@ vErrors.push(err363);
 errors++;
 }
 }
-}
-else {
-const err364 = {instancePath:instancePath+"/utility_bills",schemaPath:"#/properties/utility_bills/type",keyword:"type",params:{type: "array"},message:"must be array"};
+if(data153.attachment_id !== undefined){
+let data163 = data153.attachment_id;
+if((typeof data163 !== "string") && (data163 !== null)){
+const err364 = {instancePath:instancePath+"/utility_bills/" + i18+"/attachment_id",schemaPath:"#/properties/utility_bills/items/properties/attachment_id/type",keyword:"type",params:{type: schema31.properties.utility_bills.items.properties.attachment_id.type},message:"must be string,null"};
 if(vErrors === null){
 vErrors = [err364];
 }
@@ -4761,15 +4764,51 @@ vErrors.push(err364);
 }
 errors++;
 }
-}
-}
-else {
-const err365 = {instancePath,schemaPath:"#/type",keyword:"type",params:{type: "object"},message:"must be object"};
+if(typeof data163 === "string"){
+if(!(formats0.test(data163))){
+const err365 = {instancePath:instancePath+"/utility_bills/" + i18+"/attachment_id",schemaPath:"#/properties/utility_bills/items/properties/attachment_id/format",keyword:"format",params:{format: "uuid"},message:"must match format \""+"uuid"+"\""};
 if(vErrors === null){
 vErrors = [err365];
 }
 else {
 vErrors.push(err365);
+}
+errors++;
+}
+}
+}
+}
+else {
+const err366 = {instancePath:instancePath+"/utility_bills/" + i18,schemaPath:"#/properties/utility_bills/items/type",keyword:"type",params:{type: "object"},message:"must be object"};
+if(vErrors === null){
+vErrors = [err366];
+}
+else {
+vErrors.push(err366);
+}
+errors++;
+}
+}
+}
+else {
+const err367 = {instancePath:instancePath+"/utility_bills",schemaPath:"#/properties/utility_bills/type",keyword:"type",params:{type: "array"},message:"must be array"};
+if(vErrors === null){
+vErrors = [err367];
+}
+else {
+vErrors.push(err367);
+}
+errors++;
+}
+}
+}
+else {
+const err368 = {instancePath,schemaPath:"#/type",keyword:"type",params:{type: "object"},message:"must be object"};
+if(vErrors === null){
+vErrors = [err368];
+}
+else {
+vErrors.push(err368);
 }
 errors++;
 }

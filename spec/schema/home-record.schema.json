@@ -22,7 +22,7 @@
     "schema_version": {
       "type": "string",
       "pattern": "^\\d+\\.\\d+\\.\\d+$",
-      "enum": ["0.1.0", "0.1.1", "0.2.0", "0.3.0", "0.4.0"],
+      "enum": ["0.1.0", "0.1.1", "0.2.0", "0.3.0", "0.4.0", "0.5.0"],
       "description": "Semver of the Home Record spec this document conforms to, e.g. 0.2.0. Downstream import validation rejects unknown versions rather than duck-typing."
     },
     "home": { "$ref": "./entities/home.schema.json" },

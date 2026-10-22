@@ -222,8 +222,10 @@ public struct Component: Codable {
     public let lastServicedAt: String?
     public let levelID: String?
     public let linkedComponentID: String?
+    public let locationNote: String?
     public let make: String?
     public let manualAttachmentID: String?
+    public let manualURL: String?
     public let model: String?
     public let name: String
     public let notes: String?
@@ -244,8 +246,10 @@ public struct Component: Codable {
         case lastServicedAt = "last_serviced_at"
         case levelID = "level_id"
         case linkedComponentID = "linked_component_id"
+        case locationNote = "location_note"
         case make = "make"
         case manualAttachmentID = "manual_attachment_id"
+        case manualURL = "manual_url"
         case model = "model"
         case name = "name"
         case notes = "notes"
@@ -257,7 +261,7 @@ public struct Component: Codable {
         case warrantyStart = "warranty_start"
     }
 
-    public init(componentType: ComponentType, condition: Condition, customFields: [String: JSONAny], geometry: PlanGeometry?, id: String, installDate: String?, lastServicedAt: String?, levelID: String?, linkedComponentID: String?, make: String?, manualAttachmentID: String?, model: String?, name: String, notes: String?, roomIDS: [String], serialNumber: String?, serviceIntervalDays: Int?, systemID: String, warrantyLengthMonths: Int?, warrantyStart: String?) {
+    public init(componentType: ComponentType, condition: Condition, customFields: [String: JSONAny], geometry: PlanGeometry?, id: String, installDate: String?, lastServicedAt: String?, levelID: String?, linkedComponentID: String?, locationNote: String?, make: String?, manualAttachmentID: String?, manualURL: String?, model: String?, name: String, notes: String?, roomIDS: [String], serialNumber: String?, serviceIntervalDays: Int?, systemID: String, warrantyLengthMonths: Int?, warrantyStart: String?) {
         self.componentType = componentType
         self.condition = condition
         self.customFields = customFields
@@ -267,8 +271,10 @@ public struct Component: Codable {
         self.lastServicedAt = lastServicedAt
         self.levelID = levelID
         self.linkedComponentID = linkedComponentID
+        self.locationNote = locationNote
         self.make = make
         self.manualAttachmentID = manualAttachmentID
+        self.manualURL = manualURL
         self.model = model
         self.name = name
         self.notes = notes
@@ -309,8 +315,10 @@ public extension Component {
         lastServicedAt: String?? = nil,
         levelID: String?? = nil,
         linkedComponentID: String?? = nil,
+        locationNote: String?? = nil,
         make: String?? = nil,
         manualAttachmentID: String?? = nil,
+        manualURL: String?? = nil,
         model: String?? = nil,
         name: String? = nil,
         notes: String?? = nil,
@@ -331,8 +339,10 @@ public extension Component {
             lastServicedAt: lastServicedAt ?? self.lastServicedAt,
             levelID: levelID ?? self.levelID,
             linkedComponentID: linkedComponentID ?? self.linkedComponentID,
+            locationNote: locationNote ?? self.locationNote,
             make: make ?? self.make,
             manualAttachmentID: manualAttachmentID ?? self.manualAttachmentID,
+            manualURL: manualURL ?? self.manualURL,
             model: model ?? self.model,
             name: name ?? self.name,
             notes: notes ?? self.notes,
@@ -355,21 +365,84 @@ public extension Component {
 }
 
 public enum ComponentType: String, Codable {
+    case alarmPanel = "alarm_panel"
     case applianceGeneric = "appliance_generic"
+    case atticInsulation = "attic_insulation"
+    case bathtubShower = "bathtub_shower"
+    case branchCircuit = "branch_circuit"
     case camera = "camera"
+    case chimney = "chimney"
+    case clothesDryer = "clothes_dryer"
+    case clothesWasher = "clothes_washer"
+    case coDetector = "co_detector"
+    case deckPorchPatio = "deck_porch_patio"
+    case dishwasher = "dishwasher"
     case downspout = "downspout"
+    case drainWasteVent = "drain_waste_vent"
+    case drivewayWalkway = "driveway_walkway"
+    case electricMeter = "electric_meter"
     case electricalPanel = "electrical_panel"
+    case exteriorDoor = "exterior_door"
+    case exteriorWallCovering = "exterior_wall_covering"
+    case fenceWall = "fence_wall"
+    case flashing = "flashing"
+    case foundation = "foundation"
+    case garageDoor = "garage_door"
+    case garageDoorOpener = "garage_door_opener"
+    case garbageDisposal = "garbage_disposal"
+    case gasShutoff = "gas_shutoff"
+    case generator = "generator"
+    case gfciReceptacle = "gfci_receptacle"
     case gutter = "gutter"
     case hvacACUnit = "hvac_ac_unit"
+    case hvacAirHandler = "hvac_air_handler"
+    case hvacBoiler = "hvac_boiler"
+    case hvacDuctwork = "hvac_ductwork"
+    case hvacFilter = "hvac_filter"
+    case hvacFireplace = "hvac_fireplace"
     case hvacFurnace = "hvac_furnace"
+    case hvacHeatPump = "hvac_heat_pump"
+    case hvacMiniSplit = "hvac_mini_split"
+    case hvacVentilationFan = "hvac_ventilation_fan"
+    case irrigationSystem = "irrigation_system"
+    case leakSensor = "leak_sensor"
     case lightFixture = "light_fixture"
+    case lowVoltageCabling = "low_voltage_cabling"
+    case mainWaterShutoff = "main_water_shutoff"
+    case microwave = "microwave"
+    case networkAccessPoint = "network_access_point"
     case networkRouter = "network_router"
     case other = "other"
     case outlet = "outlet"
     case plumbingFixture = "plumbing_fixture"
+    case poolSPA = "pool_spa"
+    case rangeHood = "range_hood"
+    case rangeOven = "range_oven"
+    case refrigerator = "refrigerator"
+    case roofCovering = "roof_covering"
+    case roofVent = "roof_vent"
+    case septicSystem = "septic_system"
+    case serviceConductors = "service_conductors"
+    case sewerLateral = "sewer_lateral"
+    case sink = "sink"
+    case skylight = "skylight"
+    case smartHub = "smart_hub"
+    case smartLock = "smart_lock"
     case smokeDetector = "smoke_detector"
+    case soffitFascia = "soffit_fascia"
+    case solarPVSystem = "solar_pv_system"
+    case structuralMember = "structural_member"
+    case structuredWiringPanel = "structured_wiring_panel"
+    case subpanel = "subpanel"
+    case sumpPump = "sump_pump"
     case thermostat = "thermostat"
+    case toilet = "toilet"
+    case videoDoorbell = "video_doorbell"
     case waterHeater = "water_heater"
+    case waterSupplyLine = "water_supply_line"
+    case waterTreatment = "water_treatment"
+    case wellPump = "well_pump"
+    case window = "window"
 }
 
 /// Shared condition scale used by Component.condition and Event.condition_after, so the two
