@@ -1,0 +1,892 @@
+{
+  "version": "0.6.0",
+  "description": "Recall matcher corpus: match expectations over canned CPSC records (likely, possible, none), alert construction with sanitization and the url rule, and error-record detection. Hand-derived from spec/docs/recall-matching.md.",
+  "brands_source": "spec/taxonomy/brands.json",
+  "cases": [
+    {
+      "name": "armstrong-model-and-brand-is-likely",
+      "recall": "allied-armstrong-furnace-23218.json",
+      "component": {
+        "id": "aa000000-0000-4000-8000-000000000001",
+        "component_type": "hvac_furnace",
+        "make": "Armstrong Air",
+        "model": "A96UH1E045B12S",
+        "type_keywords": [
+          "furnace",
+          "gas furnace",
+          "forced air furnace",
+          "heater"
+        ]
+      },
+      "expected": {
+        "confidence": "likely",
+        "matched_on": "model"
+      }
+    },
+    {
+      "name": "armstrong-model-not-in-the-recall-list-is-no-match",
+      "recall": "allied-armstrong-furnace-23218.json",
+      "component": {
+        "id": "aa000000-0000-4000-8000-000000000002",
+        "component_type": "hvac_furnace",
+        "make": "Armstrong Air",
+        "model": "A96UH1E999Z99Z",
+        "type_keywords": [
+          "furnace",
+          "gas furnace",
+          "forced air furnace",
+          "heater"
+        ]
+      },
+      "expected": {
+        "confidence": null,
+        "matched_on": null
+      }
+    },
+    {
+      "name": "armstrong-model-with-a-space-still-matches",
+      "recall": "allied-armstrong-furnace-23218.json",
+      "component": {
+        "id": "aa000000-0000-4000-8000-000000000003",
+        "component_type": "hvac_furnace",
+        "make": "Armstrong Air",
+        "model": "A96UH1E 045B12S",
+        "type_keywords": [
+          "furnace",
+          "gas furnace",
+          "forced air furnace",
+          "heater"
+        ]
+      },
+      "expected": {
+        "confidence": "likely",
+        "matched_on": "model"
+      }
+    },
+    {
+      "name": "armstrong-other-brand-with-a-long-model-is-still-likely",
+      "recall": "allied-armstrong-furnace-23218.json",
+      "component": {
+        "id": "aa000000-0000-4000-8000-000000000004",
+        "component_type": "hvac_furnace",
+        "make": "Lennox",
+        "model": "A96UH1E045B12S",
+        "type_keywords": [
+          "furnace",
+          "gas furnace",
+          "forced air furnace",
+          "heater"
+        ]
+      },
+      "expected": {
+        "confidence": "likely",
+        "matched_on": "model"
+      }
+    },
+    {
+      "name": "armstrong-brand-and-type-without-a-model-is-possible",
+      "recall": "allied-armstrong-furnace-23218.json",
+      "component": {
+        "id": "aa000000-0000-4000-8000-000000000005",
+        "component_type": "hvac_furnace",
+        "make": "Armstrong Air",
+        "model": null,
+        "type_keywords": [
+          "furnace",
+          "gas furnace",
+          "forced air furnace",
+          "heater"
+        ]
+      },
+      "expected": {
+        "confidence": "possible",
+        "matched_on": "manufacturer"
+      }
+    },
+    {
+      "name": "armstrong-plural-keyword-furnaces-matches-the-singular-keyword",
+      "recall": "allied-armstrong-furnace-23218.json",
+      "component": {
+        "id": "aa000000-0000-4000-8000-000000000006",
+        "component_type": "hvac_furnace",
+        "make": "Armstrong Air",
+        "model": null,
+        "type_keywords": [
+          "furnace"
+        ]
+      },
+      "expected": {
+        "confidence": "possible",
+        "matched_on": "manufacturer"
+      }
+    },
+    {
+      "name": "armstrong-brand-with-the-wrong-type-is-no-match",
+      "recall": "allied-armstrong-furnace-23218.json",
+      "component": {
+        "id": "aa000000-0000-4000-8000-000000000007",
+        "component_type": "hvac_boiler",
+        "make": "Armstrong Air",
+        "model": null,
+        "type_keywords": [
+          "boiler",
+          "hydronic boiler",
+          "steam boiler",
+          "radiator heat"
+        ]
+      },
+      "expected": {
+        "confidence": null,
+        "matched_on": null
+      }
+    },
+    {
+      "name": "friedrich-exact-model-is-likely",
+      "recall": "friedrich-kuhl-ac-26776.json",
+      "component": {
+        "id": "aa000000-0000-4000-8000-000000000008",
+        "component_type": "mini_split",
+        "make": "Friedrich",
+        "model": "KCVS12B10A",
+        "type_keywords": [
+          "air conditioner",
+          "window air conditioner",
+          "ac"
+        ]
+      },
+      "expected": {
+        "confidence": "likely",
+        "matched_on": "model"
+      }
+    },
+    {
+      "name": "friedrich-family-prefix-model-is-likely",
+      "recall": "friedrich-kuhl-ac-26776.json",
+      "component": {
+        "id": "aa000000-0000-4000-8000-000000000009",
+        "component_type": "mini_split",
+        "make": "Friedrich",
+        "model": "KCVS12B10AX",
+        "type_keywords": [
+          "air conditioner",
+          "window air conditioner",
+          "ac"
+        ]
+      },
+      "expected": {
+        "confidence": "likely",
+        "matched_on": "model"
+      }
+    },
+    {
+      "name": "friedrich-model-not-in-the-recall-list-is-no-match",
+      "recall": "friedrich-kuhl-ac-26776.json",
+      "component": {
+        "id": "aa000000-0000-4000-8000-000000000010",
+        "component_type": "mini_split",
+        "make": "Friedrich",
+        "model": "KCVS99X99Z",
+        "type_keywords": [
+          "air conditioner",
+          "window air conditioner",
+          "ac"
+        ]
+      },
+      "expected": {
+        "confidence": null,
+        "matched_on": null
+      }
+    },
+    {
+      "name": "friedrich-short-model-is-ignored-then-brand-and-type-is-possible",
+      "recall": "friedrich-kuhl-ac-26776.json",
+      "component": {
+        "id": "aa000000-0000-4000-8000-000000000011",
+        "component_type": "mini_split",
+        "make": "Friedrich",
+        "model": "K12",
+        "type_keywords": [
+          "air conditioner",
+          "window air conditioner",
+          "ac"
+        ]
+      },
+      "expected": {
+        "confidence": "possible",
+        "matched_on": "manufacturer"
+      }
+    },
+    {
+      "name": "friedrich-location-text-is-not-a-brand",
+      "recall": "friedrich-kuhl-ac-26776.json",
+      "component": {
+        "id": "aa000000-0000-4000-8000-000000000012",
+        "component_type": "mini_split",
+        "make": "Texas",
+        "model": null,
+        "type_keywords": [
+          "air conditioner",
+          "window air conditioner",
+          "ac"
+        ]
+      },
+      "expected": {
+        "confidence": null,
+        "matched_on": null
+      }
+    },
+    {
+      "name": "friedrich-short-brand-needs-a-whole-word",
+      "recall": "friedrich-kuhl-ac-26776.json",
+      "component": {
+        "id": "aa000000-0000-4000-8000-000000000013",
+        "component_type": "mini_split",
+        "make": "Rich",
+        "model": null,
+        "type_keywords": [
+          "air conditioner",
+          "window air conditioner",
+          "ac"
+        ]
+      },
+      "expected": {
+        "confidence": null,
+        "matched_on": null
+      }
+    },
+    {
+      "name": "vst-model-with-a-hyphen-is-likely",
+      "recall": "vst-tankless-26026.json",
+      "component": {
+        "id": "aa000000-0000-4000-8000-000000000014",
+        "component_type": "water_heater",
+        "make": "VST",
+        "model": "VRS-150",
+        "type_keywords": [
+          "water heater",
+          "hot water heater",
+          "tank",
+          "tankless",
+          "heat pump water heater"
+        ]
+      },
+      "expected": {
+        "confidence": "likely",
+        "matched_on": "model"
+      }
+    },
+    {
+      "name": "vst-model-typed-in-lowercase-with-a-space-is-likely",
+      "recall": "vst-tankless-26026.json",
+      "component": {
+        "id": "aa000000-0000-4000-8000-000000000015",
+        "component_type": "water_heater",
+        "make": "vst",
+        "model": "vrs 199",
+        "type_keywords": [
+          "water heater",
+          "hot water heater",
+          "tank",
+          "tankless",
+          "heat pump water heater"
+        ]
+      },
+      "expected": {
+        "confidence": "likely",
+        "matched_on": "model"
+      }
+    },
+    {
+      "name": "vst-boiler-component-reaches-the-type-through-the-description",
+      "recall": "vst-tankless-26026.json",
+      "component": {
+        "id": "aa000000-0000-4000-8000-000000000016",
+        "component_type": "hvac_boiler",
+        "make": "VST",
+        "model": null,
+        "type_keywords": [
+          "boiler",
+          "hydronic boiler",
+          "steam boiler",
+          "radiator heat"
+        ]
+      },
+      "expected": {
+        "confidence": "possible",
+        "matched_on": "manufacturer"
+      }
+    },
+    {
+      "name": "vst-water-heater-component-reaches-the-type-through-the-title",
+      "recall": "vst-tankless-26026.json",
+      "component": {
+        "id": "aa000000-0000-4000-8000-000000000017",
+        "component_type": "water_heater",
+        "make": "VST",
+        "model": null,
+        "type_keywords": [
+          "water heater",
+          "hot water heater",
+          "tank",
+          "tankless",
+          "heat pump water heater"
+        ]
+      },
+      "expected": {
+        "confidence": "possible",
+        "matched_on": "manufacturer"
+      }
+    },
+    {
+      "name": "laminator-recall-matches-no-furnace-model",
+      "recall": "non-home-laminator-27024.json",
+      "component": {
+        "id": "aa000000-0000-4000-8000-000000000018",
+        "component_type": "hvac_furnace",
+        "make": "Carrier",
+        "model": "58STA070",
+        "type_keywords": [
+          "furnace",
+          "gas furnace",
+          "forced air furnace",
+          "heater"
+        ]
+      },
+      "expected": {
+        "confidence": null,
+        "matched_on": null
+      }
+    },
+    {
+      "name": "laminator-brand-with-the-wrong-type-is-no-match",
+      "recall": "non-home-laminator-27024.json",
+      "component": {
+        "id": "aa000000-0000-4000-8000-000000000019",
+        "component_type": "hvac_furnace",
+        "make": "3M",
+        "model": null,
+        "type_keywords": [
+          "furnace",
+          "gas furnace",
+          "forced air furnace",
+          "heater"
+        ]
+      },
+      "expected": {
+        "confidence": null,
+        "matched_on": null
+      }
+    },
+    {
+      "name": "laminator-short-model-without-a-brand-is-possible",
+      "recall": "non-home-laminator-27024.json",
+      "component": {
+        "id": "aa000000-0000-4000-8000-000000000020",
+        "component_type": "other",
+        "make": "Acme",
+        "model": "TL1302Z",
+        "type_keywords": [
+          "laminator"
+        ]
+      },
+      "expected": {
+        "confidence": "possible",
+        "matched_on": "model"
+      }
+    },
+    {
+      "name": "laminator-nfkd-trademark-glues-the-brand-word",
+      "recall": "non-home-laminator-27024.json",
+      "component": {
+        "id": "aa000000-0000-4000-8000-000000000021",
+        "component_type": "other",
+        "make": "Scotch",
+        "model": "TL1302Z",
+        "type_keywords": [
+          "laminator"
+        ]
+      },
+      "expected": {
+        "confidence": "possible",
+        "matched_on": "model"
+      }
+    },
+    {
+      "name": "null-description-model-and-brand-is-likely",
+      "recall": "null-description.json",
+      "component": {
+        "id": "aa000000-0000-4000-8000-000000000022",
+        "component_type": "sump_pump",
+        "make": "Acme",
+        "model": "ZX-9000",
+        "type_keywords": [
+          "sump pump",
+          "sump"
+        ]
+      },
+      "expected": {
+        "confidence": "likely",
+        "matched_on": "model"
+      }
+    },
+    {
+      "name": "null-description-brand-and-type-is-possible",
+      "recall": "null-description.json",
+      "component": {
+        "id": "aa000000-0000-4000-8000-000000000023",
+        "component_type": "sump_pump",
+        "make": "Acme",
+        "model": null,
+        "type_keywords": [
+          "sump pump",
+          "sump"
+        ]
+      },
+      "expected": {
+        "confidence": "possible",
+        "matched_on": "manufacturer"
+      }
+    },
+    {
+      "name": "no-hazards-model-and-brand-is-likely",
+      "recall": "no-hazards.json",
+      "component": {
+        "id": "aa000000-0000-4000-8000-000000000024",
+        "component_type": "smoke_detector",
+        "make": "Wattson",
+        "model": "WS-2200",
+        "type_keywords": [
+          "smoke detector",
+          "smoke alarm"
+        ]
+      },
+      "expected": {
+        "confidence": "likely",
+        "matched_on": "model"
+      }
+    },
+    {
+      "name": "error-record-matches-nothing",
+      "recall": "error-record.json",
+      "component": {
+        "id": "aa000000-0000-4000-8000-000000000025",
+        "component_type": "hvac_furnace",
+        "make": "Carrier",
+        "model": "58STA070",
+        "type_keywords": [
+          "furnace",
+          "gas furnace",
+          "forced air furnace",
+          "heater"
+        ]
+      },
+      "expected": {
+        "confidence": null,
+        "matched_on": null
+      }
+    }
+  ],
+  "alert_cases": [
+    {
+      "name": "allied-furnace-alert-copies-the-first-hazard-and-remedy",
+      "recall": "allied-armstrong-furnace-23218.json",
+      "component_id": "bb000000-0000-4000-8000-000000000001",
+      "user_id": "99999999-9999-4999-8999-999999999999",
+      "home_id": "11111111-1111-4111-8111-111111111111",
+      "match": {
+        "matched_on": "model",
+        "confidence": "likely"
+      },
+      "expected": {
+        "id": "261bab46-e65c-5022-9617-e17620f40aa3",
+        "home_id": "11111111-1111-4111-8111-111111111111",
+        "component_id": "bb000000-0000-4000-8000-000000000001",
+        "recall_number": "23218",
+        "recall_id": 9642,
+        "title": "Allied Air Enterprises Recalls Armstrong Air and Air Ease Gas Furnaces Due to Carbon Monoxide Poisoning Hazard",
+        "hazard": "A component inside the furnace was improperly assembled, causing the furnace to produce high levels of carbon monoxide (CO) under certain operating conditions, which poses a risk of CO poisoning to the consumer.",
+        "remedy": "Contact Allied Air Enterprises to schedule a free in-home repair by an authorized technician who will replace the incorrect component. Allied Air Enterprises is contacting all known distributors directly, who will work with dealers to contact all known consumers who purchased the recalled units. Consumers who continue to use the recalled furnaces while awaiting repair should have working carbon monoxide alarms on every level of the home and outside sleeping areas.",
+        "url": "https://www.cpsc.gov/Recalls/2023/Allied-Air-Enterprises-Recalls-Armstrong-Air-and-Air-Ease-Gas-Furnaces-Due-to-Carbon-Monoxide-Poisoning-Hazard",
+        "recall_date": "2023-06-08",
+        "matched_on": "model",
+        "confidence": "likely",
+        "status": "open"
+      }
+    },
+    {
+      "name": "friedrich-alert-keeps-non-ascii-title-text-and-the-apex-host",
+      "recall": "friedrich-kuhl-ac-26776.json",
+      "component_id": "bb000000-0000-4000-8000-000000000001",
+      "user_id": "99999999-9999-4999-8999-999999999999",
+      "home_id": "11111111-1111-4111-8111-111111111111",
+      "match": {
+        "matched_on": "model",
+        "confidence": "likely"
+      },
+      "expected": {
+        "id": "20214922-8c40-5494-8a78-f2a9abd8a77e",
+        "home_id": "11111111-1111-4111-8111-111111111111",
+        "component_id": "bb000000-0000-4000-8000-000000000001",
+        "recall_number": "26776",
+        "recall_id": 10985,
+        "title": "Friedrich Air Conditioning Recalls KÜHL Window Air Conditioners Due to Risk of Serious Injury or Death from Fire and Burn Hazards",
+        "hazard": "The control board inside the motor of the recalled air conditioners can fail, posing a risk of serious injury or death from fire and burn hazards.",
+        "remedy": "Consumers should stop using the recalled air conditioners immediately and visit www.friedrich.com/product-recall to receive information on how to determine if their unit is covered by the recall. Consumers should have the air conditioner’s serial number, which can be found on the inside of the unit, when they visit the recall web page or call Friedrich about the recall. If your unit has a serial number that is included in the recall, the firm will send you instructions on how to obtain a refund or free replacement unit.",
+        "url": "https://cpsc.gov/Recalls/2026/Friedrich-Air-Conditioning-Recalls-K%C3%9CHL-Window-Air-Conditioners-Due-to-Risk-of-Serious-Injury-or-Death-from-Fire-and-Burn-Hazards",
+        "recall_date": "2026-09-17",
+        "matched_on": "model",
+        "confidence": "likely",
+        "status": "open"
+      }
+    },
+    {
+      "name": "vst-boiler-alert-is-a-possible-manufacturer-match",
+      "recall": "vst-tankless-26026.json",
+      "component_id": "bb000000-0000-4000-8000-000000000002",
+      "user_id": "99999999-9999-4999-8999-999999999999",
+      "home_id": "11111111-1111-4111-8111-111111111111",
+      "match": {
+        "matched_on": "manufacturer",
+        "confidence": "possible"
+      },
+      "expected": {
+        "id": "034ef50d-dc58-5e37-b3e0-eae653b76496",
+        "home_id": "11111111-1111-4111-8111-111111111111",
+        "component_id": "bb000000-0000-4000-8000-000000000002",
+        "recall_number": "26026",
+        "recall_id": 10436,
+        "title": "VESTA.DS Recalls VST Brand Tankless Water Heaters Due to Carbon Monoxide (CO) Poisoning Hazard and Risk of Serious Injury and Death",
+        "hazard": "The exhaust duct can crack, allowing gases to escape inside of the home, posing a carbon monoxide (CO) poisoning hazard that can result in death or serious injury.",
+        "remedy": "Consumers should immediately stop using the recalled water heater and contact VESTA.DS to have a certified technician install the free repair. Consumers who must continue using the water heater while awaiting repair should have working smoke and carbon monoxide alarms in their homes.",
+        "url": "https://www.cpsc.gov/Recalls/2026/VESTA-DS-Recalls-VST-Brand-Tankless-Water-Heaters-Due-to-Carbon-Monoxide-CO-Poisoning-Hazard-and-Risk-of-Serious-Injury-and-Death",
+        "recall_date": "2025-10-16",
+        "matched_on": "manufacturer",
+        "confidence": "possible",
+        "status": "open"
+      }
+    },
+    {
+      "name": "no-hazards-alert-has-a-null-hazard",
+      "recall": "no-hazards.json",
+      "component_id": "bb000000-0000-4000-8000-000000000003",
+      "user_id": "99999999-9999-4999-8999-999999999999",
+      "home_id": "11111111-1111-4111-8111-111111111111",
+      "match": {
+        "matched_on": "model",
+        "confidence": "likely"
+      },
+      "expected": {
+        "id": "8423850e-57db-55ca-8511-fac021e1defd",
+        "home_id": "11111111-1111-4111-8111-111111111111",
+        "component_id": "bb000000-0000-4000-8000-000000000003",
+        "recall_number": "99003",
+        "recall_id": 99003,
+        "title": "Wattson Electric Recalls WS-2200 Smoke Alarms Due to Failure to Alert Consumers",
+        "hazard": null,
+        "remedy": "Contact Wattson Electric for a free replacement alarm.",
+        "url": "https://www.cpsc.gov/Recalls/2026/Wattson-Electric-Recalls-WS-2200-Smoke-Alarms-Due-to-Failure-to-Alert-Consumers",
+        "recall_date": "2026-08-12",
+        "matched_on": "model",
+        "confidence": "likely",
+        "status": "open"
+      }
+    },
+    {
+      "name": "null-description-alert-still-builds",
+      "recall": "null-description.json",
+      "component_id": "bb000000-0000-4000-8000-000000000004",
+      "user_id": "99999999-9999-4999-8999-999999999999",
+      "home_id": "11111111-1111-4111-8111-111111111111",
+      "match": {
+        "matched_on": "model",
+        "confidence": "likely"
+      },
+      "expected": {
+        "id": "c6e5289b-3a45-5a01-aa6a-f542ac6d5524",
+        "home_id": "11111111-1111-4111-8111-111111111111",
+        "component_id": "bb000000-0000-4000-8000-000000000004",
+        "recall_number": "99001",
+        "recall_id": 99001,
+        "title": "Acme Pump Co. Recalls ZX-9000 Sump Pumps Due to Electric Shock Hazard",
+        "hazard": "The pump housing can become energized, posing an electric shock hazard.",
+        "remedy": "Stop using the pumps and contact Acme Pump Co. for a free replacement.",
+        "url": "https://www.cpsc.gov/Recalls/2026/Acme-Pump-Co-Recalls-ZX-9000-Sump-Pumps-Due-to-Electric-Shock-Hazard",
+        "recall_date": "2026-08-12",
+        "matched_on": "model",
+        "confidence": "likely",
+        "status": "open"
+      }
+    },
+    {
+      "name": "uppercase-component-id-gives-the-same-alert-id",
+      "recall": "allied-armstrong-furnace-23218.json",
+      "component_id": "BB000000-0000-4000-8000-000000000001",
+      "user_id": "99999999-9999-4999-8999-999999999999",
+      "home_id": "11111111-1111-4111-8111-111111111111",
+      "match": {
+        "matched_on": "model",
+        "confidence": "likely"
+      },
+      "expected": {
+        "id": "261bab46-e65c-5022-9617-e17620f40aa3",
+        "home_id": "11111111-1111-4111-8111-111111111111",
+        "component_id": "BB000000-0000-4000-8000-000000000001",
+        "recall_number": "23218",
+        "recall_id": 9642,
+        "title": "Allied Air Enterprises Recalls Armstrong Air and Air Ease Gas Furnaces Due to Carbon Monoxide Poisoning Hazard",
+        "hazard": "A component inside the furnace was improperly assembled, causing the furnace to produce high levels of carbon monoxide (CO) under certain operating conditions, which poses a risk of CO poisoning to the consumer.",
+        "remedy": "Contact Allied Air Enterprises to schedule a free in-home repair by an authorized technician who will replace the incorrect component. Allied Air Enterprises is contacting all known distributors directly, who will work with dealers to contact all known consumers who purchased the recalled units. Consumers who continue to use the recalled furnaces while awaiting repair should have working carbon monoxide alarms on every level of the home and outside sleeping areas.",
+        "url": "https://www.cpsc.gov/Recalls/2023/Allied-Air-Enterprises-Recalls-Armstrong-Air-and-Air-Ease-Gas-Furnaces-Due-to-Carbon-Monoxide-Poisoning-Hazard",
+        "recall_date": "2023-06-08",
+        "matched_on": "model",
+        "confidence": "likely",
+        "status": "open"
+      }
+    },
+    {
+      "name": "control-characters-are-stripped-and-whitespace-collapsed",
+      "recall": "null-description.json",
+      "component_id": "bb000000-0000-4000-8000-000000000005",
+      "user_id": "99999999-9999-4999-8999-999999999999",
+      "home_id": "11111111-1111-4111-8111-111111111111",
+      "match": {
+        "matched_on": "model",
+        "confidence": "likely"
+      },
+      "recall_override": {
+        "Title": "Acme\u0007 Recalls\tSump\n  Pumps Due to Shock"
+      },
+      "expected": {
+        "id": "90a2d70c-5b21-5bf7-b427-ad1869d7c697",
+        "home_id": "11111111-1111-4111-8111-111111111111",
+        "component_id": "bb000000-0000-4000-8000-000000000005",
+        "recall_number": "99001",
+        "recall_id": 99001,
+        "title": "Acme Recalls Sump Pumps Due to Shock",
+        "hazard": "The pump housing can become energized, posing an electric shock hazard.",
+        "remedy": "Stop using the pumps and contact Acme Pump Co. for a free replacement.",
+        "url": "https://www.cpsc.gov/Recalls/2026/Acme-Pump-Co-Recalls-ZX-9000-Sump-Pumps-Due-to-Electric-Shock-Hazard",
+        "recall_date": "2026-08-12",
+        "matched_on": "model",
+        "confidence": "likely",
+        "status": "open"
+      }
+    },
+    {
+      "name": "long-title-hazard-and-remedy-are-clipped",
+      "recall": "null-description.json",
+      "component_id": "bb000000-0000-4000-8000-000000000006",
+      "user_id": "99999999-9999-4999-8999-999999999999",
+      "home_id": "11111111-1111-4111-8111-111111111111",
+      "match": {
+        "matched_on": "model",
+        "confidence": "likely"
+      },
+      "recall_override": {
+        "Title": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "Hazards": [
+          {
+            "Name": "HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH",
+            "HazardType": "",
+            "HazardTypeID": ""
+          }
+        ],
+        "Remedies": [
+          {
+            "Name": "RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR"
+          }
+        ]
+      },
+      "expected": {
+        "id": "c1a774bb-420b-5a4b-8b0a-3a00ea28d369",
+        "home_id": "11111111-1111-4111-8111-111111111111",
+        "component_id": "bb000000-0000-4000-8000-000000000006",
+        "recall_number": "99001",
+        "recall_id": 99001,
+        "title": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "hazard": "HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH",
+        "remedy": "RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR",
+        "url": "https://www.cpsc.gov/Recalls/2026/Acme-Pump-Co-Recalls-ZX-9000-Sump-Pumps-Due-to-Electric-Shock-Hazard",
+        "recall_date": "2026-08-12",
+        "matched_on": "model",
+        "confidence": "likely",
+        "status": "open"
+      }
+    },
+    {
+      "name": "http-url-falls-back",
+      "recall": "null-description.json",
+      "component_id": "bb000000-0000-4000-8000-000000000007",
+      "user_id": "99999999-9999-4999-8999-999999999999",
+      "home_id": "11111111-1111-4111-8111-111111111111",
+      "match": {
+        "matched_on": "model",
+        "confidence": "likely"
+      },
+      "recall_override": {
+        "URL": "http://www.cpsc.gov/Recalls/2026/x"
+      },
+      "expected": {
+        "id": "5bbeeda5-2532-57e6-9ae6-a11faee22e93",
+        "home_id": "11111111-1111-4111-8111-111111111111",
+        "component_id": "bb000000-0000-4000-8000-000000000007",
+        "recall_number": "99001",
+        "recall_id": 99001,
+        "title": "Acme Pump Co. Recalls ZX-9000 Sump Pumps Due to Electric Shock Hazard",
+        "hazard": "The pump housing can become energized, posing an electric shock hazard.",
+        "remedy": "Stop using the pumps and contact Acme Pump Co. for a free replacement.",
+        "url": "https://www.cpsc.gov/Recalls",
+        "recall_date": "2026-08-12",
+        "matched_on": "model",
+        "confidence": "likely",
+        "status": "open"
+      }
+    },
+    {
+      "name": "foreign-host-url-falls-back",
+      "recall": "null-description.json",
+      "component_id": "bb000000-0000-4000-8000-000000000008",
+      "user_id": "99999999-9999-4999-8999-999999999999",
+      "home_id": "11111111-1111-4111-8111-111111111111",
+      "match": {
+        "matched_on": "model",
+        "confidence": "likely"
+      },
+      "recall_override": {
+        "URL": "https://www.example.com/cpsc.gov/Recalls"
+      },
+      "expected": {
+        "id": "71ad8227-13b9-5144-a220-21fd37882e1b",
+        "home_id": "11111111-1111-4111-8111-111111111111",
+        "component_id": "bb000000-0000-4000-8000-000000000008",
+        "recall_number": "99001",
+        "recall_id": 99001,
+        "title": "Acme Pump Co. Recalls ZX-9000 Sump Pumps Due to Electric Shock Hazard",
+        "hazard": "The pump housing can become energized, posing an electric shock hazard.",
+        "remedy": "Stop using the pumps and contact Acme Pump Co. for a free replacement.",
+        "url": "https://www.cpsc.gov/Recalls",
+        "recall_date": "2026-08-12",
+        "matched_on": "model",
+        "confidence": "likely",
+        "status": "open"
+      }
+    },
+    {
+      "name": "look-alike-host-url-falls-back",
+      "recall": "null-description.json",
+      "component_id": "bb000000-0000-4000-8000-000000000009",
+      "user_id": "99999999-9999-4999-8999-999999999999",
+      "home_id": "11111111-1111-4111-8111-111111111111",
+      "match": {
+        "matched_on": "model",
+        "confidence": "likely"
+      },
+      "recall_override": {
+        "URL": "https://cpsc.gov.example.com/Recalls"
+      },
+      "expected": {
+        "id": "fca20688-3690-52e2-b362-3974e4f88e9b",
+        "home_id": "11111111-1111-4111-8111-111111111111",
+        "component_id": "bb000000-0000-4000-8000-000000000009",
+        "recall_number": "99001",
+        "recall_id": 99001,
+        "title": "Acme Pump Co. Recalls ZX-9000 Sump Pumps Due to Electric Shock Hazard",
+        "hazard": "The pump housing can become energized, posing an electric shock hazard.",
+        "remedy": "Stop using the pumps and contact Acme Pump Co. for a free replacement.",
+        "url": "https://www.cpsc.gov/Recalls",
+        "recall_date": "2026-08-12",
+        "matched_on": "model",
+        "confidence": "likely",
+        "status": "open"
+      }
+    },
+    {
+      "name": "userinfo-url-falls-back",
+      "recall": "null-description.json",
+      "component_id": "bb000000-0000-4000-8000-00000000000a",
+      "user_id": "99999999-9999-4999-8999-999999999999",
+      "home_id": "11111111-1111-4111-8111-111111111111",
+      "match": {
+        "matched_on": "model",
+        "confidence": "likely"
+      },
+      "recall_override": {
+        "URL": "https://www.cpsc.gov@example.com/Recalls"
+      },
+      "expected": {
+        "id": "4932d3c6-7bb3-552e-9161-f12d4e58fe1f",
+        "home_id": "11111111-1111-4111-8111-111111111111",
+        "component_id": "bb000000-0000-4000-8000-00000000000a",
+        "recall_number": "99001",
+        "recall_id": 99001,
+        "title": "Acme Pump Co. Recalls ZX-9000 Sump Pumps Due to Electric Shock Hazard",
+        "hazard": "The pump housing can become energized, posing an electric shock hazard.",
+        "remedy": "Stop using the pumps and contact Acme Pump Co. for a free replacement.",
+        "url": "https://www.cpsc.gov/Recalls",
+        "recall_date": "2026-08-12",
+        "matched_on": "model",
+        "confidence": "likely",
+        "status": "open"
+      }
+    },
+    {
+      "name": "null-url-falls-back",
+      "recall": "null-description.json",
+      "component_id": "bb000000-0000-4000-8000-00000000000b",
+      "user_id": "99999999-9999-4999-8999-999999999999",
+      "home_id": "11111111-1111-4111-8111-111111111111",
+      "match": {
+        "matched_on": "model",
+        "confidence": "likely"
+      },
+      "recall_override": {
+        "URL": null
+      },
+      "expected": {
+        "id": "c3468640-8bdb-5648-9064-444c95a9e118",
+        "home_id": "11111111-1111-4111-8111-111111111111",
+        "component_id": "bb000000-0000-4000-8000-00000000000b",
+        "recall_number": "99001",
+        "recall_id": 99001,
+        "title": "Acme Pump Co. Recalls ZX-9000 Sump Pumps Due to Electric Shock Hazard",
+        "hazard": "The pump housing can become energized, posing an electric shock hazard.",
+        "remedy": "Stop using the pumps and contact Acme Pump Co. for a free replacement.",
+        "url": "https://www.cpsc.gov/Recalls",
+        "recall_date": "2026-08-12",
+        "matched_on": "model",
+        "confidence": "likely",
+        "status": "open"
+      }
+    }
+  ],
+  "error_record_cases": [
+    {
+      "payload": "allied-armstrong-furnace-23218.json",
+      "is_error": false
+    },
+    {
+      "payload": "friedrich-kuhl-ac-26776.json",
+      "is_error": false
+    },
+    {
+      "payload": "vst-tankless-26026.json",
+      "is_error": false
+    },
+    {
+      "payload": "non-home-laminator-27024.json",
+      "is_error": false
+    },
+    {
+      "payload": "null-description.json",
+      "is_error": false
+    },
+    {
+      "payload": "no-hazards.json",
+      "is_error": false
+    },
+    {
+      "payload": "error-record.json",
+      "is_error": true
+    }
+  ]
+}

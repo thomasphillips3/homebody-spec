@@ -1,0 +1,51 @@
+{
+  "RecallID": 99003,
+  "RecallNumber": "99003",
+  "RecallDate": "2026-08-12T00:00:00",
+  "LastPublishDate": "2026-08-12T00:00:00",
+  "Retailers": [
+    {
+      "Name": "Sold at hardware stores nationwide.",
+      "CompanyID": ""
+    }
+  ],
+  "Importers": [],
+  "Distributors": [],
+  "ConsumerContact": "Synthetic fixture record. Not a real CPSC recall.",
+  "Injuries": [
+    {
+      "Name": "None reported"
+    }
+  ],
+  "Inconjunctions": [],
+  "RemedyOptions": [
+    {
+      "Option": "Replace"
+    }
+  ],
+  "URL": "https://www.cpsc.gov/Recalls/2026/Wattson-Electric-Recalls-WS-2200-Smoke-Alarms-Due-to-Failure-to-Alert-Consumers",
+  "Title": "Wattson Electric Recalls WS-2200 Smoke Alarms Due to Failure to Alert Consumers",
+  "Description": "This recall involves Wattson WS-2200 ceiling mounted smoke alarms. The model number is printed on the back of the alarm.",
+  "Products": [
+    {
+      "Name": "Wattson WS-2200 smoke alarms",
+      "Description": "",
+      "Model": "",
+      "Type": "",
+      "CategoryID": "",
+      "NumberOfUnits": "About 500"
+    }
+  ],
+  "Manufacturers": [
+    {
+      "Name": "Wattson Electric Corp., of Austin, Texas",
+      "CompanyID": ""
+    }
+  ],
+  "Hazards": [],
+  "Remedies": [
+    {
+      "Name": "Contact Wattson Electric for a free replacement alarm."
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "RecallID": 0,
+  "RecallNumber": null,
+  "RecallDate": null,
+  "Description": null,
+  "URL": null,
+  "Title": "Error retrieving Recalls: An error occurred while reading from the store provider's data reader. See the inner exception for details.",
+  "Products": [],
+  "Manufacturers": [],
+  "Importers": [],
+  "Distributors": [],
+  "Retailers": [],
+  "Hazards": [],
+  "Remedies": []
+}

@@ -1,0 +1,93 @@
+{
+  "RecallID": 10985,
+  "RecallNumber": "26776",
+  "RecallDate": "2026-09-17T00:00:00",
+  "Description": "This recall involves KÜHL Q and KÜHL S Window Air Conditioners. The products have a gray front and a black air discharge grille and have the name Friedrich and the Friedrich logo in the lower left corner of the unit. The Kühl Q front control panel is located on the top left corner of the unit, and the Kühl S front control panel is located on the right side of the unit below the discharge grille. The models are KCVQ08B10A, KHVQ10B11A, KCVS08B10A, KCVS12B10A, KCVS12B30A and KCVS16B30A. The model and serial number are located inside the air conditioners. Only some serial numbers below have motors that are included in this recall.",
+  "URL": "https://cpsc.gov/Recalls/2026/Friedrich-Air-Conditioning-Recalls-K%C3%9CHL-Window-Air-Conditioners-Due-to-Risk-of-Serious-Injury-or-Death-from-Fire-and-Burn-Hazards",
+  "Title": "Friedrich Air Conditioning Recalls KÜHL Window Air Conditioners Due to Risk of Serious Injury or Death from Fire and Burn Hazards",
+  "ConsumerContact": "Friedrich Air Conditioning toll-free at 800-541-6645 between 8 a.m. and 5 p.m. CT, Monday through Friday, or online at www.friedrich.com.product-recall or online at www.friedrich.com and click on \"Recall Information\" at the bottom of the page.",
+  "LastPublishDate": "2026-09-17T00:00:00",
+  "Products": [
+    {
+      "Name": "Kühl® Q and Kühl® S Window Air Conditioners",
+      "Description": "",
+      "Model": "",
+      "Type": "Air Conditioners",
+      "CategoryID": "1811",
+      "NumberOfUnits": "About 2,000"
+    }
+  ],
+  "Inconjunctions": [],
+  "Images": [
+    {
+      "URL": "https://www.cpsc.gov/s3fs-public/RecalledKÜHLQAirConditioner.png",
+      "Caption": "Recalled KÜHL® Q Air Conditioner"
+    },
+    {
+      "URL": "https://www.cpsc.gov/s3fs-public/ModelSerialKÜHLQAirConditioner.png",
+      "Caption": "The model and serial number are location inside the Kühl® Q Air Conditioner"
+    },
+    {
+      "URL": "https://www.cpsc.gov/s3fs-public/CloseUpModelSerialInsideKÜHLQAirConditioner.png",
+      "Caption": "A close up of serial and model number are location inside the Kühl® Q Air Conditioner"
+    },
+    {
+      "URL": "https://www.cpsc.gov/s3fs-public/RecalledKÜHLSAirConditioner.png",
+      "Caption": "Recalled KÜHL® S Air Conditioner"
+    },
+    {
+      "URL": "https://www.cpsc.gov/s3fs-public/ModelSerialKÜHLSAirConditioner.png",
+      "Caption": "The model and serial number are location inside the Kühl® S Air Conditioner"
+    },
+    {
+      "URL": "https://www.cpsc.gov/s3fs-public/CloseUpModelSerialInsideKÜHLSAirConditioner.png",
+      "Caption": "Close-up of the model and serial number are location inside the Kühl® S Air Conditioner"
+    }
+  ],
+  "Injuries": [
+    {
+      "Name": "The firm has received two reports indicating that the air conditioner’s motor ignited, with one incident causing smoke and fire damage to a residence. No injuries have been reported."
+    }
+  ],
+  "Manufacturers": [],
+  "Retailers": [
+    {
+      "Name": "Sold At:\nPC Richard & Son, Grainger, and Johnson Supply stores and other appliance distributors and retailers nationwide from January 2026 through August 2026 for between $1,300 and $2,000.",
+      "CompanyID": ""
+    }
+  ],
+  "Importers": [
+    {
+      "Name": "Friedrich Air Conditioning Co., of San Antonio, Texas",
+      "CompanyID": ""
+    }
+  ],
+  "Distributors": [],
+  "SoldAtLabel": null,
+  "ManufacturerCountries": [
+    {
+      "Country": "Mexico"
+    }
+  ],
+  "ProductUPCs": [],
+  "Hazards": [
+    {
+      "Name": "The control board inside the motor of the recalled air conditioners can fail, posing a risk of serious injury or death from fire and burn hazards.",
+      "HazardType": "",
+      "HazardTypeID": ""
+    }
+  ],
+  "Remedies": [
+    {
+      "Name": "Consumers should stop using the recalled air conditioners immediately and visit www.friedrich.com/product-recall to receive information on how to determine if their unit is covered by the recall. Consumers should have the air conditioner’s serial number, which can be found on the inside of the unit, when they visit the recall web page or call Friedrich about the recall. If your unit has a serial number that is included in the recall, the firm will send you instructions on how to obtain a refund or free replacement unit."
+    }
+  ],
+  "RemedyOptions": [
+    {
+      "Option": "Refund"
+    },
+    {
+      "Option": "Replace"
+    }
+  ]
+}

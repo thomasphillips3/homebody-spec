@@ -1,0 +1,74 @@
+{
+  "RecallID": 9642,
+  "RecallNumber": "23218",
+  "RecallDate": "2023-06-08T00:00:00",
+  "Description": "This recall involves 96% efficiency gas furnaces under the ARMSTRONG and AIREASE brand names with the model numbers A96UH1E045B12S, A96UH1E070B12S, and/or A96UH1E110C20S. The furnaces weigh between 129 and 170 pounds and were sold between September 2022 and March 2023. The brand name is printed on the outside of the furnace, and the model number is located on the label found by opening the furnace door.",
+  "URL": "https://www.cpsc.gov/Recalls/2023/Allied-Air-Enterprises-Recalls-Armstrong-Air-and-Air-Ease-Gas-Furnaces-Due-to-Carbon-Monoxide-Poisoning-Hazard",
+  "Title": "Allied Air Enterprises Recalls Armstrong Air and Air Ease Gas Furnaces Due to Carbon Monoxide Poisoning Hazard",
+  "ConsumerContact": "Allied Air Enterprises at 800-448-5872 from 8 a.m. to 5 p.m. ET Monday through Friday or online at www.alliedair.com/product-recall or www.alliedair.com and click on \"PRODUCT RECALL\" for more information.",
+  "LastPublishDate": "2023-06-08T00:00:00",
+  "Products": [
+    {
+      "Name": "Armstrong Air and Air Ease single stage gas furnaces",
+      "Description": "",
+      "Model": "",
+      "Type": "",
+      "CategoryID": "",
+      "NumberOfUnits": "About 9,255"
+    }
+  ],
+  "Inconjunctions": [],
+  "Images": [
+    {
+      "URL": "https://www.cpsc.gov/s3fs-public/armstrong-furnace.png",
+      "Caption": "Recalled ARMSTRONG furnace"
+    },
+    {
+      "URL": "https://www.cpsc.gov/s3fs-public/airease-furnace.png",
+      "Caption": "Recalled AIREASE furnace"
+    }
+  ],
+  "Injuries": [
+    {
+      "Name": "None reported"
+    }
+  ],
+  "Manufacturers": [
+    {
+      "Name": "Allied Air Enterprises LLC, of West Columbia, South Carolina",
+      "CompanyID": ""
+    }
+  ],
+  "Retailers": [
+    {
+      "Name": "ARMSTRONG and AIREASE authorized HVAC dealers nationwide from September 2022 through March 2023 for between $1,800 and $3,400.",
+      "CompanyID": ""
+    }
+  ],
+  "Importers": [],
+  "Distributors": [],
+  "SoldAtLabel": null,
+  "ManufacturerCountries": [
+    {
+      "Country": "United States"
+    }
+  ],
+  "ProductUPCs": [],
+  "Hazards": [
+    {
+      "Name": "A component inside the furnace was improperly assembled, causing the furnace to produce high levels of carbon monoxide (CO) under certain operating conditions, which poses a risk of CO poisoning to the consumer.",
+      "HazardType": "",
+      "HazardTypeID": ""
+    }
+  ],
+  "Remedies": [
+    {
+      "Name": "Contact Allied Air Enterprises to schedule a free in-home repair by an authorized technician who will replace the incorrect component. Allied Air Enterprises is contacting all known distributors directly, who will work with dealers to contact all known consumers who purchased the recalled units. Consumers who continue to use the recalled furnaces while awaiting repair should have working carbon monoxide alarms on every level of the home and outside sleeping areas."
+    }
+  ],
+  "RemedyOptions": [
+    {
+      "Option": "Repair"
+    }
+  ]
+}

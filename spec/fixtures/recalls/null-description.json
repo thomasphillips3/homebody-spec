@@ -1,0 +1,57 @@
+{
+  "RecallID": 99001,
+  "RecallNumber": "99001",
+  "RecallDate": "2026-08-12T00:00:00",
+  "LastPublishDate": "2026-08-12T00:00:00",
+  "Retailers": [
+    {
+      "Name": "Sold at hardware stores nationwide.",
+      "CompanyID": ""
+    }
+  ],
+  "Importers": [],
+  "Distributors": [],
+  "ConsumerContact": "Synthetic fixture record. Not a real CPSC recall.",
+  "Injuries": [
+    {
+      "Name": "None reported"
+    }
+  ],
+  "Inconjunctions": [],
+  "RemedyOptions": [
+    {
+      "Option": "Replace"
+    }
+  ],
+  "URL": "https://www.cpsc.gov/Recalls/2026/Acme-Pump-Co-Recalls-ZX-9000-Sump-Pumps-Due-to-Electric-Shock-Hazard",
+  "Title": "Acme Pump Co. Recalls ZX-9000 Sump Pumps Due to Electric Shock Hazard",
+  "Description": null,
+  "Products": [
+    {
+      "Name": "ZX-9000 sump pumps",
+      "Description": "",
+      "Model": "",
+      "Type": "",
+      "CategoryID": "",
+      "NumberOfUnits": "About 1,000"
+    }
+  ],
+  "Manufacturers": [
+    {
+      "Name": "Acme Pump Co., of Dayton, Ohio",
+      "CompanyID": ""
+    }
+  ],
+  "Hazards": [
+    {
+      "Name": "The pump housing can become energized, posing an electric shock hazard.",
+      "HazardType": "",
+      "HazardTypeID": ""
+    }
+  ],
+  "Remedies": [
+    {
+      "Name": "Stop using the pumps and contact Acme Pump Co. for a free replacement."
+    }
+  ]
+}

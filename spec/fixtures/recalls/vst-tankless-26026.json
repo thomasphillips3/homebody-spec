@@ -1,0 +1,82 @@
+{
+  "RecallID": 10436,
+  "RecallNumber": "26026",
+  "RecallDate": "2025-10-16T00:00:00",
+  "Description": "This recall involves VST-brand residential wall-mounted gas boilers, Series VT, VR, and VR Plus, with model numbers VRS-150, VRS-199, VRP-150, VRP-199, VRS Plus-150, VRS Plus-199, VRP Plus-150, VRP Plus-199, VTS-150, VTS-199, VTP-150, and VTP-199. The white label on the side of the boiler has the model number bolded, near the top of the label. The boilers are metal, rectangular units and have either VST printed in white on the control panel near the bottom, or VESTA.DS.Inc. printed in gray near the top of the panel.",
+  "URL": "https://www.cpsc.gov/Recalls/2026/VESTA-DS-Recalls-VST-Brand-Tankless-Water-Heaters-Due-to-Carbon-Monoxide-CO-Poisoning-Hazard-and-Risk-of-Serious-Injury-and-Death",
+  "Title": "VESTA.DS Recalls VST Brand Tankless Water Heaters Due to Carbon Monoxide (CO) Poisoning Hazard and Risk of Serious Injury and Death",
+  "ConsumerContact": "VESTA.DS toll-free at 888-505-5525 from 8:30 a.m. to 6 p.m. ET Monday through Friday, email condensingwaterheater@realtimeresults.net or online at www.recallrtr.com/condensingwaterheater or at https://www.vestahws.com and click on \"Recall\" under the \"Documents/Support\" tab at the top of the page for more information.",
+  "LastPublishDate": "2025-10-17T00:00:00",
+  "Products": [
+    {
+      "Name": "VST gas-fired tankless water heaters",
+      "Description": "",
+      "Model": "",
+      "Type": "",
+      "CategoryID": "",
+      "NumberOfUnits": "About 36,700 (In addition, about 3,500 were sold in Canada)"
+    }
+  ],
+  "Inconjunctions": [
+    {
+      "URL": "https://recalls-rappels.canada.ca/en/alert-recall/vesta-tankless-hot-water-heater-recalled-due-carbon-monoxide-poisoning-hazard"
+    }
+  ],
+  "Images": [
+    {
+      "URL": "https://www.cpsc.gov/s3fs-public/VR-VT-1.jpg",
+      "Caption": "Recalled VR Plus and VT Series Vesta Water Heaters"
+    },
+    {
+      "URL": "https://www.cpsc.gov/s3fs-public/VR-VT-2.jpg",
+      "Caption": "Recalled VR Series Vesta Water Heater"
+    },
+    {
+      "URL": "https://www.cpsc.gov/s3fs-public/VR-VT-3.png",
+      "Caption": "Model Number on the Label of the Recalled Water Heaters"
+    }
+  ],
+  "Injuries": [
+    {
+      "Name": "The firm has received 33 reports of cracked exhaust ducts allowing exhaust fumes to leak out. No injuries have been reported."
+    }
+  ],
+  "Manufacturers": [],
+  "Retailers": [
+    {
+      "Name": "In-store and online at Best Buy, Dick's Sporting Goods, Nebraska Furniture and ABT stores nationwide and online at nordictrack.com and Amazon.com from November 2018 through April 2022 for about $1,700.",
+      "CompanyID": ""
+    }
+  ],
+  "Importers": [
+    {
+      "Name": "VESTA.DS, Inc., of Ontario, California",
+      "CompanyID": ""
+    }
+  ],
+  "Distributors": [],
+  "SoldAtLabel": null,
+  "ManufacturerCountries": [
+    {
+      "Country": "South Korea"
+    }
+  ],
+  "ProductUPCs": [],
+  "Hazards": [
+    {
+      "Name": "The exhaust duct can crack, allowing gases to escape inside of the home, posing a carbon monoxide (CO) poisoning hazard that can result in death or serious injury.",
+      "HazardType": "",
+      "HazardTypeID": ""
+    }
+  ],
+  "Remedies": [
+    {
+      "Name": "Consumers should immediately stop using the recalled water heater and contact VESTA.DS to have a certified technician install the free repair. Consumers who must continue using the water heater while awaiting repair should have working smoke and carbon monoxide alarms in their homes."
+    }
+  ],
+  "RemedyOptions": [
+    {
+      "Option": "Repair"
+    }
+  ]
+}
