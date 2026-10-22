@@ -38,6 +38,11 @@ describe("generateRenderModel golden vectors", () => {
       input: "maximal-main-floor.input.json",
       golden: "maximal-main-floor.golden.json",
     },
+    {
+      name: "roomplan-scan",
+      input: "roomplan-scan.input.json",
+      golden: "roomplan-scan.golden.json",
+    },
   ];
 
   for (const { name, input, golden } of cases) {

@@ -1,0 +1,138 @@
+{
+  "version": 2,
+  "story": 0,
+  "walls": [
+    {
+      "category": {
+        "wall": {}
+      },
+      "confidence": {
+        "high": {}
+      },
+      "completedEdges": [],
+      "dimensions": [2.82842712, 2.5, 0],
+      "transform": [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 2, 1.25, 0, 1],
+      "identifier": "00000000-0000-4000-8000-000000000001",
+      "parentIdentifier": null,
+      "polygonCorners": [],
+      "story": 0,
+      "curve": {
+        "center": [0, -1.41421356],
+        "radius": 2,
+        "startAngle": {
+          "value": 0.7853981633974483,
+          "unit": {
+            "converter": {
+              "coefficient": 57.29577951308232,
+              "constant": 0
+            },
+            "symbol": "rad"
+          }
+        },
+        "endAngle": {
+          "value": 2.356194490192345,
+          "unit": {
+            "converter": {
+              "coefficient": 57.29577951308232,
+              "constant": 0
+            },
+            "symbol": "rad"
+          }
+        }
+      }
+    },
+    {
+      "category": {
+        "wall": {}
+      },
+      "confidence": {
+        "high": {}
+      },
+      "completedEdges": [],
+      "dimensions": [3, 2.5, 0],
+      "transform": [0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, 0, 3.41421356, 1.25, 1.5, 1],
+      "identifier": "00000000-0000-4000-8000-000000000002",
+      "parentIdentifier": null,
+      "polygonCorners": [],
+      "story": 0,
+      "curve": null
+    }
+  ],
+  "doors": [],
+  "windows": [],
+  "openings": [],
+  "floors": [],
+  "objects": [],
+  "sections": [],
+  "referenceOriginTransform": [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+  "rooms": [
+    {
+      "version": 2,
+      "story": 0,
+      "walls": [
+        {
+          "category": {
+            "wall": {}
+          },
+          "confidence": {
+            "high": {}
+          },
+          "completedEdges": [],
+          "dimensions": [2.82842712, 2.5, 0],
+          "transform": [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 2, 1.25, 0, 1],
+          "identifier": "00000000-0000-4000-8000-000000000001",
+          "parentIdentifier": null,
+          "polygonCorners": [],
+          "story": 0,
+          "curve": {
+            "center": [0, -1.41421356],
+            "radius": 2,
+            "startAngle": {
+              "value": 0.7853981633974483,
+              "unit": {
+                "converter": {
+                  "coefficient": 57.29577951308232,
+                  "constant": 0
+                },
+                "symbol": "rad"
+              }
+            },
+            "endAngle": {
+              "value": 2.356194490192345,
+              "unit": {
+                "converter": {
+                  "coefficient": 57.29577951308232,
+                  "constant": 0
+                },
+                "symbol": "rad"
+              }
+            }
+          }
+        },
+        {
+          "category": {
+            "wall": {}
+          },
+          "confidence": {
+            "high": {}
+          },
+          "completedEdges": [],
+          "dimensions": [3, 2.5, 0],
+          "transform": [0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, 0, 3.41421356, 1.25, 1.5, 1],
+          "identifier": "00000000-0000-4000-8000-000000000002",
+          "parentIdentifier": null,
+          "polygonCorners": [],
+          "story": 0,
+          "curve": null
+        }
+      ],
+      "doors": [],
+      "windows": [],
+      "openings": [],
+      "floors": [],
+      "objects": [],
+      "sections": [],
+      "referenceOriginTransform": [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]
+    }
+  ]
+}

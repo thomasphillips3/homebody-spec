@@ -1,0 +1,52 @@
+{
+  "scan_rotation_rad": 0,
+  "scan_origin_m": [0, 0],
+  "story_count": 1,
+  "elements": [
+    {
+      "surface_id": "00000000-0000-4000-8000-000000000001",
+      "kind": "wall",
+      "host_surface_id": null,
+      "coordinates": [[0,0], [4,0]]
+    },
+    {
+      "surface_id": "00000000-0000-4000-8000-000000000002",
+      "kind": "wall",
+      "host_surface_id": null,
+      "coordinates": [[4,0], [4,3]]
+    },
+    {
+      "surface_id": "00000000-0000-4000-8000-000000000003",
+      "kind": "wall",
+      "host_surface_id": null,
+      "coordinates": [[4,3], [0,3]]
+    },
+    {
+      "surface_id": "00000000-0000-4000-8000-000000000004",
+      "kind": "wall",
+      "host_surface_id": null,
+      "coordinates": [[0,3], [0,0]]
+    },
+    {
+      "surface_id": "00000000-0000-4000-8000-000000000005",
+      "kind": "door",
+      "host_surface_id": "00000000-0000-4000-8000-000000000001",
+      "coordinates": [[0.55,0], [1.45,0]]
+    },
+    {
+      "surface_id": "00000000-0000-4000-8000-000000000006",
+      "kind": "window",
+      "host_surface_id": "00000000-0000-4000-8000-000000000002",
+      "coordinates": [[4,0.9], [4,2.1]]
+    }
+  ],
+  "rooms": [
+    {
+      "surface_id": "00000000-0000-4000-8000-000000000007",
+      "room_type": "kitchen",
+      "ring": [[0,0], [4,0], [4,3], [0,3], [0,0]],
+      "area_m2": 12
+    }
+  ],
+  "warnings": []
+}

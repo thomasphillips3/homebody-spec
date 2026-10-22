@@ -1,0 +1,70 @@
+{
+  "scan_rotation_rad": 0,
+  "scan_origin_m": [0, 0],
+  "story_count": 1,
+  "elements": [
+    {
+      "surface_id": "00000000-0000-4000-8000-000000000001",
+      "kind": "wall",
+      "host_surface_id": null,
+      "coordinates": [[0,0], [6,0]]
+    },
+    {
+      "surface_id": "00000000-0000-4000-8000-000000000002",
+      "kind": "wall",
+      "host_surface_id": null,
+      "coordinates": [[6,0], [6,3]]
+    },
+    {
+      "surface_id": "00000000-0000-4000-8000-000000000003",
+      "kind": "wall",
+      "host_surface_id": null,
+      "coordinates": [[6,3], [3,3]]
+    },
+    {
+      "surface_id": "00000000-0000-4000-8000-000000000004",
+      "kind": "wall",
+      "host_surface_id": null,
+      "coordinates": [[3,3], [3,5]]
+    },
+    {
+      "surface_id": "00000000-0000-4000-8000-000000000005",
+      "kind": "wall",
+      "host_surface_id": null,
+      "coordinates": [[3,5], [0,5]]
+    },
+    {
+      "surface_id": "00000000-0000-4000-8000-000000000006",
+      "kind": "wall",
+      "host_surface_id": null,
+      "coordinates": [[0,5], [0,0]]
+    },
+    {
+      "surface_id": "00000000-0000-4000-8000-000000000007",
+      "kind": "door",
+      "host_surface_id": "00000000-0000-4000-8000-000000000006",
+      "coordinates": [[0,1.45], [0,0.55]]
+    },
+    {
+      "surface_id": "00000000-0000-4000-8000-000000000008",
+      "kind": "window",
+      "host_surface_id": "00000000-0000-4000-8000-000000000005",
+      "coordinates": [[2.6,5], [1.4,5]]
+    },
+    {
+      "surface_id": "00000000-0000-4000-8000-000000000009",
+      "kind": "opening",
+      "host_surface_id": "00000000-0000-4000-8000-000000000004",
+      "coordinates": [[3,3.5], [3,4.5]]
+    }
+  ],
+  "rooms": [
+    {
+      "surface_id": "00000000-0000-4000-8000-000000000010",
+      "room_type": "living_room",
+      "ring": [[0,0], [6,0], [6,3], [3,3], [3,5], [0,5], [0,0]],
+      "area_m2": 24
+    }
+  ],
+  "warnings": []
+}

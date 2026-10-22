@@ -25,6 +25,8 @@
     "spec/schema/",
     "spec/render/style-tokens.json",
     "spec/fixtures/render/",
+    "spec/fixtures/roomplan/",
+    "spec/docs/roomplan-projection.md",
     "spec/VERSION",
     "README.md",
     "LICENSE"
@@ -42,8 +44,9 @@
     "test:version": "node --test tests/version-consistency.test.mjs",
     "test:types": "tsc --noEmit --strict --module Node16 --moduleResolution Node16 --target ES2022 tests/typescript-consumer.ts",
     "test:consumer": "node tests/package-consumer.mjs",
+    "test:roomplan": "node --test tests/roomplan-fixtures.test.mjs",
     "test:render": "vitest run",
-    "test": "npm run build && npm run test:resolver && npm run test:validator && npm run test:fixtures && npm run test:version && npm run test:types && npm run test:consumer && npm run test:render",
+    "test": "npm run build && npm run test:resolver && npm run test:validator && npm run test:fixtures && npm run test:version && npm run test:types && npm run test:consumer && npm run test:roomplan && npm run test:render",
     "prepare": "npm run build",
     "prepack": "npm run build"
   },

@@ -1,0 +1,51 @@
+{
+  "scan_rotation_rad": 0,
+  "scan_origin_m": [-0.585786, 0],
+  "story_count": 1,
+  "elements": [
+    {
+      "surface_id": "00000000-0000-4000-8000-000000000001#0",
+      "kind": "wall",
+      "host_surface_id": null,
+      "coordinates": [[0,0], [0.414214,0.317837]]
+    },
+    {
+      "surface_id": "00000000-0000-4000-8000-000000000001#1",
+      "kind": "wall",
+      "host_surface_id": null,
+      "coordinates": [[0.414214,0.317837], [0.896575,0.517638]]
+    },
+    {
+      "surface_id": "00000000-0000-4000-8000-000000000001#2",
+      "kind": "wall",
+      "host_surface_id": null,
+      "coordinates": [[0.896575,0.517638], [1.414214,0.585786]]
+    },
+    {
+      "surface_id": "00000000-0000-4000-8000-000000000001#3",
+      "kind": "wall",
+      "host_surface_id": null,
+      "coordinates": [[1.414214,0.585786], [1.931852,0.517638]]
+    },
+    {
+      "surface_id": "00000000-0000-4000-8000-000000000001#4",
+      "kind": "wall",
+      "host_surface_id": null,
+      "coordinates": [[1.931852,0.517638], [2.414214,0.317837]]
+    },
+    {
+      "surface_id": "00000000-0000-4000-8000-000000000001#5",
+      "kind": "wall",
+      "host_surface_id": null,
+      "coordinates": [[2.414214,0.317837], [2.828427,0]]
+    },
+    {
+      "surface_id": "00000000-0000-4000-8000-000000000002",
+      "kind": "wall",
+      "host_surface_id": null,
+      "coordinates": [[2.828427,0], [2.828427,3]]
+    }
+  ],
+  "rooms": [],
+  "warnings": []
+}
