@@ -2,6 +2,30 @@
 
 All notable changes to the Home Record spec are documented in this file.
 
+## 0.6.0 - 2026-10-22
+
+- `Event` gains optional nullable `title` (short description, max 200
+  characters). `notes` stays the long description.
+- `Home` gains optional nullable `maintenance_defaults` (component_type to
+  whole days, 1 to 3650), which overrides the taxonomy default interval.
+- New `RecallAlert` entity and an optional `recall_alerts` array on the Home
+  Record root (default empty, not required).
+- `schema_version` accepts `0.6.0`.
+- Taxonomy: `default_service_interval_days` added for `flashing`, `skylight`,
+  `roof_vent`, `soffit_fascia` and `garage_door` (365 days, sources in
+  `docs/taxonomy.md`); the taxonomy file version moves to `0.6.0`.
+- Added docs and golden fixtures for event application (noon-UTC civil date and
+  the Owner rule), maintenance schedule, history scopes, notification plan,
+  recall matching and quick log: `event-application.json`,
+  `maintenance-schedule.json`, `history-scopes.json`,
+  `notification-plan.json`, `recalls/` and `quick-log/`.
+- `attachment-referencing.md` gains the event attachment ordering rule.
+- Generated Swift, Kotlin and TypeScript models regenerated.
+- Compatibility: all new fields and the new root array are optional and
+  nullable; every 0.5.0 record stays valid; a 0.6.0 record that carries
+  `recall_alerts` cannot be decoded as strictly by a 0.5.0 reader that rejects
+  unknown root properties.
+
 ## 0.5.0 - 2026-10-22
 
 - Widened `Component.component_type` from 15 to 78 values covering the seven
