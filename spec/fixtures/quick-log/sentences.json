@@ -1,0 +1,384 @@
+{
+  "version": "0.6.0",
+  "description": "Typed quick-log parser corpus. Expectations are derived by hand from spec/docs/quick-log.md against the fixed reference clock (today 2026-10-22, a Thursday).",
+  "reference": {
+    "now_local": "2026-10-22T10:00",
+    "today": "2026-10-22"
+  },
+  "cases": [
+    {
+      "name": "service-consumable-filter-date-today-cost-dollar-sign",
+      "input": "replaced the furnace filter today, $28",
+      "expected": {
+        "event_type": "service",
+        "component_hint": "furnace",
+        "occurred_on": "2026-10-22",
+        "cost_cents": 2800,
+        "title": "Replaced furnace filter"
+      }
+    },
+    {
+      "name": "inspection-date-yesterday-cost-none",
+      "input": "inspected the roof yesterday",
+      "expected": {
+        "event_type": "inspection",
+        "component_hint": "roof",
+        "occurred_on": "2026-10-21",
+        "cost_cents": null,
+        "title": "Inspected roof"
+      }
+    },
+    {
+      "name": "service-date-last-weekday-cost-dollar-sign",
+      "input": "cleaned the gutters last Tuesday for $90",
+      "expected": {
+        "event_type": "service",
+        "component_hint": "gutters",
+        "occurred_on": "2026-10-20",
+        "cost_cents": 9000,
+        "title": "Cleaned gutters"
+      }
+    },
+    {
+      "name": "replacement-date-days-ago",
+      "input": "swapped the water heater anode 3 days ago",
+      "expected": {
+        "event_type": "replacement",
+        "component_hint": "water heater anode",
+        "occurred_on": "2026-10-19",
+        "cost_cents": null,
+        "title": "Swapped water heater anode"
+      }
+    },
+    {
+      "name": "note-no-verb-date-none",
+      "input": "furnace is making a weird noise",
+      "expected": {
+        "event_type": "note",
+        "component_hint": null,
+        "occurred_on": "2026-10-22",
+        "cost_cents": null,
+        "title": "Furnace is making a weird noise"
+      }
+    },
+    {
+      "name": "reading-date-iso",
+      "input": "measured the radon level on 2026-10-01 at 2.4 pCi",
+      "expected": {
+        "event_type": "reading",
+        "component_hint": "radon level",
+        "occurred_on": "2026-10-01",
+        "cost_cents": null,
+        "title": "Measured radon level"
+      }
+    },
+    {
+      "name": "repair-date-rollback-cost-dollars",
+      "input": "patched the drywall on dec 5 for 120 dollars",
+      "expected": {
+        "event_type": "repair",
+        "component_hint": "drywall",
+        "occurred_on": "2025-12-05",
+        "cost_cents": 12000,
+        "title": "Patched drywall"
+      }
+    },
+    {
+      "name": "replacement-date-bare-weekday",
+      "input": "installed a new thermostat on friday",
+      "expected": {
+        "event_type": "replacement",
+        "component_hint": "thermostat",
+        "occurred_on": "2026-10-16",
+        "cost_cents": null,
+        "title": "Installed thermostat"
+      }
+    },
+    {
+      "name": "repair-date-same-weekday",
+      "input": "fixed the garage door opener thursday",
+      "expected": {
+        "event_type": "repair",
+        "component_hint": "garage door opener",
+        "occurred_on": "2026-10-15",
+        "cost_cents": null,
+        "title": "Fixed garage door opener"
+      }
+    },
+    {
+      "name": "inspection-date-week-ago",
+      "input": "tested the smoke detectors a week ago",
+      "expected": {
+        "event_type": "inspection",
+        "component_hint": "smoke detectors",
+        "occurred_on": "2026-10-15",
+        "cost_cents": null,
+        "title": "Tested smoke detectors"
+      }
+    },
+    {
+      "name": "service-date-last-week-cost-single-decimal",
+      "input": "serviced the hvac last week for $210.5",
+      "expected": {
+        "event_type": "service",
+        "component_hint": "hvac",
+        "occurred_on": "2026-10-15",
+        "cost_cents": 21050,
+        "title": "Serviced hvac"
+      }
+    },
+    {
+      "name": "service-date-month-name",
+      "input": "drained the water heater on oct 3",
+      "expected": {
+        "event_type": "service",
+        "component_hint": "water heater",
+        "occurred_on": "2026-10-03",
+        "cost_cents": null,
+        "title": "Drained water heater"
+      }
+    },
+    {
+      "name": "repair-date-numeric",
+      "input": "tightened the toilet handle 9/30",
+      "expected": {
+        "event_type": "repair",
+        "component_hint": "toilet handle",
+        "occurred_on": "2026-09-30",
+        "cost_cents": null,
+        "title": "Tightened toilet handle"
+      }
+    },
+    {
+      "name": "service-date-numeric-rollback",
+      "input": "winterized the hose bibs 11/15",
+      "expected": {
+        "event_type": "service",
+        "component_hint": "hose bibs",
+        "occurred_on": "2025-11-15",
+        "cost_cents": null,
+        "title": "Winterized hose bibs"
+      }
+    },
+    {
+      "name": "replacement-cost-thousands-date-yesterday",
+      "input": "replaced the roof for $1,250.50 yesterday",
+      "expected": {
+        "event_type": "replacement",
+        "component_hint": "roof",
+        "occurred_on": "2026-10-21",
+        "cost_cents": 125050,
+        "title": "Replaced roof"
+      }
+    },
+    {
+      "name": "replacement-cost-cents-only",
+      "input": "replaced the faucet aerator for $0.99",
+      "expected": {
+        "event_type": "replacement",
+        "component_hint": "faucet aerator",
+        "occurred_on": "2026-10-22",
+        "cost_cents": 99,
+        "title": "Replaced faucet aerator"
+      }
+    },
+    {
+      "name": "service-consumable-battery-cost-bucks",
+      "input": "changed the smoke detector battery for 45 bucks",
+      "expected": {
+        "event_type": "service",
+        "component_hint": "smoke detector",
+        "occurred_on": "2026-10-22",
+        "cost_cents": 4500,
+        "title": "Changed smoke detector battery"
+      }
+    },
+    {
+      "name": "service-consumable-cartridge-cost-usd",
+      "input": "installed the water softener cartridge, 65 usd",
+      "expected": {
+        "event_type": "service",
+        "component_hint": "water softener",
+        "occurred_on": "2026-10-22",
+        "cost_cents": 6500,
+        "title": "Installed water softener cartridge"
+      }
+    },
+    {
+      "name": "note-cost-no-verb",
+      "input": "water heater leaking, $150",
+      "expected": {
+        "event_type": "note",
+        "component_hint": null,
+        "occurred_on": "2026-10-22",
+        "cost_cents": 15000,
+        "title": "Water heater leaking, $150"
+      }
+    },
+    {
+      "name": "service-consumable-bulb-date-yesterday",
+      "input": "changed the porch light bulb yesterday",
+      "expected": {
+        "event_type": "service",
+        "component_hint": "porch light",
+        "occurred_on": "2026-10-21",
+        "cost_cents": null,
+        "title": "Changed porch light bulb"
+      }
+    },
+    {
+      "name": "service-consumable-pad",
+      "input": "swapped the humidifier pad",
+      "expected": {
+        "event_type": "service",
+        "component_hint": "humidifier",
+        "occurred_on": "2026-10-22",
+        "cost_cents": null,
+        "title": "Swapped humidifier pad"
+      }
+    },
+    {
+      "name": "service-consumable-only-noun",
+      "input": "installed new filters",
+      "expected": {
+        "event_type": "service",
+        "component_hint": "filters",
+        "occurred_on": "2026-10-22",
+        "cost_cents": null,
+        "title": "Installed filters"
+      }
+    },
+    {
+      "name": "noisy-fillers-consumable",
+      "input": "um so okay I just replaced the uh furnace filter like yesterday basically",
+      "expected": {
+        "event_type": "service",
+        "component_hint": "furnace",
+        "occurred_on": "2026-10-21",
+        "cost_cents": null,
+        "title": "Replaced furnace filter"
+      }
+    },
+    {
+      "name": "noisy-fillers-commas",
+      "input": "uh, like, cleaned the um gutters",
+      "expected": {
+        "event_type": "service",
+        "component_hint": "gutters",
+        "occurred_on": "2026-10-22",
+        "cost_cents": null,
+        "title": "Cleaned gutters"
+      }
+    },
+    {
+      "name": "note-no-verb-date-last-week",
+      "input": "attic smells musty since last week",
+      "expected": {
+        "event_type": "note",
+        "component_hint": null,
+        "occurred_on": "2026-10-15",
+        "cost_cents": null,
+        "title": "Attic smells musty since last week"
+      }
+    },
+    {
+      "name": "two-verbs-first-wins",
+      "input": "cleaned the filter and replaced the belt",
+      "expected": {
+        "event_type": "service",
+        "component_hint": "filter",
+        "occurred_on": "2026-10-22",
+        "cost_cents": null,
+        "title": "Cleaned filter"
+      }
+    },
+    {
+      "name": "uppercase-whitespace-inspection",
+      "input": "  INSPECTED   THE   ROOF  YESTERDAY  ",
+      "expected": {
+        "event_type": "inspection",
+        "component_hint": "roof",
+        "occurred_on": "2026-10-21",
+        "cost_cents": null,
+        "title": "Inspected roof"
+      }
+    },
+    {
+      "name": "cost-spelled-out-unsupported",
+      "input": "replaced the furnace filter for twenty eight dollars",
+      "expected": {
+        "event_type": "service",
+        "component_hint": "furnace",
+        "occurred_on": "2026-10-22",
+        "cost_cents": null,
+        "title": "Replaced furnace filter"
+      }
+    },
+    {
+      "name": "service-empty-subject",
+      "input": "cleaned it yesterday",
+      "expected": {
+        "event_type": "service",
+        "component_hint": null,
+        "occurred_on": "2026-10-21",
+        "cost_cents": null,
+        "title": "Cleaned"
+      }
+    },
+    {
+      "name": "inspection-looked-at",
+      "input": "looked at the attic hatch yesterday",
+      "expected": {
+        "event_type": "inspection",
+        "component_hint": "attic hatch",
+        "occurred_on": "2026-10-21",
+        "cost_cents": null,
+        "title": "Looked at attic hatch"
+      }
+    },
+    {
+      "name": "repair-comma-cut",
+      "input": "unclogged the kitchen drain, it was bad",
+      "expected": {
+        "event_type": "repair",
+        "component_hint": "kitchen drain",
+        "occurred_on": "2026-10-22",
+        "cost_cents": null,
+        "title": "Unclogged kitchen drain"
+      }
+    },
+    {
+      "name": "inspection-date-a-day-ago",
+      "input": "checked the sump pump a day ago",
+      "expected": {
+        "event_type": "inspection",
+        "component_hint": "sump pump",
+        "occurred_on": "2026-10-21",
+        "cost_cents": null,
+        "title": "Checked sump pump"
+      }
+    },
+    {
+      "name": "service-date-weeks-ago",
+      "input": "flushed the water heater 2 weeks ago",
+      "expected": {
+        "event_type": "service",
+        "component_hint": "water heater",
+        "occurred_on": "2026-10-08",
+        "cost_cents": null,
+        "title": "Flushed water heater"
+      }
+    },
+    {
+      "name": "note-no-verb-long-truncated",
+      "input": "the whole upstairs bathroom has a strange smell that comes and goes in the evenings",
+      "expected": {
+        "event_type": "note",
+        "component_hint": null,
+        "occurred_on": "2026-10-22",
+        "cost_cents": null,
+        "title": "The whole upstairs bathroom has a strange smell that comes a"
+      }
+    }
+  ]
+}

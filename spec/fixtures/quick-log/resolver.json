@@ -1,0 +1,289 @@
+{
+  "version": "0.6.0",
+  "description": "Shared component resolver corpus. Both the typed parser and the on-device model feed resolveHint with a component_hint. component_ids are ordered by lowercase name then lowercase id.",
+  "components": [
+    {
+      "id": "00000000-0000-4000-8000-000000000001",
+      "name": "Furnace - Upstairs",
+      "component_type": "furnace",
+      "make": "Carrier",
+      "model": null,
+      "type_label": "Furnace",
+      "aliases": [
+        "heater",
+        "forced air"
+      ]
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000002",
+      "name": "Furnace - Basement",
+      "component_type": "furnace",
+      "make": "Lennox",
+      "model": null,
+      "type_label": "Furnace",
+      "aliases": [
+        "heater",
+        "forced air"
+      ]
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000003",
+      "name": "Water Heater",
+      "component_type": "water_heater",
+      "make": "Rheem",
+      "model": null,
+      "type_label": "Water heater",
+      "aliases": [
+        "hot water heater",
+        "tank",
+        "tankless"
+      ]
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000004",
+      "name": "North Gutter Run",
+      "component_type": "gutter",
+      "make": null,
+      "model": null,
+      "type_label": "Gutter",
+      "aliases": [
+        "gutters",
+        "rain gutter",
+        "eavestrough"
+      ]
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000005",
+      "name": "Garage Subpanel",
+      "component_type": "electrical_panel",
+      "make": "Square D",
+      "model": null,
+      "type_label": "Electrical panel",
+      "aliases": [
+        "breaker box",
+        "panelboard",
+        "load center",
+        "fuse box"
+      ]
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000006",
+      "name": "Kitchen Faucet",
+      "component_type": "plumbing_fixture",
+      "make": null,
+      "model": null,
+      "type_label": "Plumbing fixture",
+      "aliases": [
+        "fixture",
+        "faucet",
+        "tub",
+        "shower"
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "name": "single-clear-match",
+      "hint": "water heater",
+      "expected": {
+        "status": "resolved",
+        "component_ids": [
+          "00000000-0000-4000-8000-000000000003"
+        ]
+      }
+    },
+    {
+      "name": "two-furnaces-ambiguous",
+      "hint": "furnace",
+      "expected": {
+        "status": "ambiguous",
+        "component_ids": [
+          "00000000-0000-4000-8000-000000000002",
+          "00000000-0000-4000-8000-000000000001"
+        ]
+      }
+    },
+    {
+      "name": "basement-furnace-resolved",
+      "hint": "basement furnace",
+      "expected": {
+        "status": "resolved",
+        "component_ids": [
+          "00000000-0000-4000-8000-000000000002"
+        ]
+      }
+    },
+    {
+      "name": "upstairs-furnace-resolved",
+      "hint": "upstairs furnace",
+      "expected": {
+        "status": "resolved",
+        "component_ids": [
+          "00000000-0000-4000-8000-000000000001"
+        ]
+      }
+    },
+    {
+      "name": "noisy-hint-fillers-removed",
+      "hint": "uh the furnace thing",
+      "expected": {
+        "status": "ambiguous",
+        "component_ids": [
+          "00000000-0000-4000-8000-000000000002",
+          "00000000-0000-4000-8000-000000000001"
+        ]
+      }
+    },
+    {
+      "name": "no-match-dishwasher",
+      "hint": "dishwasher",
+      "expected": {
+        "status": "none",
+        "component_ids": []
+      }
+    },
+    {
+      "name": "no-match-sump-pump",
+      "hint": "sump pump",
+      "expected": {
+        "status": "none",
+        "component_ids": []
+      }
+    },
+    {
+      "name": "null-hint",
+      "hint": null,
+      "expected": {
+        "status": "none",
+        "component_ids": []
+      }
+    },
+    {
+      "name": "empty-string-hint",
+      "hint": "",
+      "expected": {
+        "status": "none",
+        "component_ids": []
+      }
+    },
+    {
+      "name": "empty-after-stopwords",
+      "hint": "the thing",
+      "expected": {
+        "status": "none",
+        "component_ids": []
+      }
+    },
+    {
+      "name": "plural-gutters-match-gutter",
+      "hint": "gutters",
+      "expected": {
+        "status": "resolved",
+        "component_ids": [
+          "00000000-0000-4000-8000-000000000004"
+        ]
+      }
+    },
+    {
+      "name": "alias-by-type-breaker",
+      "hint": "breaker",
+      "expected": {
+        "status": "resolved",
+        "component_ids": [
+          "00000000-0000-4000-8000-000000000005"
+        ]
+      }
+    },
+    {
+      "name": "label-words-tier-one",
+      "hint": "electrical panel",
+      "expected": {
+        "status": "resolved",
+        "component_ids": [
+          "00000000-0000-4000-8000-000000000005"
+        ]
+      }
+    },
+    {
+      "name": "prefix-gutt",
+      "hint": "gutt",
+      "expected": {
+        "status": "resolved",
+        "component_ids": [
+          "00000000-0000-4000-8000-000000000004"
+        ]
+      }
+    },
+    {
+      "name": "prefix-furn-ambiguous",
+      "hint": "furn",
+      "expected": {
+        "status": "ambiguous",
+        "component_ids": [
+          "00000000-0000-4000-8000-000000000002",
+          "00000000-0000-4000-8000-000000000001"
+        ]
+      }
+    },
+    {
+      "name": "make-rheem",
+      "hint": "rheem",
+      "expected": {
+        "status": "resolved",
+        "component_ids": [
+          "00000000-0000-4000-8000-000000000003"
+        ]
+      }
+    },
+    {
+      "name": "make-plus-name-carrier-furnace",
+      "hint": "carrier furnace",
+      "expected": {
+        "status": "resolved",
+        "component_ids": [
+          "00000000-0000-4000-8000-000000000001"
+        ]
+      }
+    },
+    {
+      "name": "tier-zero-beats-tier-one-heater",
+      "hint": "heater",
+      "expected": {
+        "status": "resolved",
+        "component_ids": [
+          "00000000-0000-4000-8000-000000000003"
+        ]
+      }
+    },
+    {
+      "name": "alias-prefix-tank",
+      "hint": "tank",
+      "expected": {
+        "status": "resolved",
+        "component_ids": [
+          "00000000-0000-4000-8000-000000000003"
+        ]
+      }
+    },
+    {
+      "name": "punctuation-and-case",
+      "hint": "Basement FURNACE!",
+      "expected": {
+        "status": "resolved",
+        "component_ids": [
+          "00000000-0000-4000-8000-000000000002"
+        ]
+      }
+    },
+    {
+      "name": "name-word-faucet",
+      "hint": "faucet",
+      "expected": {
+        "status": "resolved",
+        "component_ids": [
+          "00000000-0000-4000-8000-000000000006"
+        ]
+      }
+    }
+  ]
+}
