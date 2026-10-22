@@ -1,0 +1,2156 @@
+{
+  "version": "0.6.0",
+  "description": "Owner-rule goldens for applying a created, edited or deleted event to its component. Hand-derived from spec/docs/event-application.md; events_after is the live event list after the change.",
+  "qualifying_types": [
+    "service",
+    "repair",
+    "replacement"
+  ],
+  "apply_cases": [
+    {
+      "name": "create-service-on-never-serviced-component",
+      "tags": [
+        "create"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": null,
+        "condition": null
+      },
+      "before": null,
+      "after": {
+        "id": "a1000001-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "service",
+        "occurred_at": "2026-05-10T12:00:00Z",
+        "condition_after": null,
+        "system_id": null
+      },
+      "events_after": [
+        {
+          "id": "a1000001-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "service",
+          "occurred_at": "2026-05-10T12:00:00Z",
+          "condition_after": null,
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": "2026-05-10",
+        "condition": null,
+        "patch": {
+          "last_serviced_at": "2026-05-10"
+        }
+      }
+    },
+    {
+      "name": "create-service-raises-an-older-value",
+      "tags": [
+        "create"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": "2026-01-15",
+        "condition": null
+      },
+      "before": null,
+      "after": {
+        "id": "a1000003-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "service",
+        "occurred_at": "2026-05-10T12:00:00Z",
+        "condition_after": null,
+        "system_id": null
+      },
+      "events_after": [
+        {
+          "id": "a1000002-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "service",
+          "occurred_at": "2026-01-15T12:00:00Z",
+          "condition_after": null,
+          "system_id": null
+        },
+        {
+          "id": "a1000003-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "service",
+          "occurred_at": "2026-05-10T12:00:00Z",
+          "condition_after": null,
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": "2026-05-10",
+        "condition": null,
+        "patch": {
+          "last_serviced_at": "2026-05-10"
+        }
+      }
+    },
+    {
+      "name": "create-inspection-leaves-the-service-date",
+      "tags": [
+        "create"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": "2026-01-15",
+        "condition": null
+      },
+      "before": null,
+      "after": {
+        "id": "a1000005-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "inspection",
+        "occurred_at": "2026-05-10T12:00:00Z",
+        "condition_after": null,
+        "system_id": null
+      },
+      "events_after": [
+        {
+          "id": "a1000004-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "service",
+          "occurred_at": "2026-01-15T12:00:00Z",
+          "condition_after": null,
+          "system_id": null
+        },
+        {
+          "id": "a1000005-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "inspection",
+          "occurred_at": "2026-05-10T12:00:00Z",
+          "condition_after": null,
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": "2026-01-15",
+        "condition": null,
+        "patch": {}
+      }
+    },
+    {
+      "name": "create-reading-leaves-the-service-date",
+      "tags": [
+        "create"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": null,
+        "condition": null
+      },
+      "before": null,
+      "after": {
+        "id": "a1000006-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "reading",
+        "occurred_at": "2026-05-10T12:00:00Z",
+        "condition_after": null,
+        "system_id": null
+      },
+      "events_after": [
+        {
+          "id": "a1000006-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "reading",
+          "occurred_at": "2026-05-10T12:00:00Z",
+          "condition_after": null,
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": null,
+        "condition": null,
+        "patch": {}
+      }
+    },
+    {
+      "name": "create-note-leaves-the-service-date",
+      "tags": [
+        "create"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": null,
+        "condition": null
+      },
+      "before": null,
+      "after": {
+        "id": "a1000007-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "note",
+        "occurred_at": "2026-05-10T12:00:00Z",
+        "condition_after": null,
+        "system_id": null
+      },
+      "events_after": [
+        {
+          "id": "a1000007-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "note",
+          "occurred_at": "2026-05-10T12:00:00Z",
+          "condition_after": null,
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": null,
+        "condition": null,
+        "patch": {}
+      }
+    },
+    {
+      "name": "create-repair-qualifies",
+      "tags": [
+        "create"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": null,
+        "condition": null
+      },
+      "before": null,
+      "after": {
+        "id": "a1000008-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "repair",
+        "occurred_at": "2026-03-03T12:00:00Z",
+        "condition_after": null,
+        "system_id": null
+      },
+      "events_after": [
+        {
+          "id": "a1000008-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "repair",
+          "occurred_at": "2026-03-03T12:00:00Z",
+          "condition_after": null,
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": "2026-03-03",
+        "condition": null,
+        "patch": {
+          "last_serviced_at": "2026-03-03"
+        }
+      }
+    },
+    {
+      "name": "create-replacement-qualifies",
+      "tags": [
+        "create"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": null,
+        "condition": null
+      },
+      "before": null,
+      "after": {
+        "id": "a1000009-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "replacement",
+        "occurred_at": "2026-04-04T12:00:00Z",
+        "condition_after": null,
+        "system_id": null
+      },
+      "events_after": [
+        {
+          "id": "a1000009-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "replacement",
+          "occurred_at": "2026-04-04T12:00:00Z",
+          "condition_after": null,
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": "2026-04-04",
+        "condition": null,
+        "patch": {
+          "last_serviced_at": "2026-04-04"
+        }
+      }
+    },
+    {
+      "name": "backfill-older-service-keeps-the-newer-date",
+      "tags": [
+        "create",
+        "backfill"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": "2026-05-10",
+        "condition": null
+      },
+      "before": null,
+      "after": {
+        "id": "b1000002-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "service",
+        "occurred_at": "2025-03-01T12:00:00Z",
+        "condition_after": null,
+        "system_id": null
+      },
+      "events_after": [
+        {
+          "id": "b1000001-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "service",
+          "occurred_at": "2026-05-10T12:00:00Z",
+          "condition_after": null,
+          "system_id": null
+        },
+        {
+          "id": "b1000002-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "service",
+          "occurred_at": "2025-03-01T12:00:00Z",
+          "condition_after": null,
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": "2026-05-10",
+        "condition": null,
+        "patch": {}
+      }
+    },
+    {
+      "name": "backfill-older-condition-does-not-overwrite-a-newer-one",
+      "tags": [
+        "create",
+        "backfill",
+        "condition-backfill"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": "2026-05-10",
+        "condition": "fair"
+      },
+      "before": null,
+      "after": {
+        "id": "b1000004-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "inspection",
+        "occurred_at": "2025-03-01T12:00:00Z",
+        "condition_after": "good",
+        "system_id": null
+      },
+      "events_after": [
+        {
+          "id": "b1000003-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "service",
+          "occurred_at": "2026-05-10T12:00:00Z",
+          "condition_after": "fair",
+          "system_id": null
+        },
+        {
+          "id": "b1000004-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "inspection",
+          "occurred_at": "2025-03-01T12:00:00Z",
+          "condition_after": "good",
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": "2026-05-10",
+        "condition": "fair",
+        "patch": {}
+      }
+    },
+    {
+      "name": "backfill-condition-fills-an-unset-component",
+      "tags": [
+        "create",
+        "backfill",
+        "condition-backfill"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": "2026-05-10",
+        "condition": null
+      },
+      "before": null,
+      "after": {
+        "id": "b1000006-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "inspection",
+        "occurred_at": "2025-03-01T12:00:00Z",
+        "condition_after": "good",
+        "system_id": null
+      },
+      "events_after": [
+        {
+          "id": "b1000005-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "service",
+          "occurred_at": "2026-05-10T12:00:00Z",
+          "condition_after": null,
+          "system_id": null
+        },
+        {
+          "id": "b1000006-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "inspection",
+          "occurred_at": "2025-03-01T12:00:00Z",
+          "condition_after": "good",
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": "2026-05-10",
+        "condition": "good",
+        "patch": {
+          "condition": "good"
+        }
+      }
+    },
+    {
+      "name": "create-newer-condition-wins",
+      "tags": [
+        "create",
+        "condition-latest-wins"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": null,
+        "condition": "good"
+      },
+      "before": null,
+      "after": {
+        "id": "c1000002-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "inspection",
+        "occurred_at": "2026-05-01T12:00:00Z",
+        "condition_after": "needs_attention",
+        "system_id": null
+      },
+      "events_after": [
+        {
+          "id": "c1000001-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "inspection",
+          "occurred_at": "2026-04-01T12:00:00Z",
+          "condition_after": "good",
+          "system_id": null
+        },
+        {
+          "id": "c1000002-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "inspection",
+          "occurred_at": "2026-05-01T12:00:00Z",
+          "condition_after": "needs_attention",
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": null,
+        "condition": "needs_attention",
+        "patch": {
+          "condition": "needs_attention"
+        }
+      }
+    },
+    {
+      "name": "create-first-condition-sets-the-component",
+      "tags": [
+        "create",
+        "condition-latest-wins"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": null,
+        "condition": null
+      },
+      "before": null,
+      "after": {
+        "id": "c1000003-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "inspection",
+        "occurred_at": "2026-05-01T12:00:00Z",
+        "condition_after": "fair",
+        "system_id": null
+      },
+      "events_after": [
+        {
+          "id": "c1000003-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "inspection",
+          "occurred_at": "2026-05-01T12:00:00Z",
+          "condition_after": "fair",
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": null,
+        "condition": "fair",
+        "patch": {
+          "condition": "fair"
+        }
+      }
+    },
+    {
+      "name": "manual-condition-survives-an-older-event",
+      "tags": [
+        "create",
+        "backfill",
+        "condition-manual-override"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": null,
+        "condition": "needs_replacement"
+      },
+      "before": null,
+      "after": {
+        "id": "d1000002-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "inspection",
+        "occurred_at": "2026-02-01T12:00:00Z",
+        "condition_after": "fair",
+        "system_id": null
+      },
+      "events_after": [
+        {
+          "id": "d1000001-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "inspection",
+          "occurred_at": "2026-03-01T12:00:00Z",
+          "condition_after": "good",
+          "system_id": null
+        },
+        {
+          "id": "d1000002-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "inspection",
+          "occurred_at": "2026-02-01T12:00:00Z",
+          "condition_after": "fair",
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": null,
+        "condition": "needs_replacement",
+        "patch": {}
+      }
+    },
+    {
+      "name": "manual-condition-is-replaced-by-a-newer-event",
+      "tags": [
+        "create",
+        "condition-latest-wins",
+        "condition-manual-override"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": null,
+        "condition": "needs_replacement"
+      },
+      "before": null,
+      "after": {
+        "id": "d1000004-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "inspection",
+        "occurred_at": "2026-06-01T12:00:00Z",
+        "condition_after": "fair",
+        "system_id": null
+      },
+      "events_after": [
+        {
+          "id": "d1000003-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "inspection",
+          "occurred_at": "2026-03-01T12:00:00Z",
+          "condition_after": "good",
+          "system_id": null
+        },
+        {
+          "id": "d1000004-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "inspection",
+          "occurred_at": "2026-06-01T12:00:00Z",
+          "condition_after": "fair",
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": null,
+        "condition": "fair",
+        "patch": {
+          "condition": "fair"
+        }
+      }
+    },
+    {
+      "name": "deleting-a-non-owning-event-keeps-a-manual-condition",
+      "tags": [
+        "delete-non-owner",
+        "condition-manual-override"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": null,
+        "condition": "needs_attention"
+      },
+      "before": {
+        "id": "d1000005-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "inspection",
+        "occurred_at": "2026-05-01T12:00:00Z",
+        "condition_after": "good",
+        "system_id": null
+      },
+      "after": null,
+      "events_after": [],
+      "expected": {
+        "last_serviced_at": null,
+        "condition": "needs_attention",
+        "patch": {}
+      }
+    },
+    {
+      "name": "edit-date-earlier-on-the-owner-recomputes",
+      "tags": [
+        "edit-date"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": "2026-05-01",
+        "condition": null
+      },
+      "before": {
+        "id": "e1000001-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "service",
+        "occurred_at": "2026-05-01T12:00:00Z",
+        "condition_after": null,
+        "system_id": null
+      },
+      "after": {
+        "id": "e1000001-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "service",
+        "occurred_at": "2026-04-01T12:00:00Z",
+        "condition_after": null,
+        "system_id": null
+      },
+      "events_after": [
+        {
+          "id": "e1000001-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "service",
+          "occurred_at": "2026-04-01T12:00:00Z",
+          "condition_after": null,
+          "system_id": null
+        },
+        {
+          "id": "e1000002-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "service",
+          "occurred_at": "2026-03-01T12:00:00Z",
+          "condition_after": null,
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": "2026-04-01",
+        "condition": null,
+        "patch": {
+          "last_serviced_at": "2026-04-01"
+        }
+      }
+    },
+    {
+      "name": "edit-date-earlier-than-another-service-falls-to-that-service",
+      "tags": [
+        "edit-date"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": "2026-05-01",
+        "condition": null
+      },
+      "before": {
+        "id": "e1000003-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "service",
+        "occurred_at": "2026-05-01T12:00:00Z",
+        "condition_after": null,
+        "system_id": null
+      },
+      "after": {
+        "id": "e1000003-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "service",
+        "occurred_at": "2026-03-01T12:00:00Z",
+        "condition_after": null,
+        "system_id": null
+      },
+      "events_after": [
+        {
+          "id": "e1000003-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "service",
+          "occurred_at": "2026-03-01T12:00:00Z",
+          "condition_after": null,
+          "system_id": null
+        },
+        {
+          "id": "e1000004-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "service",
+          "occurred_at": "2026-04-20T12:00:00Z",
+          "condition_after": null,
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": "2026-04-20",
+        "condition": null,
+        "patch": {
+          "last_serviced_at": "2026-04-20"
+        }
+      }
+    },
+    {
+      "name": "edit-date-later-raises-the-value",
+      "tags": [
+        "edit-date"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": "2026-05-01",
+        "condition": null
+      },
+      "before": {
+        "id": "e1000005-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "service",
+        "occurred_at": "2026-05-01T12:00:00Z",
+        "condition_after": null,
+        "system_id": null
+      },
+      "after": {
+        "id": "e1000005-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "service",
+        "occurred_at": "2026-06-01T12:00:00Z",
+        "condition_after": null,
+        "system_id": null
+      },
+      "events_after": [
+        {
+          "id": "e1000005-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "service",
+          "occurred_at": "2026-06-01T12:00:00Z",
+          "condition_after": null,
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": "2026-06-01",
+        "condition": null,
+        "patch": {
+          "last_serviced_at": "2026-06-01"
+        }
+      }
+    },
+    {
+      "name": "edit-date-on-a-non-owner-keeps-the-value",
+      "tags": [
+        "edit-date"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": "2026-06-01",
+        "condition": null
+      },
+      "before": {
+        "id": "e1000007-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "service",
+        "occurred_at": "2026-05-01T12:00:00Z",
+        "condition_after": null,
+        "system_id": null
+      },
+      "after": {
+        "id": "e1000007-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "service",
+        "occurred_at": "2026-04-01T12:00:00Z",
+        "condition_after": null,
+        "system_id": null
+      },
+      "events_after": [
+        {
+          "id": "e1000006-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "service",
+          "occurred_at": "2026-06-01T12:00:00Z",
+          "condition_after": null,
+          "system_id": null
+        },
+        {
+          "id": "e1000007-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "service",
+          "occurred_at": "2026-04-01T12:00:00Z",
+          "condition_after": null,
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": "2026-06-01",
+        "condition": null,
+        "patch": {}
+      }
+    },
+    {
+      "name": "edit-date-below-another-conditioned-event-hands-over-the-condition",
+      "tags": [
+        "edit-date",
+        "edit-condition",
+        "condition-latest-wins"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": null,
+        "condition": "good"
+      },
+      "before": {
+        "id": "e1000009-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "inspection",
+        "occurred_at": "2026-05-01T12:00:00Z",
+        "condition_after": "good",
+        "system_id": null
+      },
+      "after": {
+        "id": "e1000009-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "inspection",
+        "occurred_at": "2026-04-01T12:00:00Z",
+        "condition_after": "good",
+        "system_id": null
+      },
+      "events_after": [
+        {
+          "id": "e1000008-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "inspection",
+          "occurred_at": "2026-04-15T12:00:00Z",
+          "condition_after": "fair",
+          "system_id": null
+        },
+        {
+          "id": "e1000009-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "inspection",
+          "occurred_at": "2026-04-01T12:00:00Z",
+          "condition_after": "good",
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": null,
+        "condition": "fair",
+        "patch": {
+          "condition": "fair"
+        }
+      }
+    },
+    {
+      "name": "edit-type-owner-to-inspection-falls-back",
+      "tags": [
+        "edit-type"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": "2026-05-01",
+        "condition": null
+      },
+      "before": {
+        "id": "f1000001-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "service",
+        "occurred_at": "2026-05-01T12:00:00Z",
+        "condition_after": null,
+        "system_id": null
+      },
+      "after": {
+        "id": "f1000001-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "inspection",
+        "occurred_at": "2026-05-01T12:00:00Z",
+        "condition_after": null,
+        "system_id": null
+      },
+      "events_after": [
+        {
+          "id": "f1000001-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "inspection",
+          "occurred_at": "2026-05-01T12:00:00Z",
+          "condition_after": null,
+          "system_id": null
+        },
+        {
+          "id": "f1000002-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "service",
+          "occurred_at": "2026-03-01T12:00:00Z",
+          "condition_after": null,
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": "2026-03-01",
+        "condition": null,
+        "patch": {
+          "last_serviced_at": "2026-03-01"
+        }
+      }
+    },
+    {
+      "name": "edit-type-inspection-to-service-raises",
+      "tags": [
+        "edit-type"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": "2026-01-15",
+        "condition": null
+      },
+      "before": {
+        "id": "f1000004-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "inspection",
+        "occurred_at": "2026-05-10T12:00:00Z",
+        "condition_after": null,
+        "system_id": null
+      },
+      "after": {
+        "id": "f1000004-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "service",
+        "occurred_at": "2026-05-10T12:00:00Z",
+        "condition_after": null,
+        "system_id": null
+      },
+      "events_after": [
+        {
+          "id": "f1000003-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "service",
+          "occurred_at": "2026-01-15T12:00:00Z",
+          "condition_after": null,
+          "system_id": null
+        },
+        {
+          "id": "f1000004-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "service",
+          "occurred_at": "2026-05-10T12:00:00Z",
+          "condition_after": null,
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": "2026-05-10",
+        "condition": null,
+        "patch": {
+          "last_serviced_at": "2026-05-10"
+        }
+      }
+    },
+    {
+      "name": "edit-type-service-to-repair-keeps-the-value",
+      "tags": [
+        "edit-type"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": "2026-05-01",
+        "condition": null
+      },
+      "before": {
+        "id": "f1000005-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "service",
+        "occurred_at": "2026-05-01T12:00:00Z",
+        "condition_after": null,
+        "system_id": null
+      },
+      "after": {
+        "id": "f1000005-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "repair",
+        "occurred_at": "2026-05-01T12:00:00Z",
+        "condition_after": null,
+        "system_id": null
+      },
+      "events_after": [
+        {
+          "id": "f1000005-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "repair",
+          "occurred_at": "2026-05-01T12:00:00Z",
+          "condition_after": null,
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": "2026-05-01",
+        "condition": null,
+        "patch": {}
+      }
+    },
+    {
+      "name": "edit-type-only-service-to-note-clears-the-value",
+      "tags": [
+        "edit-type"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": "2026-05-01",
+        "condition": null
+      },
+      "before": {
+        "id": "f1000006-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "service",
+        "occurred_at": "2026-05-01T12:00:00Z",
+        "condition_after": null,
+        "system_id": null
+      },
+      "after": {
+        "id": "f1000006-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "note",
+        "occurred_at": "2026-05-01T12:00:00Z",
+        "condition_after": null,
+        "system_id": null
+      },
+      "events_after": [
+        {
+          "id": "f1000006-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "note",
+          "occurred_at": "2026-05-01T12:00:00Z",
+          "condition_after": null,
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": null,
+        "condition": null,
+        "patch": {
+          "last_serviced_at": null
+        }
+      }
+    },
+    {
+      "name": "edit-condition-on-the-latest-event-updates-the-component",
+      "tags": [
+        "edit-condition"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": null,
+        "condition": "good"
+      },
+      "before": {
+        "id": "a2000001-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "inspection",
+        "occurred_at": "2026-05-01T12:00:00Z",
+        "condition_after": "good",
+        "system_id": null
+      },
+      "after": {
+        "id": "a2000001-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "inspection",
+        "occurred_at": "2026-05-01T12:00:00Z",
+        "condition_after": "fair",
+        "system_id": null
+      },
+      "events_after": [
+        {
+          "id": "a2000001-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "inspection",
+          "occurred_at": "2026-05-01T12:00:00Z",
+          "condition_after": "fair",
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": null,
+        "condition": "fair",
+        "patch": {
+          "condition": "fair"
+        }
+      }
+    },
+    {
+      "name": "edit-condition-cleared-falls-back-to-the-previous-event",
+      "tags": [
+        "edit-condition"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": null,
+        "condition": "fair"
+      },
+      "before": {
+        "id": "a2000003-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "inspection",
+        "occurred_at": "2026-05-01T12:00:00Z",
+        "condition_after": "fair",
+        "system_id": null
+      },
+      "after": {
+        "id": "a2000003-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "inspection",
+        "occurred_at": "2026-05-01T12:00:00Z",
+        "condition_after": null,
+        "system_id": null
+      },
+      "events_after": [
+        {
+          "id": "a2000002-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "inspection",
+          "occurred_at": "2026-03-01T12:00:00Z",
+          "condition_after": "good",
+          "system_id": null
+        },
+        {
+          "id": "a2000003-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "inspection",
+          "occurred_at": "2026-05-01T12:00:00Z",
+          "condition_after": null,
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": null,
+        "condition": "good",
+        "patch": {
+          "condition": "good"
+        }
+      }
+    },
+    {
+      "name": "edit-condition-cleared-with-no-other-event-keeps-the-component",
+      "tags": [
+        "edit-condition"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": null,
+        "condition": "fair"
+      },
+      "before": {
+        "id": "a2000004-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "inspection",
+        "occurred_at": "2026-05-01T12:00:00Z",
+        "condition_after": "fair",
+        "system_id": null
+      },
+      "after": {
+        "id": "a2000004-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "inspection",
+        "occurred_at": "2026-05-01T12:00:00Z",
+        "condition_after": null,
+        "system_id": null
+      },
+      "events_after": [
+        {
+          "id": "a2000004-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "inspection",
+          "occurred_at": "2026-05-01T12:00:00Z",
+          "condition_after": null,
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": null,
+        "condition": "fair",
+        "patch": {}
+      }
+    },
+    {
+      "name": "edit-condition-on-an-older-event-keeps-the-component",
+      "tags": [
+        "edit-condition"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": null,
+        "condition": "fair"
+      },
+      "before": {
+        "id": "a2000006-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "inspection",
+        "occurred_at": "2026-03-01T12:00:00Z",
+        "condition_after": "good",
+        "system_id": null
+      },
+      "after": {
+        "id": "a2000006-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "inspection",
+        "occurred_at": "2026-03-01T12:00:00Z",
+        "condition_after": "needs_attention",
+        "system_id": null
+      },
+      "events_after": [
+        {
+          "id": "a2000006-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "inspection",
+          "occurred_at": "2026-03-01T12:00:00Z",
+          "condition_after": "needs_attention",
+          "system_id": null
+        },
+        {
+          "id": "a2000005-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "inspection",
+          "occurred_at": "2026-05-01T12:00:00Z",
+          "condition_after": "fair",
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": null,
+        "condition": "fair",
+        "patch": {}
+      }
+    },
+    {
+      "name": "delete-owner-recomputes-to-the-next-service",
+      "tags": [
+        "delete-owner"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": "2026-05-01",
+        "condition": null
+      },
+      "before": {
+        "id": "a3000001-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "service",
+        "occurred_at": "2026-05-01T12:00:00Z",
+        "condition_after": null,
+        "system_id": null
+      },
+      "after": null,
+      "events_after": [
+        {
+          "id": "a3000002-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "service",
+          "occurred_at": "2026-03-01T12:00:00Z",
+          "condition_after": null,
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": "2026-03-01",
+        "condition": null,
+        "patch": {
+          "last_serviced_at": "2026-03-01"
+        }
+      }
+    },
+    {
+      "name": "delete-owner-ignores-non-qualifying-events",
+      "tags": [
+        "delete-owner",
+        "delete-only-event"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": "2026-05-01",
+        "condition": null
+      },
+      "before": {
+        "id": "a3000003-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "service",
+        "occurred_at": "2026-05-01T12:00:00Z",
+        "condition_after": null,
+        "system_id": null
+      },
+      "after": null,
+      "events_after": [
+        {
+          "id": "a3000004-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "inspection",
+          "occurred_at": "2026-04-01T12:00:00Z",
+          "condition_after": null,
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": null,
+        "condition": null,
+        "patch": {
+          "last_serviced_at": null
+        }
+      }
+    },
+    {
+      "name": "delete-non-owner-keeps-the-value",
+      "tags": [
+        "delete-non-owner"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": "2026-05-01",
+        "condition": null
+      },
+      "before": {
+        "id": "a3000005-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "service",
+        "occurred_at": "2026-03-01T12:00:00Z",
+        "condition_after": null,
+        "system_id": null
+      },
+      "after": null,
+      "events_after": [
+        {
+          "id": "a3000006-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "service",
+          "occurred_at": "2026-05-01T12:00:00Z",
+          "condition_after": null,
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": "2026-05-01",
+        "condition": null,
+        "patch": {}
+      }
+    },
+    {
+      "name": "delete-only-event-clears-the-date-and-keeps-the-condition",
+      "tags": [
+        "delete-only-event"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": "2026-05-01",
+        "condition": "fair"
+      },
+      "before": {
+        "id": "a3000007-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "service",
+        "occurred_at": "2026-05-01T12:00:00Z",
+        "condition_after": "fair",
+        "system_id": null
+      },
+      "after": null,
+      "events_after": [],
+      "expected": {
+        "last_serviced_at": null,
+        "condition": "fair",
+        "patch": {
+          "last_serviced_at": null
+        }
+      }
+    },
+    {
+      "name": "delete-only-inspection-keeps-a-manual-date",
+      "tags": [
+        "delete-only-event",
+        "manual-date"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": "2026-01-15",
+        "condition": null
+      },
+      "before": {
+        "id": "a3000008-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "inspection",
+        "occurred_at": "2026-05-10T12:00:00Z",
+        "condition_after": null,
+        "system_id": null
+      },
+      "after": null,
+      "events_after": [],
+      "expected": {
+        "last_serviced_at": "2026-01-15",
+        "condition": null,
+        "patch": {}
+      }
+    },
+    {
+      "name": "delete-the-latest-conditioned-event-falls-back",
+      "tags": [
+        "delete-owner",
+        "condition-latest-wins"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": null,
+        "condition": "needs_attention"
+      },
+      "before": {
+        "id": "a300000a-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "inspection",
+        "occurred_at": "2026-05-01T12:00:00Z",
+        "condition_after": "needs_attention",
+        "system_id": null
+      },
+      "after": null,
+      "events_after": [
+        {
+          "id": "a3000009-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "inspection",
+          "occurred_at": "2026-03-01T12:00:00Z",
+          "condition_after": "good",
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": null,
+        "condition": "good",
+        "patch": {
+          "condition": "good"
+        }
+      }
+    },
+    {
+      "name": "delete-an-older-conditioned-event-keeps-the-component",
+      "tags": [
+        "delete-non-owner"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": null,
+        "condition": "fair"
+      },
+      "before": {
+        "id": "a300000c-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "inspection",
+        "occurred_at": "2026-03-01T12:00:00Z",
+        "condition_after": "good",
+        "system_id": null
+      },
+      "after": null,
+      "events_after": [
+        {
+          "id": "a300000b-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "inspection",
+          "occurred_at": "2026-05-01T12:00:00Z",
+          "condition_after": "fair",
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": null,
+        "condition": "fair",
+        "patch": {}
+      }
+    },
+    {
+      "name": "manual-date-equal-to-the-deleted-event-is-event-owned",
+      "tags": [
+        "manual-date",
+        "delete-owner"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": "2026-05-01",
+        "condition": null
+      },
+      "before": {
+        "id": "a4000001-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "service",
+        "occurred_at": "2026-05-01T12:00:00Z",
+        "condition_after": null,
+        "system_id": null
+      },
+      "after": null,
+      "events_after": [
+        {
+          "id": "a4000002-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "service",
+          "occurred_at": "2026-03-01T12:00:00Z",
+          "condition_after": null,
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": "2026-03-01",
+        "condition": null,
+        "patch": {
+          "last_serviced_at": "2026-03-01"
+        }
+      }
+    },
+    {
+      "name": "manual-date-later-than-every-event-survives-a-delete",
+      "tags": [
+        "manual-date",
+        "delete-non-owner"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": "2026-06-30",
+        "condition": null
+      },
+      "before": {
+        "id": "a4000003-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "service",
+        "occurred_at": "2026-05-01T12:00:00Z",
+        "condition_after": null,
+        "system_id": null
+      },
+      "after": null,
+      "events_after": [
+        {
+          "id": "a4000004-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "service",
+          "occurred_at": "2026-03-01T12:00:00Z",
+          "condition_after": null,
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": "2026-06-30",
+        "condition": null,
+        "patch": {}
+      }
+    },
+    {
+      "name": "manual-date-survives-an-older-backfill",
+      "tags": [
+        "manual-date",
+        "backfill",
+        "create"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": "2026-06-30",
+        "condition": null
+      },
+      "before": null,
+      "after": {
+        "id": "a4000005-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "service",
+        "occurred_at": "2025-03-01T12:00:00Z",
+        "condition_after": null,
+        "system_id": null
+      },
+      "events_after": [
+        {
+          "id": "a4000005-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "service",
+          "occurred_at": "2025-03-01T12:00:00Z",
+          "condition_after": null,
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": "2026-06-30",
+        "condition": null,
+        "patch": {}
+      }
+    },
+    {
+      "name": "manual-date-is-raised-by-a-newer-service",
+      "tags": [
+        "manual-date",
+        "create"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": "2026-06-30",
+        "condition": null
+      },
+      "before": null,
+      "after": {
+        "id": "a4000006-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "service",
+        "occurred_at": "2026-07-15T12:00:00Z",
+        "condition_after": null,
+        "system_id": null
+      },
+      "events_after": [
+        {
+          "id": "a4000006-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "service",
+          "occurred_at": "2026-07-15T12:00:00Z",
+          "condition_after": null,
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": "2026-07-15",
+        "condition": null,
+        "patch": {
+          "last_serviced_at": "2026-07-15"
+        }
+      }
+    },
+    {
+      "name": "tie-the-greater-lowercase-id-wins-the-condition",
+      "tags": [
+        "tie",
+        "create",
+        "condition-latest-wins"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": null,
+        "condition": "good"
+      },
+      "before": null,
+      "after": {
+        "id": "a5000001-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "inspection",
+        "occurred_at": "2026-09-01T12:00:00Z",
+        "condition_after": "fair",
+        "system_id": null
+      },
+      "events_after": [
+        {
+          "id": "9f000003-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "inspection",
+          "occurred_at": "2026-09-01T12:00:00Z",
+          "condition_after": "good",
+          "system_id": null
+        },
+        {
+          "id": "a5000001-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "inspection",
+          "occurred_at": "2026-09-01T12:00:00Z",
+          "condition_after": "fair",
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": null,
+        "condition": "fair",
+        "patch": {
+          "condition": "fair"
+        }
+      }
+    },
+    {
+      "name": "tie-the-smaller-lowercase-id-does-not-win-the-condition",
+      "tags": [
+        "tie",
+        "create"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": null,
+        "condition": "good"
+      },
+      "before": null,
+      "after": {
+        "id": "9f000003-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "inspection",
+        "occurred_at": "2026-09-01T12:00:00Z",
+        "condition_after": "fair",
+        "system_id": null
+      },
+      "events_after": [
+        {
+          "id": "a5000001-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "inspection",
+          "occurred_at": "2026-09-01T12:00:00Z",
+          "condition_after": "good",
+          "system_id": null
+        },
+        {
+          "id": "9f000003-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "inspection",
+          "occurred_at": "2026-09-01T12:00:00Z",
+          "condition_after": "fair",
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": null,
+        "condition": "good",
+        "patch": {}
+      }
+    },
+    {
+      "name": "uppercase-id-compares-as-lowercase-and-wins",
+      "tags": [
+        "uppercase-id",
+        "tie",
+        "create"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": null,
+        "condition": "good"
+      },
+      "before": null,
+      "after": {
+        "id": "B2000004-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "inspection",
+        "occurred_at": "2026-09-01T12:00:00Z",
+        "condition_after": "fair",
+        "system_id": null
+      },
+      "events_after": [
+        {
+          "id": "a5000001-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "inspection",
+          "occurred_at": "2026-09-01T12:00:00Z",
+          "condition_after": "good",
+          "system_id": null
+        },
+        {
+          "id": "B2000004-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "inspection",
+          "occurred_at": "2026-09-01T12:00:00Z",
+          "condition_after": "fair",
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": null,
+        "condition": "fair",
+        "patch": {
+          "condition": "fair"
+        }
+      }
+    },
+    {
+      "name": "uppercase-id-compares-as-lowercase-and-loses",
+      "tags": [
+        "uppercase-id",
+        "tie",
+        "create"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": null,
+        "condition": "good"
+      },
+      "before": null,
+      "after": {
+        "id": "A9000009-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "inspection",
+        "occurred_at": "2026-09-01T12:00:00Z",
+        "condition_after": "fair",
+        "system_id": null
+      },
+      "events_after": [
+        {
+          "id": "b2000004-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "inspection",
+          "occurred_at": "2026-09-01T12:00:00Z",
+          "condition_after": "good",
+          "system_id": null
+        },
+        {
+          "id": "A9000009-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "inspection",
+          "occurred_at": "2026-09-01T12:00:00Z",
+          "condition_after": "fair",
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": null,
+        "condition": "good",
+        "patch": {}
+      }
+    },
+    {
+      "name": "layer-event-create-leaves-components-alone",
+      "tags": [
+        "layer-event",
+        "create"
+      ],
+      "component": null,
+      "before": null,
+      "after": {
+        "id": "a5000011-0000-4000-8000-000000000000",
+        "component_id": null,
+        "event_type": "service",
+        "occurred_at": "2026-05-10T12:00:00Z",
+        "condition_after": null,
+        "system_id": "51000000-0000-4000-8000-000000000000"
+      },
+      "events_after": [
+        {
+          "id": "a5000011-0000-4000-8000-000000000000",
+          "component_id": null,
+          "event_type": "service",
+          "occurred_at": "2026-05-10T12:00:00Z",
+          "condition_after": null,
+          "system_id": "51000000-0000-4000-8000-000000000000"
+        }
+      ],
+      "expected": {
+        "last_serviced_at": null,
+        "condition": null,
+        "patch": {}
+      }
+    },
+    {
+      "name": "layer-event-edit-leaves-components-alone",
+      "tags": [
+        "layer-event"
+      ],
+      "component": null,
+      "before": {
+        "id": "a5000012-0000-4000-8000-000000000000",
+        "component_id": null,
+        "event_type": "service",
+        "occurred_at": "2026-05-10T12:00:00Z",
+        "condition_after": null,
+        "system_id": "51000000-0000-4000-8000-000000000000"
+      },
+      "after": {
+        "id": "a5000012-0000-4000-8000-000000000000",
+        "component_id": null,
+        "event_type": "inspection",
+        "occurred_at": "2026-06-10T12:00:00Z",
+        "condition_after": null,
+        "system_id": "51000000-0000-4000-8000-000000000000"
+      },
+      "events_after": [
+        {
+          "id": "a5000012-0000-4000-8000-000000000000",
+          "component_id": null,
+          "event_type": "inspection",
+          "occurred_at": "2026-06-10T12:00:00Z",
+          "condition_after": null,
+          "system_id": "51000000-0000-4000-8000-000000000000"
+        }
+      ],
+      "expected": {
+        "last_serviced_at": null,
+        "condition": null,
+        "patch": {}
+      }
+    },
+    {
+      "name": "layer-event-delete-leaves-components-alone",
+      "tags": [
+        "layer-event",
+        "delete-only-event"
+      ],
+      "component": null,
+      "before": {
+        "id": "a5000013-0000-4000-8000-000000000000",
+        "component_id": null,
+        "event_type": "repair",
+        "occurred_at": "2026-05-10T12:00:00Z",
+        "condition_after": null,
+        "system_id": "51000000-0000-4000-8000-000000000000"
+      },
+      "after": null,
+      "events_after": [],
+      "expected": {
+        "last_serviced_at": null,
+        "condition": null,
+        "patch": {}
+      }
+    },
+    {
+      "name": "non-noon-evening-utc-stays-on-its-utc-date",
+      "tags": [
+        "non-noon",
+        "create"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": null,
+        "condition": null
+      },
+      "before": null,
+      "after": {
+        "id": "a6000001-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "service",
+        "occurred_at": "2026-04-01T23:30:00Z",
+        "condition_after": null,
+        "system_id": null
+      },
+      "events_after": [
+        {
+          "id": "a6000001-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "service",
+          "occurred_at": "2026-04-01T23:30:00Z",
+          "condition_after": null,
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": "2026-04-01",
+        "condition": null,
+        "patch": {
+          "last_serviced_at": "2026-04-01"
+        }
+      }
+    },
+    {
+      "name": "non-noon-utc-midnight-is-the-next-date",
+      "tags": [
+        "non-noon",
+        "create"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": null,
+        "condition": null
+      },
+      "before": null,
+      "after": {
+        "id": "a6000002-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "service",
+        "occurred_at": "2026-04-02T00:00:00Z",
+        "condition_after": null,
+        "system_id": null
+      },
+      "events_after": [
+        {
+          "id": "a6000002-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "service",
+          "occurred_at": "2026-04-02T00:00:00Z",
+          "condition_after": null,
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": "2026-04-02",
+        "condition": null,
+        "patch": {
+          "last_serviced_at": "2026-04-02"
+        }
+      }
+    },
+    {
+      "name": "non-noon-edit-compares-civil-dates",
+      "tags": [
+        "non-noon",
+        "edit-date"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": "2026-04-02",
+        "condition": null
+      },
+      "before": {
+        "id": "a6000003-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "service",
+        "occurred_at": "2026-04-02T00:30:00Z",
+        "condition_after": null,
+        "system_id": null
+      },
+      "after": {
+        "id": "a6000003-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "service",
+        "occurred_at": "2026-04-01T23:30:00Z",
+        "condition_after": null,
+        "system_id": null
+      },
+      "events_after": [
+        {
+          "id": "a6000003-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000001",
+          "event_type": "service",
+          "occurred_at": "2026-04-01T23:30:00Z",
+          "condition_after": null,
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": "2026-04-01",
+        "condition": null,
+        "patch": {
+          "last_serviced_at": "2026-04-01"
+        }
+      }
+    },
+    {
+      "name": "move-step-one-delete-on-the-old-component",
+      "tags": [
+        "move",
+        "delete-only-event"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000001",
+        "last_serviced_at": "2026-05-01",
+        "condition": null
+      },
+      "before": {
+        "id": "a7000001-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000001",
+        "event_type": "service",
+        "occurred_at": "2026-05-01T12:00:00Z",
+        "condition_after": null,
+        "system_id": null
+      },
+      "after": null,
+      "events_after": [],
+      "expected": {
+        "last_serviced_at": null,
+        "condition": null,
+        "patch": {
+          "last_serviced_at": null
+        }
+      }
+    },
+    {
+      "name": "move-step-two-create-on-the-new-component",
+      "tags": [
+        "move",
+        "create"
+      ],
+      "component": {
+        "id": "c0000000-0000-4000-8000-000000000002",
+        "last_serviced_at": null,
+        "condition": null
+      },
+      "before": null,
+      "after": {
+        "id": "a7000001-0000-4000-8000-000000000000",
+        "component_id": "c0000000-0000-4000-8000-000000000002",
+        "event_type": "service",
+        "occurred_at": "2026-05-01T12:00:00Z",
+        "condition_after": null,
+        "system_id": null
+      },
+      "events_after": [
+        {
+          "id": "a7000001-0000-4000-8000-000000000000",
+          "component_id": "c0000000-0000-4000-8000-000000000002",
+          "event_type": "service",
+          "occurred_at": "2026-05-01T12:00:00Z",
+          "condition_after": null,
+          "system_id": null
+        }
+      ],
+      "expected": {
+        "last_serviced_at": "2026-05-01",
+        "condition": null,
+        "patch": {
+          "last_serviced_at": "2026-05-01"
+        }
+      }
+    }
+  ],
+  "log_today_cases": [
+    {
+      "name": "utc-plus-13-after-midnight-is-the-local-date",
+      "device_local_now": "2026-03-02T01:30:00+13:00",
+      "expected_civil_today": "2026-03-02",
+      "expected_occurred_at": "2026-03-02T12:00:00Z"
+    },
+    {
+      "name": "utc-minus-11-evening-is-the-local-date",
+      "device_local_now": "2026-03-01T22:30:00-11:00",
+      "expected_civil_today": "2026-03-01",
+      "expected_occurred_at": "2026-03-01T12:00:00Z"
+    },
+    {
+      "name": "leap-day-in-utc-plus-13",
+      "device_local_now": "2028-02-29T00:05:00+13:00",
+      "expected_civil_today": "2028-02-29",
+      "expected_occurred_at": "2028-02-29T12:00:00Z"
+    },
+    {
+      "name": "year-boundary-evening-in-utc-minus-11",
+      "device_local_now": "2026-12-31T23:59:00-11:00",
+      "expected_civil_today": "2026-12-31",
+      "expected_occurred_at": "2026-12-31T12:00:00Z"
+    },
+    {
+      "name": "utc-plus-14-new-year",
+      "device_local_now": "2026-01-01T00:10:00+14:00",
+      "expected_civil_today": "2026-01-01",
+      "expected_occurred_at": "2026-01-01T12:00:00Z"
+    },
+    {
+      "name": "utc-offset-zero-midday",
+      "device_local_now": "2026-10-22T12:00:00+00:00",
+      "expected_civil_today": "2026-10-22",
+      "expected_occurred_at": "2026-10-22T12:00:00Z"
+    }
+  ],
+  "civil_cases": [
+    {
+      "occurred_at": "2026-04-01T23:30:00Z",
+      "expected_civil": "2026-04-01"
+    },
+    {
+      "occurred_at": "2026-04-02T00:00:00Z",
+      "expected_civil": "2026-04-02"
+    },
+    {
+      "occurred_at": "2026-05-10T12:00:00Z",
+      "expected_civil": "2026-05-10"
+    },
+    {
+      "occurred_at": "2028-02-29T23:59:59Z",
+      "expected_civil": "2028-02-29"
+    }
+  ]
+}
