@@ -3,7 +3,9 @@ import type {
   DrawCommand,
   FillDrawCommand,
   LevelRenderInput,
+  MarkerDrawCommand,
   PlanPoint,
+  RenderComponent,
   RenderModel,
   StrokeDrawCommand,
   StyleToken,
@@ -11,6 +13,20 @@ import type {
 import { LAYER_BY_STYLE } from "./style-layers.js";
 
 const COORD_DECIMALS = 6;
+
+/**
+ * Glyph name per layer category. There is no per-component glyph override.
+ * Must equal components.category_glyphs in style-tokens.json.
+ */
+export const CATEGORY_GLYPHS: Record<string, string> = {
+  plumbing: "droplet",
+  electrical: "bolt",
+  hvac: "fan",
+  roof_structure: "roofline",
+  appliances_and_water_heater: "appliance_box",
+  exterior_and_site: "tree",
+  low_voltage_and_smart_home: "router",
+};
 
 function roundCoord(value: number): number {
   const factor = 10 ** COORD_DECIMALS;
@@ -89,6 +105,37 @@ function strokeCommand(
   };
 }
 
+function markerCommand(
+  component: RenderComponent,
+  center: PlanPoint,
+): MarkerDrawCommand {
+  return {
+    id: `${component.id}:component.marker`,
+    kind: "marker",
+    layer: LAYER_BY_STYLE["component.marker"],
+    style: "component.marker",
+    source_id: component.id,
+    hit_test_id: component.id,
+    center,
+    category: component.category,
+    glyph: CATEGORY_GLYPHS[component.category] ?? "",
+  };
+}
+
+/** Midpoint of the longest segment of an already rounded polyline (first on ties). */
+function longestSegmentMidpoint(points: PlanPoint[]): PlanPoint {
+  let best: PlanPoint[] = [points[0], points[1]];
+  let bestLength = -1;
+  for (let index = 1; index < points.length; index += 1) {
+    const length = segmentLength(points[index - 1], points[index]);
+    if (length > bestLength) {
+      bestLength = length;
+      best = [points[index - 1], points[index]];
+    }
+  }
+  return roundPoint([(best[0][0] + best[1][0]) / 2, (best[0][1] + best[1][1]) / 2]);
+}
+
 function compareCommands(a: DrawCommand, b: DrawCommand): number {
   if (a.layer !== b.layer) {
     return a.layer - b.layer;
@@ -100,7 +147,7 @@ function compareCommands(a: DrawCommand, b: DrawCommand): number {
 }
 
 /**
- * Converts plan elements and rooms for one level into a stable, sorted list of
+ * Converts plan elements, rooms and components for one level into a stable, sorted list of
  * draw commands. Geometry must already be in meters (per-level plan space, Y-down).
  */
 export function generateRenderModel(input: LevelRenderInput): RenderModel {
@@ -188,6 +235,37 @@ export function generateRenderModel(input: LevelRenderInput): RenderModel {
       }
       default:
         break;
+    }
+  }
+
+  const levelComponents = (input.components ?? []).filter(
+    (component) => component.level_id === input.level_id,
+  );
+
+  for (const component of levelComponents) {
+    const { type, coordinates } = component.geometry;
+    if (type === "point") {
+      if (coordinates.length !== 1) {
+        continue;
+      }
+      commands.push(markerCommand(component, roundPoint(coordinates[0])));
+    } else if (type === "polyline") {
+      if (coordinates.length < 2) {
+        continue;
+      }
+      for (const [segmentIndex, segment] of polylineSegments(coordinates).entries()) {
+        const stroke = strokeCommand(
+          `${component.id}:component.run:${segmentIndex}`,
+          "component.run",
+          component.id,
+          segment,
+        );
+        stroke.category = component.category;
+        commands.push(stroke);
+      }
+      commands.push(
+        markerCommand(component, longestSegmentMidpoint(coordinates.map(roundPoint))),
+      );
     }
   }
 

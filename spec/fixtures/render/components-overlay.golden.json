@@ -1,0 +1,217 @@
+{
+  "level_id": "10000000-0000-4000-8000-000000000010",
+  "commands": [
+    {
+      "id": "10000000-0000-4000-8000-000000000020:room.fill",
+      "kind": "fill",
+      "layer": 0,
+      "style": "room.fill",
+      "source_id": "10000000-0000-4000-8000-000000000020",
+      "hit_test_id": "10000000-0000-4000-8000-000000000020",
+      "polygon": [
+        [
+          0,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          0,
+          3
+        ]
+      ]
+    },
+    {
+      "id": "10000000-0000-4000-8000-000000000021:room.fill",
+      "kind": "fill",
+      "layer": 0,
+      "style": "room.fill",
+      "source_id": "10000000-0000-4000-8000-000000000021",
+      "hit_test_id": "10000000-0000-4000-8000-000000000021",
+      "polygon": [
+        [
+          4,
+          0
+        ],
+        [
+          8,
+          0
+        ],
+        [
+          8,
+          3
+        ],
+        [
+          4,
+          3
+        ]
+      ]
+    },
+    {
+      "id": "20000000-0000-4000-8000-000000000002:component.run:0",
+      "kind": "stroke",
+      "layer": 40,
+      "style": "component.run",
+      "source_id": "20000000-0000-4000-8000-000000000002",
+      "category": "plumbing",
+      "points": [
+        [
+          1,
+          1
+        ],
+        [
+          3,
+          2
+        ]
+      ]
+    },
+    {
+      "id": "20000000-0000-4000-8000-000000000002:component.run:1",
+      "kind": "stroke",
+      "layer": 40,
+      "style": "component.run",
+      "source_id": "20000000-0000-4000-8000-000000000002",
+      "category": "plumbing",
+      "points": [
+        [
+          3,
+          2
+        ],
+        [
+          6,
+          2
+        ]
+      ]
+    },
+    {
+      "id": "20000000-0000-4000-8000-000000000003:component.run:0",
+      "kind": "stroke",
+      "layer": 40,
+      "style": "component.run",
+      "source_id": "20000000-0000-4000-8000-000000000003",
+      "category": "hvac",
+      "points": [
+        [
+          2,
+          0.5
+        ],
+        [
+          2,
+          2.5
+        ]
+      ]
+    },
+    {
+      "id": "20000000-0000-4000-8000-000000000005:component.run:0",
+      "kind": "stroke",
+      "layer": 40,
+      "style": "component.run",
+      "source_id": "20000000-0000-4000-8000-000000000005",
+      "category": "electrical",
+      "points": [
+        [
+          5,
+          0.5
+        ],
+        [
+          5,
+          2.5
+        ]
+      ]
+    },
+    {
+      "id": "20000000-0000-4000-8000-000000000005:component.run:1",
+      "kind": "stroke",
+      "layer": 40,
+      "style": "component.run",
+      "source_id": "20000000-0000-4000-8000-000000000005",
+      "category": "electrical",
+      "points": [
+        [
+          5,
+          2.5
+        ],
+        [
+          7,
+          2.5
+        ]
+      ]
+    },
+    {
+      "id": "20000000-0000-4000-8000-000000000001:component.marker",
+      "kind": "marker",
+      "layer": 50,
+      "style": "component.marker",
+      "source_id": "20000000-0000-4000-8000-000000000001",
+      "hit_test_id": "20000000-0000-4000-8000-000000000001",
+      "center": [
+        1,
+        1
+      ],
+      "category": "appliances_and_water_heater",
+      "glyph": "appliance_box"
+    },
+    {
+      "id": "20000000-0000-4000-8000-000000000002:component.marker",
+      "kind": "marker",
+      "layer": 50,
+      "style": "component.marker",
+      "source_id": "20000000-0000-4000-8000-000000000002",
+      "hit_test_id": "20000000-0000-4000-8000-000000000002",
+      "center": [
+        4.5,
+        2
+      ],
+      "category": "plumbing",
+      "glyph": "droplet"
+    },
+    {
+      "id": "20000000-0000-4000-8000-000000000003:component.marker",
+      "kind": "marker",
+      "layer": 50,
+      "style": "component.marker",
+      "source_id": "20000000-0000-4000-8000-000000000003",
+      "hit_test_id": "20000000-0000-4000-8000-000000000003",
+      "center": [
+        2,
+        1.5
+      ],
+      "category": "hvac",
+      "glyph": "fan"
+    },
+    {
+      "id": "20000000-0000-4000-8000-000000000004:component.marker",
+      "kind": "marker",
+      "layer": 50,
+      "style": "component.marker",
+      "source_id": "20000000-0000-4000-8000-000000000004",
+      "hit_test_id": "20000000-0000-4000-8000-000000000004",
+      "center": [
+        7,
+        1
+      ],
+      "category": "electrical",
+      "glyph": "bolt"
+    },
+    {
+      "id": "20000000-0000-4000-8000-000000000005:component.marker",
+      "kind": "marker",
+      "layer": 50,
+      "style": "component.marker",
+      "source_id": "20000000-0000-4000-8000-000000000005",
+      "hit_test_id": "20000000-0000-4000-8000-000000000005",
+      "center": [
+        5,
+        1.5
+      ],
+      "category": "electrical",
+      "glyph": "bolt"
+    }
+  ]
+}

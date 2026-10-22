@@ -1,6 +1,6 @@
 {
   "version": "1",
-  "description": "Meter-based stroke widths for plan rendering. Clients map tokens to pixels at draw time using viewport scale (meters per point).",
+  "description": "Meter-based stroke widths for plan rendering. Clients map tokens to pixels at draw time using viewport scale (meters per point). Component overlay tokens (markers, components) are screen-fixed pixel values.",
   "strokes": {
     "wall.stroke": {
       "width_m": 0.12
@@ -33,6 +33,130 @@
     "opening.stroke": 20,
     "door.gap": 30,
     "door.swing": 31,
-    "window.stroke": 32
+    "window.stroke": 32,
+    "component.run": 40,
+    "component.halo": 45,
+    "component.marker": 50,
+    "component.badge": 51
+  },
+  "markers": {
+    "component.marker": {
+      "diameter_px": 28,
+      "hit_radius_px": 22,
+      "badge_px": 14
+    },
+    "component.run": {
+      "width_px": 4,
+      "casing_px": 6,
+      "hit_band_px": 12
+    },
+    "component.halo": {
+      "ring_px": 3,
+      "gap_px": 2
+    }
+  },
+  "components": {
+    "description": "Screen-fixed component overlay tokens. Sizes are in logical pixels (pt, dp, px) and do not scale with plan zoom. Glyph and badge paths are 24x24 viewBox, absolute M L C Z only, filled with the even-odd rule. Colors are light/dark hex.",
+    "category_glyphs": {
+      "plumbing": "droplet",
+      "electrical": "bolt",
+      "hvac": "fan",
+      "roof_structure": "roofline",
+      "appliances_and_water_heater": "appliance_box",
+      "exterior_and_site": "tree",
+      "low_voltage_and_smart_home": "router"
+    },
+    "layer_colors": {
+      "component.layer.plumbing": {
+        "light": "#00698f",
+        "dark": "#5cc8f0"
+      },
+      "component.layer.electrical": {
+        "light": "#8f5a00",
+        "dark": "#f2b84b"
+      },
+      "component.layer.hvac": {
+        "light": "#b8431a",
+        "dark": "#ff8a5c"
+      },
+      "component.layer.roof_structure": {
+        "light": "#6b4f2a",
+        "dark": "#d2b07a"
+      },
+      "component.layer.appliances_and_water_heater": {
+        "light": "#6a3fa0",
+        "dark": "#b99af0"
+      },
+      "component.layer.exterior_and_site": {
+        "light": "#4d7a14",
+        "dark": "#9acd5a"
+      },
+      "component.layer.low_voltage_and_smart_home": {
+        "light": "#c2185b",
+        "dark": "#ff7aa8"
+      }
+    },
+    "condition_colors": {
+      "good": {
+        "light": "#2e7d32",
+        "dark": "#66bb6a",
+        "shape": "circle"
+      },
+      "fair": {
+        "light": "#8a6a00",
+        "dark": "#e0c04a",
+        "shape": "rounded_square"
+      },
+      "needs_attention": {
+        "light": "#b45309",
+        "dark": "#ffa94d",
+        "shape": "triangle"
+      },
+      "needs_replacement": {
+        "light": "#a4262c",
+        "dark": "#ff7b7f",
+        "shape": "octagon"
+      },
+      "unknown": {
+        "light": "#5c6460",
+        "dark": "#a3aba7",
+        "shape": "dashed_circle"
+      }
+    },
+    "badge_mark_colors": {
+      "light": "#ffffff",
+      "dark": "#1b1d1c"
+    },
+    "halo_colors": {
+      "light": "#1d2a24",
+      "dark": "#ffffff"
+    },
+    "glyphs": {
+      "droplet": "M 12 2 L 19 12 C 21 15 21 19 18 21 C 15 23 9 23 6 21 C 3 19 3 15 5 12 Z",
+      "bolt": "M 13 2 L 5 13 L 11 13 L 10 22 L 19 10 L 13 10 Z",
+      "fan": "M 12 12 L 12 3 C 17 3 19 8 15 11 Z M 12 12 L 21 12 C 21 17 16 19 13 15 Z M 12 12 L 12 21 C 7 21 5 16 9 13 Z M 12 12 L 3 12 C 3 7 8 5 11 9 Z",
+      "roofline": "M 2 12 L 12 3 L 22 12 L 19 12 L 19 21 L 5 21 L 5 12 Z",
+      "appliance_box": "M 5 2 L 19 2 L 19 22 L 5 22 Z M 8 5 L 16 5 L 16 10 L 8 10 Z M 9 14 L 15 14 L 15 17 L 9 17 Z",
+      "tree": "M 12 2 C 17 2 20 6 18 10 C 21 12 20 17 15 17 L 13 17 L 13 22 L 11 22 L 11 17 L 9 17 C 4 17 3 12 6 10 C 4 6 7 2 12 2 Z",
+      "router": "M 3 14 L 21 14 L 21 20 L 3 20 Z M 6 16 L 8 16 L 8 18 L 6 18 Z M 6 3 L 8 3 L 8 14 L 6 14 Z M 16 3 L 18 3 L 18 14 L 16 14 Z"
+    },
+    "badges": {
+      "good": {
+        "outer": "M 23 12 C 23 18.075 18.075 23 12 23 C 5.925 23 1 18.075 1 12 C 1 5.925 5.925 1 12 1 C 18.075 1 23 5.925 23 12 Z",
+        "mark": "M 6 12.5 L 7.5 11 L 10.5 14 L 16.5 8 L 18 9.5 L 10.5 17 Z"
+      },
+      "fair": {
+        "outer": "M 6 1 L 18 1 C 21 1 23 3 23 6 L 23 18 C 23 21 21 23 18 23 L 6 23 C 3 23 1 21 1 18 L 1 6 C 1 3 3 1 6 1 Z",
+        "mark": "M 6 10.5 L 18 10.5 L 18 13.5 L 6 13.5 Z"
+      },
+      "needs_attention": {
+        "outer": "M 12 1.5 L 23 21.5 L 1 21.5 Z",
+        "mark": "M 10.8 8 L 13.2 8 L 12.8 15 L 11.2 15 Z M 10.8 17 L 13.2 17 L 13.2 19.4 L 10.8 19.4 Z"
+      },
+      "needs_replacement": {
+        "outer": "M 8 1 L 16 1 L 23 8 L 23 16 L 16 23 L 8 23 L 1 16 L 1 8 Z",
+        "mark": "M 7.5 9.3 L 9.3 7.5 L 12 10.2 L 14.7 7.5 L 16.5 9.3 L 13.8 12 L 16.5 14.7 L 14.7 16.5 L 12 13.8 L 9.3 16.5 L 7.5 14.7 L 10.2 12 Z"
+      }
+    }
   }
 }

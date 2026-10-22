@@ -12,7 +12,11 @@ export type StyleToken =
   | "opening.stroke"
   | "door.gap"
   | "door.swing"
-  | "window.stroke";
+  | "window.stroke"
+  | "component.run"
+  | "component.halo"
+  | "component.marker"
+  | "component.badge";
 
 export interface DrawCommandBase {
   /** Stable id for diffing and test assertions (derived from source + kind). */
@@ -21,13 +25,15 @@ export interface DrawCommandBase {
   style: StyleToken;
   /** Entity id (room or plan_element) that produced this command. */
   source_id: string;
-  /** Room id for hit-testing; set on room fill commands only. */
+  /** Room id (fill commands) or component id (marker commands) for hit-testing. */
   hit_test_id?: string;
 }
 
 export interface StrokeDrawCommand extends DrawCommandBase {
   kind: "stroke";
   points: PlanPoint[];
+  /** Layer (system) category of a component run stroke; absent on all other strokes. */
+  category?: string;
 }
 
 export interface FillDrawCommand extends DrawCommandBase {
@@ -43,10 +49,21 @@ export interface ArcDrawCommand extends DrawCommandBase {
   end_angle_rad: number;
 }
 
+/** Screen-fixed marker for a point component or the midpoint of a run component. */
+export interface MarkerDrawCommand extends DrawCommandBase {
+  kind: "marker";
+  center: PlanPoint;
+  /** Layer (system) category of the component. */
+  category: string;
+  /** Glyph name derived from the category (see CATEGORY_GLYPHS). */
+  glyph: string;
+}
+
 export type DrawCommand =
   | StrokeDrawCommand
   | FillDrawCommand
-  | ArcDrawCommand;
+  | ArcDrawCommand
+  | MarkerDrawCommand;
 
 export interface RenderModel {
   level_id: string;
@@ -74,8 +91,23 @@ export interface RenderRoom {
   };
 }
 
+/**
+ * A component to draw. category is the component's layer (system) category and
+ * is supplied by the client. Clients pass only components of visible layers.
+ */
+export interface RenderComponent {
+  id: string;
+  level_id: string;
+  category: string;
+  geometry: {
+    type: "point" | "polyline";
+    coordinates: PlanPoint[];
+  };
+}
+
 export interface LevelRenderInput {
   level_id: string;
   plan_elements: RenderPlanElement[];
   rooms: RenderRoom[];
+  components?: RenderComponent[];
 }

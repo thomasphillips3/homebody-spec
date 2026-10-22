@@ -9,4 +9,8 @@ export const LAYER_BY_STYLE: Record<StyleToken, number> = {
   "door.swing": 31,
   "window.stroke": 32,
   "room.fill.selected": 0,
+  "component.run": 40,
+  "component.halo": 45,
+  "component.marker": 50,
+  "component.badge": 51,
 };
