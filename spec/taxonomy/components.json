@@ -1,5 +1,5 @@
 {
-  "version": "0.5.0",
+  "version": "0.6.0",
   "categories": [
     "plumbing",
     "electrical",
@@ -1222,7 +1222,7 @@
       "category": "roof_structure",
       "label": "Flashing",
       "placement": "run",
-      "default_service_interval_days": null,
+      "default_service_interval_days": 365,
       "aliases": [
         "step flashing",
         "valley",
@@ -1261,7 +1261,7 @@
       "category": "roof_structure",
       "label": "Skylight",
       "placement": "point",
-      "default_service_interval_days": null,
+      "default_service_interval_days": 365,
       "aliases": [
         "roof window",
         "sun tunnel"
@@ -1325,7 +1325,7 @@
       "category": "roof_structure",
       "label": "Roof vent",
       "placement": "point",
-      "default_service_interval_days": null,
+      "default_service_interval_days": 365,
       "aliases": [
         "ridge vent",
         "turbine",
@@ -1421,7 +1421,7 @@
       "category": "roof_structure",
       "label": "Soffit and fascia",
       "placement": "run",
-      "default_service_interval_days": null,
+      "default_service_interval_days": 365,
       "aliases": [
         "eaves",
         "fascia board",
@@ -1993,7 +1993,7 @@
       "category": "exterior_and_site",
       "label": "Garage door",
       "placement": "point",
-      "default_service_interval_days": null,
+      "default_service_interval_days": 365,
       "aliases": [
         "overhead door",
         "roll up door"

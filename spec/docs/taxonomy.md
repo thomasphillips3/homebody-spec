@@ -10,7 +10,7 @@ platform hard-codes a type list.
 
 ```json
 {
-  "version": "0.5.0",
+  "version": "0.6.0",
   "categories": ["plumbing", "electrical", "hvac", "roof_structure",
                  "appliances_and_water_heater", "exterior_and_site",
                  "low_voltage_and_smart_home"],
@@ -37,6 +37,7 @@ platform hard-codes a type list.
   low_voltage_and_smart_home. Platforms show layers in this order.
 - `types` keeps document order: layer order first, then table order inside a
   layer, with `other` last. Platforms preserve it for display.
+- `version` tracks the spec release (spec/VERSION).
 - `placement` is `point`, `run` or `either` (the user picks Point or Run).
 - `default_service_interval_days` is null or a positive integer. Phase 6
   consumes it; reminders treat null as "no schedule".
@@ -78,6 +79,31 @@ Values live in `Component.custom_fields`, keyed by the field `key`:
   changes.
 
 `wire_gauge` options are the strings "14", "12", "10", "8", "6", "other".
+
+## Default service interval sources
+
+Five types gained a 365-day `default_service_interval_days` in 0.6.0:
+`flashing`, `skylight`, `roof_vent`, `soffit_fascia` and `garage_door`. They
+follow annual exterior and roof inspection practice (the `roof_covering`
+default is already 365).
+
+- `flashing`, `skylight`, `roof_vent`, `soffit_fascia`: the WSU Extension
+  energy checklist, https://www.energy.wsu.edu/Documents/XtrMntChklst.pdf
+- `garage_door`: the Chamberlain support article on annual lubrication of the
+  door and opener,
+  https://support.chamberlaingroup.com/s/article/Does-my-garage-door-opener-require-any-monthly-or-annual-maintenance-1484145520006
+
+`smoke_detector` and `co_detector` keep 180 days, a compromise between the
+monthly test and the annual battery guidance. Replacement age is a lifecycle
+matter, not a service interval. `clothes_washer` stays null (hose replacement
+is a lifecycle item). Types with no manufacturer or standards-body interval
+have no default; they are listed under "Needs a baseline" and never notified
+until the owner sets an interval.
+
+Resolution order: a component's own `service_interval_days` wins, then the
+per-home value in `homes.maintenance_defaults` (`Home.maintenance_defaults`),
+then the taxonomy default. The owner overrides any default with
+`homes.maintenance_defaults` (D-03).
 
 ## Brands
 

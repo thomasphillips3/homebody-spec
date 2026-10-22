@@ -16,6 +16,13 @@
     "beds": { "type": ["integer", "null"] },
     "baths": { "type": ["number", "null"] },
     "lot_size_m2": { "type": ["number", "null"] },
+    "maintenance_defaults": {
+      "type": ["object", "null"],
+      "description": "Per-home service interval overrides. Keys are component_type ids; a value is a whole number of days that overrides the taxonomy default_service_interval_days for that type in this home. A component's own service_interval_days still wins over both (D-03 resolution order).",
+      "propertyNames": { "pattern": "^[a-z][a-z0-9_]{0,63}$" },
+      "maxProperties": 100,
+      "additionalProperties": { "type": "integer", "minimum": 1, "maximum": 3650 }
+    },
     "created_at": { "type": "string", "format": "date-time" }
   }
 }

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://homebody.app/schema/entities/recall-alert.schema.json",
+  "title": "RecallAlert",
+  "description": "A possible CPSC recall match for one component. The server writes alerts (the recall Edge Function inserts them); clients may change only status.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id", "home_id", "component_id", "recall_number", "recall_id", "title",
+    "url", "recall_date", "matched_on", "confidence", "status", "detected_at"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "UUIDv5 over \"{component_id}:{recall_number}\" in namespace 5f3c9a2e-7b1d-4e68-9c04-2a8d6e1b7f35, so re-running the matcher never duplicates an alert."
+    },
+    "home_id": { "type": "string", "format": "uuid" },
+    "component_id": { "type": "string", "format": "uuid" },
+    "recall_number": { "type": "string", "description": "CPSC recall number, e.g. 26123." },
+    "recall_id": { "type": "integer", "description": "CPSC numeric RecallID." },
+    "title": { "type": "string", "maxLength": 500 },
+    "hazard": { "type": ["string", "null"] },
+    "remedy": { "type": ["string", "null"] },
+    "url": {
+      "type": "string",
+      "pattern": "^https://",
+      "maxLength": 2048,
+      "description": "Link to the recall on cpsc.gov. Clients open it only when its scheme is https and its host ends with cpsc.gov."
+    },
+    "recall_date": { "type": "string", "format": "date" },
+    "matched_on": { "type": "string", "enum": ["model", "manufacturer"] },
+    "confidence": { "type": "string", "enum": ["likely", "possible"] },
+    "status": {
+      "type": "string",
+      "enum": ["open", "dismissed", "resolved"],
+      "default": "open"
+    },
+    "detected_at": { "type": "string", "format": "date-time" }
+  }
+}

@@ -32,6 +32,11 @@
     "performed_by": { "type": ["string", "null"] },
     "cost_cents": { "type": ["integer", "null"] },
     "notes": { "type": ["string", "null"] },
+    "title": {
+      "type": ["string", "null"],
+      "maxLength": 200,
+      "description": "Optional short label for the event, at most 200 characters. Shown in history lists ahead of the notes."
+    },
     "condition_after": {
       "anyOf": [
         { "$ref": "./condition.schema.json" },

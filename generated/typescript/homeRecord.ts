@@ -10,7 +10,12 @@ export interface HomeRecord {
     home:          Home;
     levels:        Level[];
     plan_elements: PlanElement[];
-    rooms:         Room[];
+    /**
+     * Recall matches the server wrote for this home's components. Optional: records without it
+     * stay valid.
+     */
+    recall_alerts?: RecallAlert[];
+    rooms:          Room[];
     /**
      * Semver of the Home Record spec this document conforms to, e.g. 0.2.0. Downstream import
      * validation rejects unknown versions rather than duck-typing.
@@ -105,22 +110,34 @@ export interface EventFields {
     performed_by?:    null | string;
     reading_unit?:    null | string;
     reading_value?:   number | null;
+    /**
+     * Optional short label for the event, at most 200 characters. Shown in history lists ahead
+     * of the notes.
+     */
+    title?: null | string;
 }
 
 export type EventType = "inspection" | "service" | "repair" | "replacement" | "reading" | "note";
 
 export interface Home {
-    address:       string;
-    baths?:        number | null;
-    beds?:         number | null;
-    created_at:    string;
-    id:            string;
-    lot_size_m2?:  number | null;
-    name:          string;
-    owner_user_id: string;
-    parcel_id?:    null | string;
-    sq_ft?:        number | null;
-    year_built?:   number | null;
+    address:      string;
+    baths?:       number | null;
+    beds?:        number | null;
+    created_at:   string;
+    id:           string;
+    lot_size_m2?: number | null;
+    /**
+     * Per-home service interval overrides. Keys are component_type ids; a value is a whole
+     * number of days that overrides the taxonomy default_service_interval_days for that type in
+     * this home. A component's own service_interval_days still wins over both (D-03 resolution
+     * order).
+     */
+    maintenance_defaults?: { [key: string]: number } | null;
+    name:                  string;
+    owner_user_id:         string;
+    parcel_id?:            null | string;
+    sq_ft?:                number | null;
+    year_built?:           number | null;
 }
 
 export interface Level {
@@ -194,6 +211,47 @@ export interface GeometryClass {
 export type PlanElementKind = "wall" | "door" | "window" | "opening";
 
 export type PlanElementSource = "hand" | "trace" | "roomplan";
+
+/**
+ * A possible CPSC recall match for one component. The server writes alerts (the recall Edge
+ * Function inserts them); clients may change only status.
+ */
+export interface RecallAlert {
+    component_id: string;
+    confidence:   Confidence;
+    detected_at:  string;
+    hazard?:      null | string;
+    home_id:      string;
+    /**
+     * UUIDv5 over "{component_id}:{recall_number}" in namespace
+     * 5f3c9a2e-7b1d-4e68-9c04-2a8d6e1b7f35, so re-running the matcher never duplicates an alert.
+     */
+    id:          string;
+    matched_on:  MatchedOn;
+    recall_date: string;
+    /**
+     * CPSC numeric RecallID.
+     */
+    recall_id: number;
+    /**
+     * CPSC recall number, e.g. 26123.
+     */
+    recall_number: string;
+    remedy?:       null | string;
+    status:        Status;
+    title:         string;
+    /**
+     * Link to the recall on cpsc.gov. Clients open it only when its scheme is https and its
+     * host ends with cpsc.gov.
+     */
+    url: string;
+}
+
+export type Confidence = "likely" | "possible";
+
+export type MatchedOn = "model" | "manufacturer";
+
+export type Status = "open" | "dismissed" | "resolved";
 
 export interface Room {
     area_computed_m2?: number | null;

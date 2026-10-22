@@ -31,6 +31,13 @@ data class HomeRecord (
     @SerialName("plan_elements")
     val planElements: List<PlanElement>,
 
+    /**
+     * Recall matches the server wrote for this home's components. Optional: records without it
+     * stay valid.
+     */
+    @SerialName("recall_alerts")
+    val recallAlerts: List<RecallAlert>? = null,
+
     val rooms: List<Room>,
 
     /**
@@ -304,7 +311,13 @@ data class Event (
     val readingValue: Double? = null,
 
     @SerialName("system_id")
-    val systemID: String? = null
+    val systemID: String? = null,
+
+    /**
+     * Optional short label for the event, at most 200 characters. Shown in history lists ahead
+     * of the notes.
+     */
+    val title: String? = null
 )
 
 @Serializable
@@ -330,6 +343,15 @@ data class Home (
 
     @SerialName("lot_size_m2")
     val lotSizeM2: Double? = null,
+
+    /**
+     * Per-home service interval overrides. Keys are component_type ids; a value is a whole
+     * number of days that overrides the taxonomy default_service_interval_days for that type in
+     * this home. A component's own service_interval_days still wins over both (D-03 resolution
+     * order).
+     */
+    @SerialName("maintenance_defaults")
+    val maintenanceDefaults: Map<String, Long>? = null,
 
     val name: String,
 
@@ -475,6 +497,79 @@ enum class PlanElementSource(val value: String) {
     @SerialName("hand") Hand("hand"),
     @SerialName("roomplan") Roomplan("roomplan"),
     @SerialName("trace") Trace("trace");
+}
+
+/**
+ * A possible CPSC recall match for one component. The server writes alerts (the recall Edge
+ * Function inserts them); clients may change only status.
+ */
+@Serializable
+data class RecallAlert (
+    @SerialName("component_id")
+    val componentID: String,
+
+    val confidence: Confidence,
+
+    @SerialName("detected_at")
+    val detectedAt: OffsetDateTime,
+
+    val hazard: String? = null,
+
+    @SerialName("home_id")
+    val homeID: String,
+
+    /**
+     * UUIDv5 over "{component_id}:{recall_number}" in namespace
+     * 5f3c9a2e-7b1d-4e68-9c04-2a8d6e1b7f35, so re-running the matcher never duplicates an alert.
+     */
+    val id: String,
+
+    @SerialName("matched_on")
+    val matchedOn: MatchedOn,
+
+    @SerialName("recall_date")
+    val recallDate: LocalDate,
+
+    /**
+     * CPSC numeric RecallID.
+     */
+    @SerialName("recall_id")
+    val recallID: Long,
+
+    /**
+     * CPSC recall number, e.g. 26123.
+     */
+    @SerialName("recall_number")
+    val recallNumber: String,
+
+    val remedy: String? = null,
+    val status: Status,
+    val title: String,
+
+    /**
+     * Link to the recall on cpsc.gov. Clients open it only when its scheme is https and its
+     * host ends with cpsc.gov.
+     */
+    val url: String
+)
+
+@Serializable
+enum class Confidence(val value: String) {
+    @SerialName("likely") Likely("likely"),
+    @SerialName("possible") Possible("possible");
+}
+
+@Serializable
+enum class MatchedOn(val value: String) {
+    @SerialName("manufacturer") Manufacturer("manufacturer"),
+    @SerialName("model") Model("model");
+}
+
+@Serializable
+enum class Status(val value: String) {
+    @SerialName("dismissed") Dismissed("dismissed"),
+    @SerialName("open") Open("open"),
+    @SerialName("resolved") Resolved("resolved");
 }
 
 @Serializable

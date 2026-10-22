@@ -1,5 +1,5 @@
 {
-  "schema_version": "0.5.0",
+  "schema_version": "0.6.0",
   "home": {
     "id": "00000000-0000-4000-8000-000000000001",
     "owner_user_id": "00000000-0000-4000-8000-000000000002",
@@ -11,6 +11,7 @@
     "beds": 4,
     "baths": 2.5,
     "lot_size_m2": 810.5,
+    "maintenance_defaults": { "water_heater": 400, "hvac_filter": 60 },
     "created_at": "2026-01-01T00:00:00Z"
   },
   "levels": [
@@ -452,6 +453,7 @@
       "occurred_at": "2026-04-01T09:00:00Z",
       "performed_by": "Springfield HVAC Co.",
       "cost_cents": 12500,
+      "title": "Annual furnace inspection",
       "notes": "Annual furnace inspection, minor rattle noted.",
       "condition_after": "fair",
       "reading_value": null,
@@ -482,6 +484,7 @@
       "occurred_at": "2026-02-20T10:00:00Z",
       "performed_by": "Test Electric LLC",
       "cost_cents": 24000,
+      "title": "Replaced two breakers",
       "notes": "Replaced two failing breakers.",
       "condition_after": "needs_attention",
       "reading_value": null,
@@ -698,6 +701,40 @@
       "cost_cents": 3800,
       "source": "manual",
       "attachment_id": null
+    }
+  ],
+  "recall_alerts": [
+    {
+      "id": "00000000-0000-4000-8000-0000000000a0",
+      "home_id": "00000000-0000-4000-8000-000000000001",
+      "component_id": "00000000-0000-4000-8000-000000000051",
+      "recall_number": "99001",
+      "recall_id": 99001,
+      "title": "Fixture Recall: Example Furnaces Due to Fixture Hazard",
+      "hazard": "The fixture furnace can overheat, posing a fictional fire hazard.",
+      "remedy": "Consumers should contact the fictional manufacturer for a free repair.",
+      "url": "https://www.cpsc.gov/Recalls/2026/fixture-recall",
+      "recall_date": "2026-09-01",
+      "matched_on": "model",
+      "confidence": "likely",
+      "status": "open",
+      "detected_at": "2026-09-02T09:17:00Z"
+    },
+    {
+      "id": "00000000-0000-4000-8000-0000000000a1",
+      "home_id": "00000000-0000-4000-8000-000000000001",
+      "component_id": "00000000-0000-4000-8000-000000000050",
+      "recall_number": "99002",
+      "recall_id": 99002,
+      "title": "Fixture Recall: Example Water Heaters Due to Fixture Defect",
+      "hazard": null,
+      "remedy": null,
+      "url": "https://www.cpsc.gov/Recalls/2026/fixture-recall-two",
+      "recall_date": "2026-08-15",
+      "matched_on": "manufacturer",
+      "confidence": "possible",
+      "status": "dismissed",
+      "detected_at": "2026-09-02T09:17:00Z"
     }
   ]
 }

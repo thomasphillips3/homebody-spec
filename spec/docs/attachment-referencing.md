@@ -46,3 +46,18 @@ that embeds one `HomeRecord` document plus attachment bytes keyed by
 `*_id`/`*_ids` reference field behaves inside the JSON document itself. A
 consumer of the JSON document as defined by this spec should always expect
 attachments to be references, never inline bytes.
+
+## Event attachment ordering
+
+A new event is written with `attachment_ids = []`. The server rejects an
+event whose `attachment_ids` names a row that does not exist when the batch
+ends, and the upload queue creates the `attachments` row only after the upload
+finishes. The queue completion step then appends the new attachment id to the
+event's `attachment_ids` in the same local transaction as the `attachments`
+mutation.
+
+`Attachment.linked_event_id` is the source of truth for display counts. The
+`attachment_ids` array is a denormalized mirror that may briefly lag.
+
+Receipts are attachments of kind `receipt`, referenced the same way. There is
+no new attachment kind.

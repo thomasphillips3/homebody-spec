@@ -1,6 +1,6 @@
 {
   "name": "homebody-spec",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "The Home Record spec: open, versioned JSON Schema plus generated Swift/Kotlin/TypeScript models and golden fixtures.",
   "license": "MIT",
   "main": "./dist/index.js",
@@ -32,6 +32,12 @@
     "spec/fixtures/condition-rollup.json",
     "spec/fixtures/nameplate/",
     "spec/fixtures/components/",
+    "spec/fixtures/event-application.json",
+    "spec/fixtures/maintenance-schedule.json",
+    "spec/fixtures/history-scopes.json",
+    "spec/fixtures/notification-plan.json",
+    "spec/fixtures/quick-log/",
+    "spec/fixtures/recalls/",
     "spec/VERSION",
     "README.md",
     "LICENSE"
@@ -52,8 +58,9 @@
     "test:roomplan": "node --test tests/roomplan-fixtures.test.mjs",
     "test:taxonomy": "node --test tests/taxonomy.test.mjs",
     "test:components": "node --test tests/components-fixtures.test.mjs",
+    "test:phase6": "node --test tests/phase6-*.test.mjs",
     "test:render": "vitest run",
-    "test": "npm run build && npm run test:resolver && npm run test:validator && npm run test:fixtures && npm run test:version && npm run test:types && npm run test:consumer && npm run test:roomplan && npm run test:taxonomy && npm run test:components && npm run test:render",
+    "test": "npm run build && npm run test:resolver && npm run test:validator && npm run test:fixtures && npm run test:version && npm run test:types && npm run test:consumer && npm run test:roomplan && npm run test:taxonomy && npm run test:components && npm run test:phase6 && npm run test:render",
     "prepare": "npm run build",
     "prepack": "npm run build"
   },

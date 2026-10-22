@@ -16,6 +16,9 @@ public struct HomeRecord: Codable {
     public let home: Home
     public let levels: [Level]
     public let planElements: [PlanElement]
+    /// Recall matches the server wrote for this home's components. Optional: records without it
+    /// stay valid.
+    public let recallAlerts: [RecallAlert]?
     public let rooms: [Room]
     /// Semver of the Home Record spec this document conforms to, e.g. 0.2.0. Downstream import
     /// validation rejects unknown versions rather than duck-typing.
@@ -31,6 +34,7 @@ public struct HomeRecord: Codable {
         case home = "home"
         case levels = "levels"
         case planElements = "plan_elements"
+        case recallAlerts = "recall_alerts"
         case rooms = "rooms"
         case schemaVersion = "schema_version"
         case smartHomeReadings = "smart_home_readings"
@@ -38,13 +42,14 @@ public struct HomeRecord: Codable {
         case utilityBills = "utility_bills"
     }
 
-    public init(attachments: [Attachment], components: [Component], events: [Event], home: Home, levels: [Level], planElements: [PlanElement], rooms: [Room], schemaVersion: String, smartHomeReadings: [SmartHomeReading], systems: [System], utilityBills: [UtilityBill]) {
+    public init(attachments: [Attachment], components: [Component], events: [Event], home: Home, levels: [Level], planElements: [PlanElement], recallAlerts: [RecallAlert]?, rooms: [Room], schemaVersion: String, smartHomeReadings: [SmartHomeReading], systems: [System], utilityBills: [UtilityBill]) {
         self.attachments = attachments
         self.components = components
         self.events = events
         self.home = home
         self.levels = levels
         self.planElements = planElements
+        self.recallAlerts = recallAlerts
         self.rooms = rooms
         self.schemaVersion = schemaVersion
         self.smartHomeReadings = smartHomeReadings
@@ -78,6 +83,7 @@ public extension HomeRecord {
         home: Home? = nil,
         levels: [Level]? = nil,
         planElements: [PlanElement]? = nil,
+        recallAlerts: [RecallAlert]?? = nil,
         rooms: [Room]? = nil,
         schemaVersion: String? = nil,
         smartHomeReadings: [SmartHomeReading]? = nil,
@@ -91,6 +97,7 @@ public extension HomeRecord {
             home: home ?? self.home,
             levels: levels ?? self.levels,
             planElements: planElements ?? self.planElements,
+            recallAlerts: recallAlerts ?? self.recallAlerts,
             rooms: rooms ?? self.rooms,
             schemaVersion: schemaVersion ?? self.schemaVersion,
             smartHomeReadings: smartHomeReadings ?? self.smartHomeReadings,
@@ -532,6 +539,9 @@ public struct Event: Codable {
     public let readingUnit: String?
     public let readingValue: Double?
     public let systemID: String?
+    /// Optional short label for the event, at most 200 characters. Shown in history lists ahead
+    /// of the notes.
+    public let title: String?
 
     public enum CodingKeys: String, CodingKey {
         case attachmentIDS = "attachment_ids"
@@ -547,9 +557,10 @@ public struct Event: Codable {
         case readingUnit = "reading_unit"
         case readingValue = "reading_value"
         case systemID = "system_id"
+        case title = "title"
     }
 
-    public init(attachmentIDS: [String], componentID: String?, conditionAfter: Condition?, costCents: Int?, eventType: EventType, homeID: String, id: String, notes: String?, occurredAt: Date, performedBy: String?, readingUnit: String?, readingValue: Double?, systemID: String?) {
+    public init(attachmentIDS: [String], componentID: String?, conditionAfter: Condition?, costCents: Int?, eventType: EventType, homeID: String, id: String, notes: String?, occurredAt: Date, performedBy: String?, readingUnit: String?, readingValue: Double?, systemID: String?, title: String?) {
         self.attachmentIDS = attachmentIDS
         self.componentID = componentID
         self.conditionAfter = conditionAfter
@@ -563,6 +574,7 @@ public struct Event: Codable {
         self.readingUnit = readingUnit
         self.readingValue = readingValue
         self.systemID = systemID
+        self.title = title
     }
 }
 
@@ -597,7 +609,8 @@ public extension Event {
         performedBy: String?? = nil,
         readingUnit: String?? = nil,
         readingValue: Double?? = nil,
-        systemID: String?? = nil
+        systemID: String?? = nil,
+        title: String?? = nil
     ) -> Event {
         return Event(
             attachmentIDS: attachmentIDS ?? self.attachmentIDS,
@@ -612,7 +625,8 @@ public extension Event {
             performedBy: performedBy ?? self.performedBy,
             readingUnit: readingUnit ?? self.readingUnit,
             readingValue: readingValue ?? self.readingValue,
-            systemID: systemID ?? self.systemID
+            systemID: systemID ?? self.systemID,
+            title: title ?? self.title
         )
     }
 
@@ -642,6 +656,11 @@ public struct Home: Codable {
     public let createdAt: Date
     public let id: String
     public let lotSizeM2: Double?
+    /// Per-home service interval overrides. Keys are component_type ids; a value is a whole
+    /// number of days that overrides the taxonomy default_service_interval_days for that type in
+    /// this home. A component's own service_interval_days still wins over both (D-03 resolution
+    /// order).
+    public let maintenanceDefaults: [String: Int]?
     public let name: String
     public let ownerUserID: String
     public let parcelID: String?
@@ -655,6 +674,7 @@ public struct Home: Codable {
         case createdAt = "created_at"
         case id = "id"
         case lotSizeM2 = "lot_size_m2"
+        case maintenanceDefaults = "maintenance_defaults"
         case name = "name"
         case ownerUserID = "owner_user_id"
         case parcelID = "parcel_id"
@@ -662,13 +682,14 @@ public struct Home: Codable {
         case yearBuilt = "year_built"
     }
 
-    public init(address: String, baths: Double?, beds: Int?, createdAt: Date, id: String, lotSizeM2: Double?, name: String, ownerUserID: String, parcelID: String?, sqFt: Double?, yearBuilt: Int?) {
+    public init(address: String, baths: Double?, beds: Int?, createdAt: Date, id: String, lotSizeM2: Double?, maintenanceDefaults: [String: Int]?, name: String, ownerUserID: String, parcelID: String?, sqFt: Double?, yearBuilt: Int?) {
         self.address = address
         self.baths = baths
         self.beds = beds
         self.createdAt = createdAt
         self.id = id
         self.lotSizeM2 = lotSizeM2
+        self.maintenanceDefaults = maintenanceDefaults
         self.name = name
         self.ownerUserID = ownerUserID
         self.parcelID = parcelID
@@ -702,6 +723,7 @@ public extension Home {
         createdAt: Date? = nil,
         id: String? = nil,
         lotSizeM2: Double?? = nil,
+        maintenanceDefaults: [String: Int]?? = nil,
         name: String? = nil,
         ownerUserID: String? = nil,
         parcelID: String?? = nil,
@@ -715,6 +737,7 @@ public extension Home {
             createdAt: createdAt ?? self.createdAt,
             id: id ?? self.id,
             lotSizeM2: lotSizeM2 ?? self.lotSizeM2,
+            maintenanceDefaults: maintenanceDefaults ?? self.maintenanceDefaults,
             name: name ?? self.name,
             ownerUserID: ownerUserID ?? self.ownerUserID,
             parcelID: parcelID ?? self.parcelID,
@@ -1021,6 +1044,143 @@ public enum PlanElementSource: String, Codable {
     case hand = "hand"
     case roomplan = "roomplan"
     case trace = "trace"
+}
+
+/// A possible CPSC recall match for one component. The server writes alerts (the recall Edge
+/// Function inserts them); clients may change only status.
+// MARK: - RecallAlert
+public struct RecallAlert: Codable {
+    public let componentID: String
+    public let confidence: Confidence
+    public let detectedAt: Date
+    public let hazard: String?
+    public let homeID: String
+    /// UUIDv5 over "{component_id}:{recall_number}" in namespace
+    /// 5f3c9a2e-7b1d-4e68-9c04-2a8d6e1b7f35, so re-running the matcher never duplicates an alert.
+    public let id: String
+    public let matchedOn: MatchedOn
+    public let recallDate: String
+    /// CPSC numeric RecallID.
+    public let recallID: Int
+    /// CPSC recall number, e.g. 26123.
+    public let recallNumber: String
+    public let remedy: String?
+    public let status: Status
+    public let title: String
+    /// Link to the recall on cpsc.gov. Clients open it only when its scheme is https and its
+    /// host ends with cpsc.gov.
+    public let url: String
+
+    public enum CodingKeys: String, CodingKey {
+        case componentID = "component_id"
+        case confidence = "confidence"
+        case detectedAt = "detected_at"
+        case hazard = "hazard"
+        case homeID = "home_id"
+        case id = "id"
+        case matchedOn = "matched_on"
+        case recallDate = "recall_date"
+        case recallID = "recall_id"
+        case recallNumber = "recall_number"
+        case remedy = "remedy"
+        case status = "status"
+        case title = "title"
+        case url = "url"
+    }
+
+    public init(componentID: String, confidence: Confidence, detectedAt: Date, hazard: String?, homeID: String, id: String, matchedOn: MatchedOn, recallDate: String, recallID: Int, recallNumber: String, remedy: String?, status: Status, title: String, url: String) {
+        self.componentID = componentID
+        self.confidence = confidence
+        self.detectedAt = detectedAt
+        self.hazard = hazard
+        self.homeID = homeID
+        self.id = id
+        self.matchedOn = matchedOn
+        self.recallDate = recallDate
+        self.recallID = recallID
+        self.recallNumber = recallNumber
+        self.remedy = remedy
+        self.status = status
+        self.title = title
+        self.url = url
+    }
+}
+
+// MARK: RecallAlert convenience initializers and mutators
+
+public extension RecallAlert {
+    init(data: Data) throws {
+        self = try newJSONDecoder().decode(RecallAlert.self, from: data)
+    }
+
+    init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
+        }
+        try self.init(data: data)
+    }
+
+    init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
+    }
+
+    func with(
+        componentID: String? = nil,
+        confidence: Confidence? = nil,
+        detectedAt: Date? = nil,
+        hazard: String?? = nil,
+        homeID: String? = nil,
+        id: String? = nil,
+        matchedOn: MatchedOn? = nil,
+        recallDate: String? = nil,
+        recallID: Int? = nil,
+        recallNumber: String? = nil,
+        remedy: String?? = nil,
+        status: Status? = nil,
+        title: String? = nil,
+        url: String? = nil
+    ) -> RecallAlert {
+        return RecallAlert(
+            componentID: componentID ?? self.componentID,
+            confidence: confidence ?? self.confidence,
+            detectedAt: detectedAt ?? self.detectedAt,
+            hazard: hazard ?? self.hazard,
+            homeID: homeID ?? self.homeID,
+            id: id ?? self.id,
+            matchedOn: matchedOn ?? self.matchedOn,
+            recallDate: recallDate ?? self.recallDate,
+            recallID: recallID ?? self.recallID,
+            recallNumber: recallNumber ?? self.recallNumber,
+            remedy: remedy ?? self.remedy,
+            status: status ?? self.status,
+            title: title ?? self.title,
+            url: url ?? self.url
+        )
+    }
+
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
+
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
+    }
+}
+
+public enum Confidence: String, Codable {
+    case likely = "likely"
+    case possible = "possible"
+}
+
+public enum MatchedOn: String, Codable {
+    case manufacturer = "manufacturer"
+    case model = "model"
+}
+
+public enum Status: String, Codable {
+    case dismissed = "dismissed"
+    case resolved = "resolved"
+    case statusOpen = "open"
 }
 
 // MARK: - Room
