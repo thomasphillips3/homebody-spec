@@ -37,7 +37,7 @@ export interface Attachment {
     storage_path: string;
 }
 
-export type AttachmentKind = "photo" | "receipt" | "manual_pdf" | "usdz_mesh" | "floor_plan_source";
+export type AttachmentKind = "photo" | "receipt" | "manual_pdf" | "usdz_mesh" | "floor_plan_source" | "roomplan_structure" | "gltf_mesh";
 
 export interface Component {
     component_type: ComponentType;
@@ -132,10 +132,37 @@ export interface Level {
     import_scale_m_per_px?: number | null;
     name:                   string;
     scale_confidence:       ScaleConfidence;
-    sort_order:             number;
+    /**
+     * Soft reference (not a foreign key) to the gltf_mesh Attachment used by Android and web 3D
+     * viewers.
+     */
+    scan_glb_attachment_id?: null | string;
+    /**
+     * Translation in meters from scan XZ (after rotation) to plan space.
+     */
+    scan_origin_m?:     [number, number, ...number[]] | null;
+    scan_review_state?: ScanReviewState | null;
+    /**
+     * Rotation in radians from scan XZ to plan space. planPoint = R(rotation) * (X, Z) +
+     * scan_origin_m.
+     */
+    scan_rotation_rad?: number | null;
+    /**
+     * Soft reference (not a foreign key) to the roomplan_structure Attachment holding the
+     * captured structure JSON.
+     */
+    scan_structure_attachment_id?: null | string;
+    /**
+     * Soft reference (not a foreign key) to the usdz_mesh Attachment of a RoomPlan scan; the
+     * level patch can sync before the attachment row.
+     */
+    scan_usdz_attachment_id?: null | string;
+    sort_order:               number;
 }
 
 export type ScaleConfidence = "measured" | "estimated";
+
+export type ScanReviewState = "pending_review" | "reviewed";
 
 export interface PlanElement {
     /**
@@ -147,6 +174,10 @@ export interface PlanElement {
     id:               string;
     kind:             PlanElementKind;
     level_id:         string;
+    /**
+     * Provenance of the row. Null means hand.
+     */
+    source?: PlanElementSource | null;
 }
 
 /**
@@ -160,6 +191,8 @@ export interface GeometryClass {
 
 export type PlanElementKind = "wall" | "door" | "window" | "opening";
 
+export type PlanElementSource = "hand" | "trace" | "roomplan";
+
 export interface Room {
     area_computed_m2?: number | null;
     geometry:          Geometry;
@@ -167,6 +200,10 @@ export interface Room {
     level_id:          string;
     name:              string;
     room_type:         RoomType;
+    /**
+     * Provenance of the row. Null means hand.
+     */
+    source?: PlanElementSource | null;
 }
 
 /**

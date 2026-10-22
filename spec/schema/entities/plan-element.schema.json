@@ -13,6 +13,11 @@
       "enum": ["wall", "door", "window", "opening"]
     },
     "geometry": { "$ref": "./plan-geometry.schema.json" },
-    "host_element_id": { "type": ["string", "null"], "format": "uuid" }
+    "host_element_id": { "type": ["string", "null"], "format": "uuid" },
+    "source": {
+      "type": ["string", "null"],
+      "enum": ["hand", "trace", "roomplan", null],
+      "description": "Provenance of the row. Null means hand."
+    }
   }
 }

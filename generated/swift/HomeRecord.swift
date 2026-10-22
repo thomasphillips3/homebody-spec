@@ -200,9 +200,11 @@ public extension Attachment {
 
 public enum AttachmentKind: String, Codable {
     case floorPlanSource = "floor_plan_source"
+    case gltfMesh = "gltf_mesh"
     case manualPDF = "manual_pdf"
     case photo = "photo"
     case receipt = "receipt"
+    case roomplanStructure = "roomplan_structure"
     case usdzMesh = "usdz_mesh"
 }
 
@@ -669,6 +671,21 @@ public struct Level: Codable {
     public let importScaleMPerPx: Double?
     public let name: String
     public let scaleConfidence: ScaleConfidence
+    /// Soft reference (not a foreign key) to the gltf_mesh Attachment used by Android and web 3D
+    /// viewers.
+    public let scanGlbAttachmentID: String?
+    /// Translation in meters from scan XZ (after rotation) to plan space.
+    public let scanOriginM: [Double]?
+    public let scanReviewState: ScanReviewState?
+    /// Rotation in radians from scan XZ to plan space. planPoint = R(rotation) * (X, Z) +
+    /// scan_origin_m.
+    public let scanRotationRAD: Double?
+    /// Soft reference (not a foreign key) to the roomplan_structure Attachment holding the
+    /// captured structure JSON.
+    public let scanStructureAttachmentID: String?
+    /// Soft reference (not a foreign key) to the usdz_mesh Attachment of a RoomPlan scan; the
+    /// level patch can sync before the attachment row.
+    public let scanUsdzAttachmentID: String?
     public let sortOrder: Int
 
     public enum CodingKeys: String, CodingKey {
@@ -682,10 +699,16 @@ public struct Level: Codable {
         case importScaleMPerPx = "import_scale_m_per_px"
         case name = "name"
         case scaleConfidence = "scale_confidence"
+        case scanGlbAttachmentID = "scan_glb_attachment_id"
+        case scanOriginM = "scan_origin_m"
+        case scanReviewState = "scan_review_state"
+        case scanRotationRAD = "scan_rotation_rad"
+        case scanStructureAttachmentID = "scan_structure_attachment_id"
+        case scanUsdzAttachmentID = "scan_usdz_attachment_id"
         case sortOrder = "sort_order"
     }
 
-    public init(elevationOffsetM: Double, homeID: String, id: String, importAttachmentID: String?, importOriginM: [Double]?, importPixelHeight: Int?, importPixelWidth: Int?, importScaleMPerPx: Double?, name: String, scaleConfidence: ScaleConfidence, sortOrder: Int) {
+    public init(elevationOffsetM: Double, homeID: String, id: String, importAttachmentID: String?, importOriginM: [Double]?, importPixelHeight: Int?, importPixelWidth: Int?, importScaleMPerPx: Double?, name: String, scaleConfidence: ScaleConfidence, scanGlbAttachmentID: String?, scanOriginM: [Double]?, scanReviewState: ScanReviewState?, scanRotationRAD: Double?, scanStructureAttachmentID: String?, scanUsdzAttachmentID: String?, sortOrder: Int) {
         self.elevationOffsetM = elevationOffsetM
         self.homeID = homeID
         self.id = id
@@ -696,6 +719,12 @@ public struct Level: Codable {
         self.importScaleMPerPx = importScaleMPerPx
         self.name = name
         self.scaleConfidence = scaleConfidence
+        self.scanGlbAttachmentID = scanGlbAttachmentID
+        self.scanOriginM = scanOriginM
+        self.scanReviewState = scanReviewState
+        self.scanRotationRAD = scanRotationRAD
+        self.scanStructureAttachmentID = scanStructureAttachmentID
+        self.scanUsdzAttachmentID = scanUsdzAttachmentID
         self.sortOrder = sortOrder
     }
 }
@@ -729,6 +758,12 @@ public extension Level {
         importScaleMPerPx: Double?? = nil,
         name: String? = nil,
         scaleConfidence: ScaleConfidence? = nil,
+        scanGlbAttachmentID: String?? = nil,
+        scanOriginM: [Double]?? = nil,
+        scanReviewState: ScanReviewState?? = nil,
+        scanRotationRAD: Double?? = nil,
+        scanStructureAttachmentID: String?? = nil,
+        scanUsdzAttachmentID: String?? = nil,
         sortOrder: Int? = nil
     ) -> Level {
         return Level(
@@ -742,6 +777,12 @@ public extension Level {
             importScaleMPerPx: importScaleMPerPx ?? self.importScaleMPerPx,
             name: name ?? self.name,
             scaleConfidence: scaleConfidence ?? self.scaleConfidence,
+            scanGlbAttachmentID: scanGlbAttachmentID ?? self.scanGlbAttachmentID,
+            scanOriginM: scanOriginM ?? self.scanOriginM,
+            scanReviewState: scanReviewState ?? self.scanReviewState,
+            scanRotationRAD: scanRotationRAD ?? self.scanRotationRAD,
+            scanStructureAttachmentID: scanStructureAttachmentID ?? self.scanStructureAttachmentID,
+            scanUsdzAttachmentID: scanUsdzAttachmentID ?? self.scanUsdzAttachmentID,
             sortOrder: sortOrder ?? self.sortOrder
         )
     }
@@ -760,6 +801,11 @@ public enum ScaleConfidence: String, Codable {
     case measured = "measured"
 }
 
+public enum ScanReviewState: String, Codable {
+    case pendingReview = "pending_review"
+    case reviewed = "reviewed"
+}
+
 // MARK: - PlanElement
 public struct PlanElement: Codable {
     /// Shared geometry type embedded by Room, PlanElement, and Component. Coordinates are
@@ -769,6 +815,8 @@ public struct PlanElement: Codable {
     public let id: String
     public let kind: PlanElementKind
     public let levelID: String
+    /// Provenance of the row. Null means hand.
+    public let source: PlanElementSource?
 
     public enum CodingKeys: String, CodingKey {
         case geometry = "geometry"
@@ -776,14 +824,16 @@ public struct PlanElement: Codable {
         case id = "id"
         case kind = "kind"
         case levelID = "level_id"
+        case source = "source"
     }
 
-    public init(geometry: GeometryClass, hostElementID: String?, id: String, kind: PlanElementKind, levelID: String) {
+    public init(geometry: GeometryClass, hostElementID: String?, id: String, kind: PlanElementKind, levelID: String, source: PlanElementSource?) {
         self.geometry = geometry
         self.hostElementID = hostElementID
         self.id = id
         self.kind = kind
         self.levelID = levelID
+        self.source = source
     }
 }
 
@@ -810,14 +860,16 @@ public extension PlanElement {
         hostElementID: String?? = nil,
         id: String? = nil,
         kind: PlanElementKind? = nil,
-        levelID: String? = nil
+        levelID: String? = nil,
+        source: PlanElementSource?? = nil
     ) -> PlanElement {
         return PlanElement(
             geometry: geometry ?? self.geometry,
             hostElementID: hostElementID ?? self.hostElementID,
             id: id ?? self.id,
             kind: kind ?? self.kind,
-            levelID: levelID ?? self.levelID
+            levelID: levelID ?? self.levelID,
+            source: source ?? self.source
         )
     }
 
@@ -892,6 +944,12 @@ public enum PlanElementKind: String, Codable {
     case window = "window"
 }
 
+public enum PlanElementSource: String, Codable {
+    case hand = "hand"
+    case roomplan = "roomplan"
+    case trace = "trace"
+}
+
 // MARK: - Room
 public struct Room: Codable {
     public let areaComputedM2: Double?
@@ -900,6 +958,8 @@ public struct Room: Codable {
     public let levelID: String
     public let name: String
     public let roomType: RoomType
+    /// Provenance of the row. Null means hand.
+    public let source: PlanElementSource?
 
     public enum CodingKeys: String, CodingKey {
         case areaComputedM2 = "area_computed_m2"
@@ -908,15 +968,17 @@ public struct Room: Codable {
         case levelID = "level_id"
         case name = "name"
         case roomType = "room_type"
+        case source = "source"
     }
 
-    public init(areaComputedM2: Double?, geometry: Geometry, id: String, levelID: String, name: String, roomType: RoomType) {
+    public init(areaComputedM2: Double?, geometry: Geometry, id: String, levelID: String, name: String, roomType: RoomType, source: PlanElementSource?) {
         self.areaComputedM2 = areaComputedM2
         self.geometry = geometry
         self.id = id
         self.levelID = levelID
         self.name = name
         self.roomType = roomType
+        self.source = source
     }
 }
 
@@ -944,7 +1006,8 @@ public extension Room {
         id: String? = nil,
         levelID: String? = nil,
         name: String? = nil,
-        roomType: RoomType? = nil
+        roomType: RoomType? = nil,
+        source: PlanElementSource?? = nil
     ) -> Room {
         return Room(
             areaComputedM2: areaComputedM2 ?? self.areaComputedM2,
@@ -952,7 +1015,8 @@ public extension Room {
             id: id ?? self.id,
             levelID: levelID ?? self.levelID,
             name: name ?? self.name,
-            roomType: roomType ?? self.roomType
+            roomType: roomType ?? self.roomType,
+            source: source ?? self.source
         )
     }
 

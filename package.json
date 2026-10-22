@@ -1,6 +1,6 @@
 {
   "name": "homebody-spec",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "The Home Record spec: open, versioned JSON Schema plus generated Swift/Kotlin/TypeScript models and golden fixtures.",
   "license": "MIT",
   "main": "./dist/index.js",

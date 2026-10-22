@@ -36,6 +36,11 @@
         }
       ]
     },
-    "area_computed_m2": { "type": ["number", "null"] }
+    "area_computed_m2": { "type": ["number", "null"] },
+    "source": {
+      "type": ["string", "null"],
+      "enum": ["hand", "trace", "roomplan", null],
+      "description": "Provenance of the row. Null means hand."
+    }
   }
 }

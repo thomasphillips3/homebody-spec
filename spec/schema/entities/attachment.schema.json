@@ -10,7 +10,7 @@
     "home_id": { "type": "string", "format": "uuid" },
     "kind": {
       "type": "string",
-      "enum": ["photo", "receipt", "manual_pdf", "usdz_mesh", "floor_plan_source"]
+      "enum": ["photo", "receipt", "manual_pdf", "usdz_mesh", "floor_plan_source", "roomplan_structure", "gltf_mesh"]
     },
     "storage_path": {
       "type": "string",

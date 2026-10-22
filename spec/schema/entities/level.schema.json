@@ -24,6 +24,36 @@
     },
     "import_scale_m_per_px": { "type": ["number", "null"] },
     "import_pixel_width": { "type": ["integer", "null"] },
-    "import_pixel_height": { "type": ["integer", "null"] }
+    "import_pixel_height": { "type": ["integer", "null"] },
+    "scan_usdz_attachment_id": {
+      "type": ["string", "null"],
+      "format": "uuid",
+      "description": "Soft reference (not a foreign key) to the usdz_mesh Attachment of a RoomPlan scan; the level patch can sync before the attachment row."
+    },
+    "scan_structure_attachment_id": {
+      "type": ["string", "null"],
+      "format": "uuid",
+      "description": "Soft reference (not a foreign key) to the roomplan_structure Attachment holding the captured structure JSON."
+    },
+    "scan_glb_attachment_id": {
+      "type": ["string", "null"],
+      "format": "uuid",
+      "description": "Soft reference (not a foreign key) to the gltf_mesh Attachment used by Android and web 3D viewers."
+    },
+    "scan_origin_m": {
+      "type": ["array", "null"],
+      "items": { "type": "number" },
+      "minItems": 2,
+      "maxItems": 2,
+      "description": "Translation in meters from scan XZ (after rotation) to plan space."
+    },
+    "scan_rotation_rad": {
+      "type": ["number", "null"],
+      "description": "Rotation in radians from scan XZ to plan space. planPoint = R(rotation) * (X, Z) + scan_origin_m."
+    },
+    "scan_review_state": {
+      "type": ["string", "null"],
+      "enum": ["pending_review", "reviewed", null]
+    }
   }
 }

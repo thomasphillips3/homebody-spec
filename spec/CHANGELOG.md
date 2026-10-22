@@ -2,6 +2,24 @@
 
 All notable changes to the Home Record spec are documented in this file.
 
+## 0.4.0 - 2026-10-22
+
+- Added six optional nullable scan fields to `Level` (`scan_usdz_attachment_id`,
+  `scan_structure_attachment_id`, `scan_glb_attachment_id`, `scan_origin_m`,
+  `scan_rotation_rad`, `scan_review_state`) so a level can come from a
+  RoomPlan scan and carry a review gate (PLAN-06, PLAN-07, MAGIC-04). The
+  three attachment pointers are soft references, not foreign keys, because
+  the level patch can sync before the attachment row.
+- Added optional nullable `source` (`hand`, `trace`, `roomplan`; null means
+  hand) to `PlanElement` and `Room` so scan rows can be told apart from
+  hand-drawn rows in one coordinate space.
+- Added `roomplan_structure` and `gltf_mesh` to `Attachment.kind`.
+- Added `spec/docs/roomplan-projection.md` (normative 3D-to-2D projection
+  rules) and the `spec/fixtures/roomplan/` structure fixtures with derived
+  plan goldens, plus a `roomplan-scan` render parity pair.
+- Compatibility: all new fields are optional and nullable; every 0.3.0
+  record stays valid.
+
 ## 0.3.0 - 2026-09-28
 
 - Added five nullable import fields to `Level` (`import_attachment_id`,

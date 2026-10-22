@@ -83,9 +83,11 @@ data class Attachment (
 @Serializable
 enum class AttachmentKind(val value: String) {
     @SerialName("floor_plan_source") FloorPlanSource("floor_plan_source"),
+    @SerialName("gltf_mesh") GltfMesh("gltf_mesh"),
     @SerialName("manual_pdf") ManualPDF("manual_pdf"),
     @SerialName("photo") Photo("photo"),
     @SerialName("receipt") Receipt("receipt"),
+    @SerialName("roomplan_structure") RoomplanStructure("roomplan_structure"),
     @SerialName("usdz_mesh") UsdzMesh("usdz_mesh");
 }
 
@@ -305,6 +307,43 @@ data class Level (
     @SerialName("scale_confidence")
     val scaleConfidence: ScaleConfidence,
 
+    /**
+     * Soft reference (not a foreign key) to the gltf_mesh Attachment used by Android and web 3D
+     * viewers.
+     */
+    @SerialName("scan_glb_attachment_id")
+    val scanGlbAttachmentID: String? = null,
+
+    /**
+     * Translation in meters from scan XZ (after rotation) to plan space.
+     */
+    @SerialName("scan_origin_m")
+    val scanOriginM: List<Double>? = null,
+
+    @SerialName("scan_review_state")
+    val scanReviewState: ScanReviewState? = null,
+
+    /**
+     * Rotation in radians from scan XZ to plan space. planPoint = R(rotation) * (X, Z) +
+     * scan_origin_m.
+     */
+    @SerialName("scan_rotation_rad")
+    val scanRotationRAD: Double? = null,
+
+    /**
+     * Soft reference (not a foreign key) to the roomplan_structure Attachment holding the
+     * captured structure JSON.
+     */
+    @SerialName("scan_structure_attachment_id")
+    val scanStructureAttachmentID: String? = null,
+
+    /**
+     * Soft reference (not a foreign key) to the usdz_mesh Attachment of a RoomPlan scan; the
+     * level patch can sync before the attachment row.
+     */
+    @SerialName("scan_usdz_attachment_id")
+    val scanUsdzAttachmentID: String? = null,
+
     @SerialName("sort_order")
     val sortOrder: Long
 )
@@ -313,6 +352,12 @@ data class Level (
 enum class ScaleConfidence(val value: String) {
     @SerialName("estimated") Estimated("estimated"),
     @SerialName("measured") Measured("measured");
+}
+
+@Serializable
+enum class ScanReviewState(val value: String) {
+    @SerialName("pending_review") PendingReview("pending_review"),
+    @SerialName("reviewed") Reviewed("reviewed");
 }
 
 @Serializable
@@ -330,7 +375,12 @@ data class PlanElement (
     val kind: PlanElementKind,
 
     @SerialName("level_id")
-    val levelID: String
+    val levelID: String,
+
+    /**
+     * Provenance of the row. Null means hand.
+     */
+    val source: PlanElementSource? = null
 )
 
 /**
@@ -352,6 +402,13 @@ enum class PlanElementKind(val value: String) {
 }
 
 @Serializable
+enum class PlanElementSource(val value: String) {
+    @SerialName("hand") Hand("hand"),
+    @SerialName("roomplan") Roomplan("roomplan"),
+    @SerialName("trace") Trace("trace");
+}
+
+@Serializable
 data class Room (
     @SerialName("area_computed_m2")
     val areaComputedM2: Double? = null,
@@ -365,7 +422,12 @@ data class Room (
     val name: String,
 
     @SerialName("room_type")
-    val roomType: RoomType
+    val roomType: RoomType,
+
+    /**
+     * Provenance of the row. Null means hand.
+     */
+    val source: PlanElementSource? = null
 )
 
 /**
